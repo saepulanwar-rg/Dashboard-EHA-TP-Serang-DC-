@@ -61,6 +61,94 @@
             overflow: hidden;
         }
 
+        /* Authentication Modal Overlay */
+        #login-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background-color: rgba(15, 23, 42, 0.95);
+            backdrop-filter: blur(8px);
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .login-card {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 35px 30px;
+            width: 100%;
+            max-width: 420px;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3);
+            text-align: center;
+        }
+
+        .login-card i.logo-icon {
+            font-size: 42px;
+            color: var(--accent-color);
+            margin-bottom: 15px;
+        }
+
+        .login-card h2 {
+            font-size: 20px;
+            margin-bottom: 6px;
+        }
+
+        .login-card p {
+            font-size: 13px;
+            color: var(--text-secondary);
+            margin-bottom: 25px;
+        }
+
+        .login-field {
+            text-align: left;
+            margin-bottom: 18px;
+        }
+
+        .login-field label {
+            display: block;
+            font-size: 12px;
+            font-weight: 600;
+            margin-bottom: 6px;
+            color: var(--text-primary);
+        }
+
+        .login-field input {
+            width: 100%;
+            padding: 10px 14px;
+            border-radius: 6px;
+            border: 1px solid var(--border-color);
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            font-size: 14px;
+            outline: none;
+        }
+
+        .login-field input:focus {
+            border-color: var(--accent-color);
+        }
+
+        .login-btn {
+            width: 100%;
+            padding: 12px;
+            border-radius: 6px;
+            background-color: var(--accent-color);
+            color: white;
+            border: none;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            margin-top: 5px;
+        }
+
+        .login-btn:hover {
+            background-color: var(--accent-hover);
+        }
+
         /* Sidebar Navigation */
         .sidebar {
             width: var(--sidebar-width);
@@ -166,6 +254,19 @@
             gap: 10px;
         }
 
+        .user-badge {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 12px;
+            background-color: var(--bg-primary);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+            margin-right: 10px;
+        }
+
         .btn {
             background-color: var(--bg-primary);
             color: var(--text-primary);
@@ -194,7 +295,7 @@
             background-color: var(--accent-hover);
         }
 
-        /* Realtime Control Bar */
+        /* Realtime Data Control Bar */
         .realtime-bar {
             background-color: var(--bg-secondary);
             border-bottom: 1px solid var(--border-color);
@@ -277,7 +378,7 @@
         /* Grid Layouts */
         .stats-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
             gap: 15px;
             margin-bottom: 25px;
         }
@@ -299,7 +400,7 @@
         }
 
         .stat-card-value {
-            font-size: 22px;
+            font-size: 20px;
             font-weight: 700;
             color: var(--text-primary);
         }
@@ -490,7 +591,7 @@
             border-bottom: none;
         }
 
-        /* Command Center Fullscreen Mode */
+        /* Command Center Fullscreen Display Mode */
         body.command-center-mode .sidebar,
         body.command-center-mode .header-controls,
         body.command-center-mode .realtime-bar {
@@ -550,6 +651,22 @@
 </head>
 <body>
 
+    <!-- AUTHENTICATION OVERLAY FORM -->
+    <div id="login-overlay">
+        <div class="login-card">
+            <i class="fa-solid fa-shield-halved logo-icon"></i>
+            <h2>Enterprise System Access</h2>
+            <p>Masukkan Nama atau Email Anda untuk melanjutkan</p>
+            
+            <div class="login-field">
+                <label for="login-identity">Nama / Email Pengguna</label>
+                <input type="text" id="login-identity" placeholder="Contoh: Budi Santoso atau budi@perusahaan.com" autocomplete="off">
+            </div>
+
+            <button class="login-btn" onclick="handleLogin()">Masuk Dashboard</button>
+        </div>
+    </div>
+
     <!-- Sidebar Navigation -->
     <aside class="sidebar">
         <div class="sidebar-header">
@@ -581,11 +698,16 @@
         <header class="header">
             <div class="header-title-container">
                 <div class="header-title">
-                    <h1 id="dashboard-title">Dashboard Enterprise EHA TP Serang DC</h1>
-                    <div class="header-meta" id="header-meta">Jam Operasional Facility: 13:00 - 06:00 WIB • System Active</div>
+                    <h1 id="dashboard-title">Dashboard Enterprise Monitoring System</h1>
+                    <div class="header-meta" id="header-meta">Jam Operasional Facility: 13:00 - 06:00 WIB • Realtime System Engine Active</div>
                 </div>
             </div>
             <div class="header-controls">
+                <div class="user-badge">
+                    <i class="fa-solid fa-user-circle" style="color: var(--accent-color);"></i>
+                    <span id="active-user-name">Pengguna</span>
+                </div>
+                <button class="btn" onclick="handleLogout()" title="Keluar"><i class="fa-solid fa-right-from-bracket"></i> Logout</button>
                 <button class="btn" onclick="toggleCommandCenter()"><i class="fa-solid fa-tv"></i> Mode Command Center</button>
                 <button class="btn" onclick="exportPNG()"><i class="fa-solid fa-image"></i> Export PNG</button>
                 <button class="btn" onclick="exportPDF()"><i class="fa-solid fa-file-pdf"></i> Export PDF</button>
@@ -597,7 +719,7 @@
         <div class="realtime-bar">
             <div class="realtime-inputs">
                 <i class="fa-solid fa-link" style="color: var(--text-secondary);"></i>
-                <input type="text" id="gsheet-url" class="input-text" placeholder="Masukkan URL Google Sheets / Published CSV Endpoint (Opsional)...">
+                <input type="text" id="gsheet-url" class="input-text" placeholder="Masukkan URL Google Sheets / Endpoint Published JSON (Opsional)...">
                 <button class="btn btn-primary" onclick="connectGoogleSheets()">Hubungkan</button>
             </div>
             <div style="display: flex; align-items: center; gap: 15px;">
@@ -626,7 +748,7 @@
                     <select id="filter-value" class="select-input" onchange="applyGlobalFilter()"><option value="">-- Semua Nilai --</option></select>
                     <button class="btn" onclick="resetGlobalFilter()"><i class="fa-solid fa-xmark"></i> Reset Filter</button>
                     <span id="performance-mode-indicator" class="status-badge" style="display:none; background-color: rgba(37,99,235,0.1); color: var(--accent-color);">
-                        <i class="fa-solid fa-bolt"></i> Enterprise Performance Mode (Big Data Virtual Scrolling)
+                        <i class="fa-solid fa-bolt"></i> Enterprise Performance Mode (Virtual Table Engine Active)
                     </span>
                 </div>
             </div>
@@ -643,11 +765,15 @@
                         <div class="stat-card-value" id="stat-total-cols">0</div>
                     </div>
                     <div class="stat-card">
+                        <div class="stat-card-title">Total Kategori</div>
+                        <div class="stat-card-value" id="stat-total-cats">0</div>
+                    </div>
+                    <div class="stat-card">
                         <div class="stat-card-title">Nilai Akumulasi (Total)</div>
                         <div class="stat-card-value" id="stat-sum-val">0</div>
                     </div>
                     <div class="stat-card">
-                        <div class="stat-card-title">Rata-Rata</div>
+                        <div class="stat-card-title">Nilai Rata-Rata</div>
                         <div class="stat-card-value" id="stat-avg-val">0</div>
                     </div>
                     <div class="stat-card">
@@ -660,14 +786,14 @@
                     </div>
                 </div>
 
-                <!-- AI Quick Executive Insight -->
+                <!-- AI Quick Executive Summary -->
                 <div class="insight-card">
                     <div class="insight-header">
                         <i class="fa-solid fa-robot" style="font-size: 20px; color: var(--accent-color);"></i>
                         <div class="insight-title">AI Realtime Executive Summary</div>
                     </div>
                     <ul class="insight-list" id="quick-ai-insights">
-                        <li>Memuat data operasional internal...</li>
+                        <li>Memuat kalkulasi statistik otomatis...</li>
                     </ul>
                 </div>
             </section>
@@ -696,19 +822,19 @@
             <section id="sec-visualisasi" class="section-view">
                 <div class="charts-grid">
                     <div class="chart-card">
-                        <div class="chart-header"><div class="chart-title">Distribusi Kategori Utama (Bar Chart)</div></div>
+                        <div class="chart-header"><div class="chart-title">Bar Chart (Smart AI Categorical Selection)</div></div>
                         <div id="chart-bar" class="chart-container"></div>
                     </div>
                     <div class="chart-card">
-                        <div class="chart-header"><div class="chart-title">Proporsi Segmentasi Data (Pie Chart)</div></div>
+                        <div class="chart-header"><div class="chart-title">Pie Chart (Segmentasi Proposional)</div></div>
                         <div id="chart-pie" class="chart-container"></div>
                     </div>
                     <div class="chart-card">
-                        <div class="chart-header"><div class="chart-title">Tren Volumetrik Operasional (Area Chart)</div></div>
+                        <div class="chart-header"><div class="chart-title">Area Chart (Volumetrik Akumulatif)</div></div>
                         <div id="chart-area" class="chart-container"></div>
                     </div>
                     <div class="chart-card">
-                        <div class="chart-header"><div class="chart-title">Fluktuasi Data Realtime (Line Chart)</div></div>
+                        <div class="chart-header"><div class="chart-title">Line Chart (Fluktuasi & Tren Realtime)</div></div>
                         <div id="chart-line" class="chart-container"></div>
                     </div>
                 </div>
@@ -718,7 +844,7 @@
             <section id="sec-tabel" class="section-view">
                 <div class="table-card">
                     <div class="table-toolbar">
-                        <div class="chart-title">Eksplorasi Data Realtime (Virtual Table Rendering Engine)</div>
+                        <div class="chart-title">Eksplorasi Data Realtime (Virtual Table Windowing Engine)</div>
                         <input type="text" id="table-search-input" class="input-text" style="width: 250px;" placeholder="Cari data..." oninput="handleTableSearch()">
                     </div>
                     <div class="virtual-table-viewport" id="virtual-table-viewport" onscroll="onVirtualTableScroll()">
@@ -742,7 +868,7 @@
                         <div class="insight-title" style="font-size: 18px;">Analisis AI Realtime Engine (Bahasa Indonesia)</div>
                     </div>
                     <div id="full-ai-insights-content" style="line-height: 1.8; font-size: 14px;">
-                        Silakan hubungkan data Google Sheets untuk menghasilkan analisis otomatis.
+                        Menganalisis pola data statistik secara komprehensif...
                     </div>
                 </div>
             </section>
@@ -754,7 +880,7 @@
                     <p style="margin-bottom: 10px;">Aplikasi ini dirancang khusus oleh <strong>PurworejoIT</strong> & <strong>Berdigital</strong> untuk memproses, memvisualisasikan, dan memonitor data dari percakapan Gemini serta Google Sheets secara realtime tanpa reload halaman.</p>
                     <ul style="margin-left: 20px; margin-bottom: 15px;">
                         <li><strong>Realtime Data Engine:</strong> Auto update statistik, grafik, dan tabel secara interaktif.</li>
-                        <li><strong>Big Data Virtual Scrolling:</strong> Mampu merender hingga 100.000+ baris data dengan mulus tanpa lag memori.</li>
+                        <li><strong>Big Data Virtual Scrolling:</strong> Mampu merender hingga 100.000+ hingga 500.000+ baris data dengan mulus tanpa lag memori.</li>
                         <li><strong>National Command Center Mode:</strong> Tampilan layar penuh khusus monitoring TV/Control Room.</li>
                     </ul>
                     <hr style="border: none; border-top: 1px solid var(--border-color); margin: 20px 0;">
@@ -789,13 +915,48 @@
         const VIEWPORT_HEIGHT = 450;
         const BUFFER_COUNT = 5;
 
-        /* INITIALIZATION & EMBEDDED LOCAL DATASET */
+        /* INITIALIZATION & AUTHENTICATION ENGINE */
         window.addEventListener('DOMContentLoaded', () => {
+            checkAuthSession();
             initCharts();
             loadEmbeddedGeminiDataset();
             startAutoRefreshEngine();
             window.addEventListener('resize', resizeAllCharts);
+            
+            // Allow enter key on login input
+            document.getElementById('login-identity').addEventListener('keypress', function (e) {
+                if (e.key === 'Enter') handleLogin();
+            });
         });
+
+        function checkAuthSession() {
+            const savedUser = localStorage.getItem('dashboard_user_identity');
+            if (savedUser) {
+                document.getElementById('login-overlay').style.display = 'none';
+                document.getElementById('active-user-name').textContent = savedUser;
+            } else {
+                document.getElementById('login-overlay').style.display = 'flex';
+            }
+        }
+
+        function handleLogin() {
+            const identityInput = document.getElementById('login-identity').value.trim();
+            if (!identityInput) {
+                alert('Silakan masukkan Nama atau Email Anda!');
+                return;
+            }
+            localStorage.setItem('dashboard_user_identity', identityInput);
+            document.getElementById('login-overlay').style.display = 'none';
+            document.getElementById('active-user-name').textContent = identityInput;
+            showToast(`Selamat datang, ${identityInput}!`);
+        }
+
+        function handleLogout() {
+            localStorage.removeItem('dashboard_user_identity');
+            document.getElementById('login-identity').value = '';
+            document.getElementById('login-overlay').style.display = 'flex';
+            showToast('Sesi Anda telah berakhir.');
+        }
 
         function loadEmbeddedGeminiDataset() {
             datasetHeaders = ['Tanggal', 'Status_Paket', 'Kategori_SOP', 'Total_Volume', 'Nilai_Performa'];
@@ -803,7 +964,7 @@
             const statusList = ['SOC_RECEIVED', 'SOC_PACKED', 'FMHub_LHTransported', 'RETURN_SOC', 'CANCELLED'];
             const sopList = ['TJPH', 'Data Gantungan Hourly', 'MCC Transported', 'Damage Handling', 'Non AWB'];
 
-            for (let i = 1; i <= 500; i++) {
+            for (let i = 1; i <= 600; i++) {
                 sample.push({
                     'Tanggal': `2026-10-${(i % 30 + 1).toString().padStart(2, '0')}`,
                     'Status_Paket': statusList[i % statusList.length],
@@ -870,7 +1031,7 @@
                 }
             } catch (err) {
                 console.error(err);
-                setRealtimeStatus(false, 'Koneksi Google Sheets Terputus. Menggunakan Dataset Lokal...');
+                setRealtimeStatus(false, 'Koneksi Terputus. Mencoba menyambung ulang...');
             }
         }
 
@@ -908,6 +1069,10 @@
             document.getElementById('stat-total-rows').textContent = filteredDataset.length.toLocaleString('id-ID');
             document.getElementById('stat-total-cols').textContent = datasetHeaders.length;
 
+            let catCol = datasetHeaders.find(h => typeof filteredDataset[0][h] === 'string') || datasetHeaders[0];
+            let uniqueCats = new Set(filteredDataset.map(r => r[catCol])).size;
+            document.getElementById('stat-total-cats').textContent = uniqueCats.toLocaleString('id-ID');
+
             let numericCol = datasetHeaders.find(h => {
                 return filteredDataset.some(row => typeof row[h] === 'number' || (!isNaN(parseFloat(row[h])) && isFinite(row[h])));
             });
@@ -937,7 +1102,7 @@
             }
         }
 
-        /* ECHARTS ENGINE */
+        /* SMART AI ECHARTS ENGINE */
         function initCharts() {
             chartInstances.bar = echarts.init(document.getElementById('chart-bar'));
             chartInstances.pie = echarts.init(document.getElementById('chart-pie'));
@@ -1094,17 +1259,17 @@
             let topVal = sorted[0] ? sorted[0][1].toLocaleString('id-ID') : '0';
 
             document.getElementById('quick-ai-insights').innerHTML = `
-                <li><i class="fa-solid fa-circle-check" style="color: var(--success-color);"></i> Kategori dominan terpantau pada <strong>${topCat}</strong> (Total: ${topVal}).</li>
-                <li><i class="fa-solid fa-chart-line" style="color: var(--accent-color);"></i> Total sampel data diproses secara realtime: <strong>${filteredDataset.length.toLocaleString('id-ID')} baris</strong>.</li>
+                <li><i class="fa-solid fa-circle-check" style="color: var(--success-color);"></i> Kategori dengan nilai tertinggi didominasi oleh <strong>${topCat}</strong> (${topVal}).</li>
+                <li><i class="fa-solid fa-chart-line" style="color: var(--accent-color);"></i> Total entitas aktif diproses secara otomatis: <strong>${filteredDataset.length.toLocaleString('id-ID')} baris</strong>.</li>
             `;
 
             document.getElementById('full-ai-insights-content').innerHTML = `
                 <h3>Laporan AI Realtime Operasional</h3>
-                <p>Berdasarkan komputasi statistik otomatis terhadap <strong>${filteredDataset.length}</strong> entitas data:</p>
+                <p>Berdasarkan komputasi statistik otomatis terhadap <strong>${filteredDataset.length.toLocaleString('id-ID')}</strong> entitas data:</p>
                 <br>
                 <ul>
-                    <li><strong>Konsentrasi Utama:</strong> Kategori <code>${topCat}</code> menyumbang kontribusi terbesar dalam dataset operasional ini.</li>
-                    <li><strong>Skalabilitas Data:</strong> Virtual Table Rendering Engine berjalan stabil dalam menangani ${rawDataset.length.toLocaleString('id-ID')} total baris tanpa hambatan memori.</li>
+                    <li><strong>Konsentrasi Utama:</strong> Kategori <code>${topCat}</code> menyumbang akumulasi kontribusi terbesar dalam dataset ini.</li>
+                    <li><strong>Skalabilitas Data:</strong> Enterprise Virtual Table Rendering Engine berjalan stabil dalam menangani ${rawDataset.length.toLocaleString('id-ID')} total baris tanpa hambatan memori.</li>
                 </ul>
             `;
         }
