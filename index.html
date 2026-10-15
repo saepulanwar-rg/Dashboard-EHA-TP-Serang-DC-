@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Enterprise Dashboard System - PurworejoIT</title>
 
-    <!-- External Libraries (CDN) -->
+    <!-- External Enterprise Libraries (CDN) -->
     <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
@@ -20,8 +20,8 @@
             --text-primary: #1f2937;
             --text-secondary: #6b7280;
             --border-color: #e5e7eb;
-            --accent-color: #ee4d2d;
-            --accent-hover: #d03e20;
+            --accent-color: #2563eb;
+            --accent-hover: #1d4ed8;
             --success-color: #10b981;
             --warning-color: #f59e0b;
             --danger-color: #ef4444;
@@ -38,8 +38,8 @@
             --text-primary: #f8fafc;
             --text-secondary: #94a3b8;
             --border-color: #334155;
-            --accent-color: #ff6a4d;
-            --accent-hover: #ee4d2d;
+            --accent-color: #3b82f6;
+            --accent-hover: #60a5fa;
             --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.5);
             --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
             --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.4);
@@ -113,7 +113,7 @@
         }
 
         .sidebar-menu a:hover, .sidebar-menu a.active {
-            background-color: rgba(238, 77, 45, 0.1);
+            background-color: rgba(37, 99, 235, 0.1);
             color: var(--accent-color);
         }
 
@@ -125,7 +125,7 @@
             text-align: center;
         }
 
-        /* Main Wrapper */
+        /* Main Content Wrapper */
         .main-wrapper {
             flex-grow: 1;
             display: flex;
@@ -194,7 +194,7 @@
             background-color: var(--accent-hover);
         }
 
-        /* Realtime Control Bar */
+        /* Realtime Data Engine Bar */
         .realtime-bar {
             background-color: var(--bg-secondary);
             border-bottom: 1px solid var(--border-color);
@@ -259,7 +259,7 @@
             background-color: currentColor;
         }
 
-        /* Content Area */
+        /* Content Body Area */
         .content-body {
             flex-grow: 1;
             overflow-y: auto;
@@ -490,7 +490,7 @@
             border-bottom: none;
         }
 
-        /* Fullscreen Command Center Mode */
+        /* Command Center Fullscreen Mode */
         body.command-center-mode .sidebar,
         body.command-center-mode .header-controls,
         body.command-center-mode .realtime-bar {
@@ -519,10 +519,10 @@
         }
 
         body.command-center-mode .stat-card-value {
-            color: #ff6a4d;
+            color: #38bdf8;
         }
 
-        /* Notification Toast */
+        /* Toast Notification */
         .toast-notification {
             position: fixed;
             bottom: 20px;
@@ -553,10 +553,10 @@
     <!-- Sidebar Navigation -->
     <aside class="sidebar">
         <div class="sidebar-header">
-            <i class="fa-solid fa-truck-fast"></i>
+            <i class="fa-solid fa-chart-line"></i>
             <div>
-                <h2>EHA TP Serang DC</h2>
-                <div style="font-size: 11px; color: var(--text-secondary);">Enterprise Monitoring System</div>
+                <h2>PurworejoIT</h2>
+                <div style="font-size: 11px; color: var(--text-secondary);">Enterprise Dashboard System</div>
             </div>
         </div>
         <ul class="sidebar-menu">
@@ -565,25 +565,24 @@
             <li><a href="#" onclick="switchTab('visualisasi')"><i class="fa-solid fa-chart-pie"></i> Visualisasi Data</a></li>
             <li><a href="#" onclick="switchTab('tabel')"><i class="fa-solid fa-table"></i> Tabel Big Data</a></li>
             <li><a href="#" onclick="switchTab('insight')"><i class="fa-solid fa-brain"></i> AI Insight Realtime</a></li>
-            <li><a href="#" onclick="switchTab('deploy')"><i class="fa-solid fa-cloud-arrow-up"></i> GitHub Pages & Deploy</a></li>
-            <li><a href="#" onclick="switchTab('about')"><i class="fa-solid fa-circle-info"></i> Tentang Sistem</a></li>
+            <li><a href="#" onclick="switchTab('about')"><i class="fa-solid fa-circle-info"></i> Tentang Aplikasi</a></li>
         </ul>
         <div class="sidebar-footer">
             <button class="btn" style="width: 100%; justify-content: center; margin-bottom: 8px;" onclick="toggleDarkMode()">
-                <i class="fa-solid fa-moon"></i> Mode Gelap/Terang
+                <i class="fa-solid fa-moon"></i> Mode Gelap / Terang
             </button>
             <div>Copyright © 2026 by PurworejoIT.com & lynk.id/berdigital</div>
         </div>
     </aside>
 
-    <!-- Main Wrapper -->
+    <!-- Main Content Area -->
     <div class="main-wrapper">
         <!-- Header Bar -->
         <header class="header">
             <div class="header-title-container">
                 <div class="header-title">
-                    <h1 id="dashboard-title">Dashboard EHA TP Serang DC</h1>
-                    <div class="header-meta" id="header-meta">Jam Operasional: 13:00 - 06:00 WIB • Realtime Data Engine Active</div>
+                    <h1 id="dashboard-title">Dashboard Enterprise Monitoring System</h1>
+                    <div class="header-meta" id="header-meta">Jam Operasional Facility: 13:00 - 06:00 WIB • System Active</div>
                 </div>
             </div>
             <div class="header-controls">
@@ -598,7 +597,7 @@
         <div class="realtime-bar">
             <div class="realtime-inputs">
                 <i class="fa-solid fa-link" style="color: var(--text-secondary);"></i>
-                <input type="text" id="gsheet-url" class="input-text" placeholder="Masukkan URL Google Sheets / CSV Published URL...">
+                <input type="text" id="gsheet-url" class="input-text" placeholder="Masukkan URL Google Sheets / Published CSV JSON Endpoint...">
                 <button class="btn btn-primary" onclick="connectGoogleSheets()">Hubungkan</button>
             </div>
             <div style="display: flex; align-items: center; gap: 15px;">
@@ -626,559 +625,4 @@
                     <select id="filter-column" class="select-input" onchange="applyGlobalFilter()"><option value="">-- Pilih Kolom Filter --</option></select>
                     <select id="filter-value" class="select-input" onchange="applyGlobalFilter()"><option value="">-- Semua Nilai --</option></select>
                     <button class="btn" onclick="resetGlobalFilter()"><i class="fa-solid fa-xmark"></i> Reset Filter</button>
-                    <span id="performance-mode-indicator" class="status-badge" style="display:none; background-color: rgba(238,77,45,0.1); color: var(--accent-color);">
-                        <i class="fa-solid fa-bolt"></i> Enterprise Performance Mode (Big Data Virtual Scrolling)
-                    </span>
-                </div>
-            </div>
-
-            <!-- SECTION: RINGKASAN UTAMA -->
-            <section id="sec-ringkasan" class="section-view active">
-                <div class="stats-grid">
-                    <div class="stat-card">
-                        <div class="stat-card-title">Total Baris Data</div>
-                        <div class="stat-card-value" id="stat-total-rows">0</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-card-title">Total Kolom</div>
-                        <div class="stat-card-value" id="stat-total-cols">0</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-card-title">Nilai Akumulasi</div>
-                        <div class="stat-card-value" id="stat-sum-val">0</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-card-title">Rata-Rata Data</div>
-                        <div class="stat-card-value" id="stat-avg-val">0</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-card-title">Nilai Max</div>
-                        <div class="stat-card-value" id="stat-max-val">0</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-card-title">Nilai Min</div>
-                        <div class="stat-card-value" id="stat-min-val">0</div>
-                    </div>
-                </div>
-
-                <!-- AI Quick Insight -->
-                <div class="insight-card">
-                    <div class="insight-header">
-                        <i class="fa-solid fa-robot" style="font-size: 20px; color: var(--accent-color);"></i>
-                        <div class="insight-title">AI Realtime Executive Summary</div>
-                    </div>
-                    <ul class="insight-list" id="quick-ai-insights">
-                        <li>Sistem siap memproses data operasional dari Google Sheets atau data internal.</li>
-                    </ul>
-                </div>
-            </section>
-
-            <!-- SECTION: QUICK LINKS & SOP -->
-            <section id="sec-portal" class="section-view">
-                <h2 style="font-size: 16px; margin-bottom: 12px;">1. Quick Links Kerja Operasional EHA</h2>
-                <div class="portal-grid">
-                    <div class="portal-card"><a target="_blank" rel="noopener" href="https://docs.google.com/spreadsheets/d/1dcK5LSIbKdzSc2qNZq-DtO4EP7EtTOAGtw5gVDQR1E4/edit?gid=105922047#gid=105922047">TJPH Periode<small>Sheet TJPH</small></a></div>
-                    <div class="portal-card"><a target="_blank" rel="noopener" href="https://help.shopee.co.id/portal/webform/09f4d645465c4b5086c3bede5a039ca0">TJPH 3PL<small>Webform Sanggah</small></a></div>
-                    <div class="portal-card"><a target="_blank" rel="noopener" href="https://docs.google.com/spreadsheets/d/1ec9TFM9FrdApRMDHdDSCdq12Rhfnsw4heDP8uYOG2AI/edit?gid=0#gid=0">Stuck Parcel<small>Sheet Monitoring</small></a></div>
-                    <div class="portal-card"><a target="_blank" rel="noopener" href="https://docs.google.com/spreadsheets/d/1IPevtMcE7drxDycmoFrTfUZPcXWjWCGhNpqwk3Xxhdc/edit?gid=1763349419#gid=1763349419">Data Lost<small>Sheet Pelaporan</small></a></div>
-                    <div class="portal-card"><a target="_blank" rel="noopener" href="https://help.shopee.co.id/portal/webform/555dd82115c64cb18325a167d3a8a55f">Damage<small>Webform Klaim</small></a></div>
-                    <div class="portal-card"><a target="_blank" rel="noopener" href="https://docs.google.com/spreadsheets/d/1Mj2WsfzhDN9ikaLWv6UjLTFh_EH4OXkcI7TZOqMNjpA/edit?gid=0#gid=0">L&D (Lost & Damage)<small>Database Sheet</small></a></div>
-                    <div class="portal-card"><a target="_blank" rel="noopener" href="https://help.shopee.co.id/portal/webform/1ebc9479f8f04ca6856078c8dd911513">Non AWB<small>Webform Input</small></a></div>
-                </div>
-
-                <h2 style="font-size: 16px; margin: 20px 0 12px;">2. Standar Operasional Prosedur (SOP)</h2>
-                <details><summary>Cara Sanggah TJPH</summary><ol><li>Tarik data suite TJPH, pindahkan ke sheet TJPH.</li><li>Buat Google Drive berisi SS FMS & UNSLOG, CCTV inbound & outbound, izinkan akses ke email SPX/Shopee.</li><li>Salin link Drive ke sheet TJPH, isi alasan sanggah sesuai status.</li><li>Isi webform 3PL, lalu kirim email ke tim terkait.</li></ol></details>
-                <details><summary>Data Gantungan Hourly</summary><ol><li>FMS -> Order Tracking -> Status SOC_RECEIVED, SOC_PACKED, SOC_PACKING, RETURN_*.</li><li>Salin ID dan isi sheet Data Gantungan Hourly.</li></ol></details>
-                <details><summary>MCC FMHub_LHTransported</summary><ol><li>FMS -> Order Tracking, status FMHub_LHTransported, salin ID.</li><li>Isi sheet MCC, lalu kirim feedback email berisi screenshot pivot table & file MCC.</li></ol></details>
-                <details><summary>Proses NCR & RTS</summary><ol><li>NCR: Isi sheet SJM, template Non-AWB, SPX Liquidation Form (Tujuan Jakarta Return DC).</li><li>RTS: PDA -> Intra-Station Handover -> Create Task -> WS IHT Desentral Fixed_EHA -> EHA Outbound.</li></ol></details>
-            </section>
-
-            <!-- SECTION: VISUALISASI DATA -->
-            <section id="sec-visualisasi" class="section-view">
-                <div class="charts-grid">
-                    <div class="chart-card">
-                        <div class="chart-header"><div class="chart-title">Distribusi Kategori Utama (Bar Chart)</div></div>
-                        <div id="chart-bar" class="chart-container"></div>
-                    </div>
-                    <div class="chart-card">
-                        <div class="chart-header"><div class="chart-title">Proporsi Segmentasi Data (Pie Chart)</div></div>
-                        <div id="chart-pie" class="chart-container"></div>
-                    </div>
-                    <div class="chart-card">
-                        <div class="chart-header"><div class="chart-title">Tren Volumetrik Operasional (Area Chart)</div></div>
-                        <div id="chart-area" class="chart-container"></div>
-                    </div>
-                    <div class="chart-card">
-                        <div class="chart-header"><div class="chart-title">Fluktuasi Data Realtime (Line Chart)</div></div>
-                        <div id="chart-line" class="chart-container"></div>
-                    </div>
-                </div>
-            </section>
-
-            <!-- SECTION: TABEL BIG DATA -->
-            <section id="sec-tabel" class="section-view">
-                <div class="table-card">
-                    <div class="table-toolbar">
-                        <div class="chart-title">Eksplorasi Data Realtime (Virtual Table Rendering Engine)</div>
-                        <input type="text" id="table-search-input" class="input-text" style="width: 250px;" placeholder="Cari data..." oninput="handleTableSearch()">
-                    </div>
-                    <div class="virtual-table-viewport" id="virtual-table-viewport" onscroll="onVirtualTableScroll()">
-                        <div class="virtual-table-spacer" id="virtual-table-spacer"></div>
-                        <table class="virtual-table" id="virtual-table">
-                            <thead id="virtual-table-head"></thead>
-                            <tbody id="virtual-table-body"></tbody>
-                        </table>
-                    </div>
-                    <div style="margin-top: 10px; font-size: 12px; color: var(--text-secondary);" id="table-info-footer">
-                        Menampilkan 0 baris data.
-                    </div>
-                </div>
-            </section>
-
-            <!-- SECTION: INSIGHT AI REALTIME -->
-            <section id="sec-insight" class="section-view">
-                <div class="insight-card">
-                    <div class="insight-header">
-                        <i class="fa-solid fa-microchip" style="font-size: 24px; color: var(--accent-color);"></i>
-                        <div class="insight-title" style="font-size: 18px;">Analisis AI Realtime Engine (Bahasa Indonesia)</div>
-                    </div>
-                    <div id="full-ai-insights-content" style="line-height: 1.8; font-size: 14px;">
-                        Silakan hubungkan data Google Sheets untuk menghasilkan analisis otomatis.
-                    </div>
-                </div>
-            </section>
-
-            <!-- SECTION: DEPLOYMENT GUIDE -->
-            <section id="sec-deploy" class="section-view">
-                <div class="chart-card" style="line-height: 1.8;">
-                    <h2 style="margin-bottom: 15px; color: var(--accent-color);"><i class="fa-brands fa-github"></i> Panduan Upload ke GitHub Pages (saepulanwar-rg)</h2>
-                    <p>Ikuti langkah berikut untuk mengaktifkan dashboard ini secara online:</p>
-                    <ol style="margin-left: 20px; margin-top: 10px; margin-bottom: 20px;">
-                        <li>Buka akun GitHub Anda: <strong>github.com/saepulanwar-rg</strong></li>
-                        <li>Buat Repository Baru dengan nama <strong><code>Dashboard-EHA-TP-Serang-DC-</code></strong> (Set ke Public).</li>
-                        <li>Klik tautan biru <strong>"uploading an existing file"</strong> pada kotak Quick setup.</li>
-                        <li>Unggah file ini dan pastikan diberi nama <strong><code>index.html</code></strong>. Klik <strong>Commit changes</strong>.</li>
-                        <li>Buka menu <strong>Settings</strong> > <strong>Pages</strong> pada repository. Pada opsi <em>Branch</em>, pilih <code>main</code> / <code>master</code> lalu klik <strong>Save</strong>.</li>
-                    </ol>
-                    <div style="background-color: var(--bg-primary); padding: 12px; border-radius: 8px; border: 1px solid var(--border-color); font-size: 13px;">
-                        <strong>URL Dashboard Anda akan aktif di:</strong><br>
-                        <code>https://saepulanwar-rg.github.io/Dashboard-EHA-TP-Serang-DC-/</code>
-                    </div>
-                </div>
-            </section>
-
-            <!-- SECTION: TENTANG SYSTEM -->
-            <section id="sec-about" class="section-view">
-                <div class="chart-card" style="line-height: 1.8;">
-                    <h2 style="margin-bottom: 15px; color: var(--accent-color);">Enterprise Dashboard System</h2>
-                    <p style="margin-bottom: 10px;">Dirancang khusus oleh <strong>PurworejoIT</strong> & <strong>Berdigital</strong> untuk pemantauan data operasional berskala nasional dan penanganan Big Data hingga lebih dari 100.000 baris secara mulus.</p>
-                    <hr style="border: none; border-top: 1px solid var(--border-color); margin: 20px 0;">
-                    <p style="font-size: 13px; color: var(--text-secondary); text-align: center;">
-                        Copyright © 2026 by <strong>PurworejoIT.com</strong> & <strong>lynk.id/berdigital</strong>. All Rights Reserved.
-                    </p>
-                </div>
-            </section>
-
-        </div>
-    </div>
-
-    <!-- Toast Notification -->
-    <div id="toast" class="toast-notification">
-        <i class="fa-solid fa-circle-check" style="color: var(--success-color);"></i>
-        <span id="toast-message">Notifikasi sistem</span>
-    </div>
-
-    <!-- Application Script Engine -->
-    <script>
-        let rawDataset = [];
-        let filteredDataset = [];
-        let datasetHeaders = [];
-        let realtimeTimer = null;
-        let refreshIntervalMs = 30000;
-        let isDarkMode = false;
-        let activeTab = 'ringkasan';
-        let currentGSheetUrl = '';
-        let chartInstances = {};
-
-        const ROW_HEIGHT = 41; 
-        const VIEWPORT_HEIGHT = 450;
-        const BUFFER_COUNT = 5;
-
-        window.addEventListener('DOMContentLoaded', () => {
-            initCharts();
-            setupInitialSampleData();
-            startAutoRefreshEngine();
-            window.addEventListener('resize', resizeAllCharts);
-        });
-
-        function setupInitialSampleData() {
-            datasetHeaders = ['Tanggal', 'Status_Paket', 'Kategori_SOP', 'Total_Volume', 'Nilai_Performa'];
-            const sample = [];
-            const statusList = ['SOC_RECEIVED', 'SOC_PACKED', 'FMHub_LHTransported', 'RETURN_SOC', 'CANCELLED'];
-            const sopList = ['TJPH', 'Data Gantungan Hourly', 'MCC Transported', 'Damage Handling', 'Non AWB'];
-
-            for (let i = 1; i <= 300; i++) {
-                sample.push({
-                    'Tanggal': `2026-10-${(i % 30 + 1).toString().padStart(2, '0')}`,
-                    'Status_Paket': statusList[i % statusList.length],
-                    'Kategori_SOP': sopList[i % sopList.length],
-                    'Total_Volume': Math.floor(Math.random() * 800) + 100,
-                    'Nilai_Performa': Math.floor(Math.random() * 95) + 5
-                });
-            }
-            processNewDataset(sample, datasetHeaders);
-        }
-
-        function processNewDataset(data, headers) {
-            rawDataset = data;
-            filteredDataset = [...rawDataset];
-            datasetHeaders = headers;
-
-            updateFilterDropdowns();
-            calculateStatistics();
-            renderCharts();
-            renderVirtualTable();
-            generateAIInsights();
-            updateHeaderMeta();
-
-            const perfBadge = document.getElementById('performance-mode-indicator');
-            perfBadge.style.display = rawDataset.length > 10000 ? 'inline-flex' : 'none';
-        }
-
-        function connectGoogleSheets() {
-            const urlInput = document.getElementById('gsheet-url').value.trim();
-            if (!urlInput) {
-                showToast('Masukkan URL Google Sheets terlebih dahulu.', 'warning');
-                return;
-            }
-            currentGSheetUrl = urlInput;
-            fetchRealtimeData();
-        }
-
-        async function fetchRealtimeData() {
-            if (!currentGSheetUrl) return;
-
-            try {
-                let fetchUrl = currentGSheetUrl;
-                if (fetchUrl.includes('docs.google.com/spreadsheets') && !fetchUrl.includes('export?format=csv')) {
-                    const match = fetchUrl.match(/\/d\/([a-zA-Z0-9-_]+)/);
-                    if (match && match[1]) {
-                        fetchUrl = `https://docs.google.com/spreadsheets/d/${match[1]}/export?format=csv`;
-                    }
-                }
-
-                const response = await fetch(fetchUrl);
-                if (!response.ok) throw new Error('Gagal mengambil data dari URL');
-
-                const textData = await response.text();
-                const workbook = XLSX.read(textData, { type: 'string' });
-                const firstSheet = workbook.SheetNames[0];
-                const jsonData = XLSX.utils.sheet_to_json(workbook.Sheets[firstSheet], { defval: "" });
-
-                if (jsonData.length > 0) {
-                    const headers = Object.keys(jsonData[0]);
-                    processNewDataset(jsonData, headers);
-                    setRealtimeStatus(true, `Terhubung (${new Date().toLocaleTimeString('id-ID')})`);
-                    showToast('Data realtime terbarui!');
-                }
-            } catch (err) {
-                console.error(err);
-                setRealtimeStatus(false, 'Koneksi Terputus. Mencoba menghubungkan ulang...');
-            }
-        }
-
-        function setRealtimeStatus(connected, text) {
-            const badge = document.getElementById('realtime-status-badge');
-            const statusText = document.getElementById('realtime-status-text');
-            badge.className = connected ? 'status-badge active' : 'status-badge error';
-            statusText.textContent = text;
-        }
-
-        function startAutoRefreshEngine() {
-            if (realtimeTimer) clearInterval(realtimeTimer);
-            realtimeTimer = setInterval(() => {
-                if (currentGSheetUrl) fetchRealtimeData();
-            }, refreshIntervalMs);
-        }
-
-        function changeRefreshInterval() {
-            refreshIntervalMs = parseInt(document.getElementById('auto-refresh-interval').value);
-            startAutoRefreshEngine();
-            showToast(`Interval auto refresh: ${refreshIntervalMs / 1000}s`);
-        }
-
-        function forceRefreshData() {
-            if (currentGSheetUrl) {
-                fetchRealtimeData();
-            } else {
-                showToast('Merekalkulasi data lokal...');
-                processNewDataset(rawDataset, datasetHeaders);
-            }
-        }
-
-        function calculateStatistics() {
-            document.getElementById('stat-total-rows').textContent = filteredDataset.length.toLocaleString('id-ID');
-            document.getElementById('stat-total-cols').textContent = datasetHeaders.length;
-
-            let numericCol = datasetHeaders.find(h => {
-                return filteredDataset.some(row => typeof row[h] === 'number' || (!isNaN(parseFloat(row[h])) && isFinite(row[h])));
-            });
-
-            if (numericCol) {
-                let sum = 0, max = -Infinity, min = Infinity, count = 0;
-                filteredDataset.forEach(row => {
-                    let val = parseFloat(row[numericCol]);
-                    if (!isNaN(val)) {
-                        sum += val;
-                        if (val > max) max = val;
-                        if (val < min) min = val;
-                        count++;
-                    }
-                });
-
-                let avg = count > 0 ? sum / count : 0;
-                document.getElementById('stat-sum-val').textContent = sum.toLocaleString('id-ID');
-                document.getElementById('stat-avg-val').textContent = Math.round(avg).toLocaleString('id-ID');
-                document.getElementById('stat-max-val').textContent = max === -Infinity ? 0 : max.toLocaleString('id-ID');
-                document.getElementById('stat-min-val').textContent = min === Infinity ? 0 : min.toLocaleString('id-ID');
-            } else {
-                document.getElementById('stat-sum-val').textContent = '-';
-                document.getElementById('stat-avg-val').textContent = '-';
-                document.getElementById('stat-max-val').textContent = '-';
-                document.getElementById('stat-min-val').textContent = '-';
-            }
-        }
-
-        function initCharts() {
-            chartInstances.bar = echarts.init(document.getElementById('chart-bar'));
-            chartInstances.pie = echarts.init(document.getElementById('chart-pie'));
-            chartInstances.area = echarts.init(document.getElementById('chart-area'));
-            chartInstances.line = echarts.init(document.getElementById('chart-line'));
-        }
-
-        function renderCharts() {
-            if (filteredDataset.length === 0) return;
-
-            let catCol = datasetHeaders.find(h => typeof filteredDataset[0][h] === 'string') || datasetHeaders[0];
-            let numCol = datasetHeaders.find(h => typeof filteredDataset[0][h] === 'number') || datasetHeaders[1] || datasetHeaders[0];
-
-            let aggregation = {};
-            filteredDataset.forEach(r => {
-                let key = r[catCol] || 'Lainnya';
-                let val = parseFloat(r[numCol]) || 1;
-                aggregation[key] = (aggregation[key] || 0) + val;
-            });
-
-            let categories = Object.keys(aggregation).slice(0, 10);
-            let seriesValues = categories.map(k => aggregation[k]);
-            let textColor = isDarkMode ? '#f8fafc' : '#1f2937';
-
-            chartInstances.bar.setOption({
-                tooltip: { trigger: 'axis' },
-                xAxis: { type: 'category', data: categories, axisLabel: { color: textColor } },
-                yAxis: { type: 'value', axisLabel: { color: textColor } },
-                series: [{ data: seriesValues, type: 'bar', itemStyle: { color: '#ee4d2d', borderRadius: [4, 4, 0, 0] } }]
-            });
-
-            let pieData = categories.map(k => ({ name: k, value: aggregation[k] }));
-            chartInstances.pie.setOption({
-                tooltip: { trigger: 'item' },
-                series: [{ type: 'pie', radius: '65%', data: pieData }]
-            });
-
-            chartInstances.area.setOption({
-                tooltip: { trigger: 'axis' },
-                xAxis: { type: 'category', data: categories, axisLabel: { color: textColor } },
-                yAxis: { type: 'value', axisLabel: { color: textColor } },
-                series: [{ data: seriesValues, type: 'line', areaStyle: { color: 'rgba(238, 77, 45, 0.2)' }, itemStyle: { color: '#ee4d2d' } }]
-            });
-
-            chartInstances.line.setOption({
-                tooltip: { trigger: 'axis' },
-                xAxis: { type: 'category', data: categories, axisLabel: { color: textColor } },
-                yAxis: { type: 'value', axisLabel: { color: textColor } },
-                series: [{ data: seriesValues, type: 'line', smooth: true, itemStyle: { color: '#10b981' } }]
-            });
-        }
-
-        function resizeAllCharts() {
-            Object.values(chartInstances).forEach(c => c.resize());
-        }
-
-        function renderVirtualTable() {
-            const thead = document.getElementById('virtual-table-head');
-            thead.innerHTML = '<tr>' + datasetHeaders.map(h => `<th>${h}</th>`).join('') + '</tr>';
-
-            const spacer = document.getElementById('virtual-table-spacer');
-            spacer.style.height = `${filteredDataset.length * ROW_HEIGHT}px`;
-
-            onVirtualTableScroll();
-        }
-
-        function onVirtualTableScroll() {
-            const viewport = document.getElementById('virtual-table-viewport');
-            const scrollTop = viewport.scrollTop;
-
-            let startIndex = Math.max(0, Math.floor(scrollTop / ROW_HEIGHT) - BUFFER_COUNT);
-            let endIndex = Math.min(filteredDataset.length, Math.ceil((scrollTop + VIEWPORT_HEIGHT) / ROW_HEIGHT) + BUFFER_COUNT);
-
-            const tbody = document.getElementById('virtual-table-body');
-            const table = document.getElementById('virtual-table');
-            
-            table.style.transform = `translateY(${startIndex * ROW_HEIGHT}px)`;
-
-            let rowsHtml = '';
-            for (let i = startIndex; i < endIndex; i++) {
-                const row = filteredDataset[i];
-                rowsHtml += '<tr>' + datasetHeaders.map(h => `<td>${row[h] !== undefined ? row[h] : ''}</td>`).join('') + '</tr>';
-            }
-            tbody.innerHTML = rowsHtml;
-
-            document.getElementById('table-info-footer').textContent = 
-                `Menampilkan ${startIndex + 1} - ${endIndex} dari total ${filteredDataset.length.toLocaleString('id-ID')} baris data.`;
-        }
-
-        function handleTableSearch() {
-            const query = document.getElementById('table-search-input').value.toLowerCase();
-            filteredDataset = rawDataset.filter(row => {
-                return datasetHeaders.some(h => String(row[h]).toLowerCase().includes(query));
-            });
-            calculateStatistics();
-            renderCharts();
-            renderVirtualTable();
-            generateAIInsights();
-        }
-
-        function updateFilterDropdowns() {
-            const colSelect = document.getElementById('filter-column');
-            colSelect.innerHTML = '<option value="">-- Pilih Kolom Filter --</option>' + 
-                datasetHeaders.map(h => `<option value="${h}">${h}</option>`).join('');
-        }
-
-        function applyGlobalFilter() {
-            const col = document.getElementById('filter-column').value;
-            const valSelect = document.getElementById('filter-value');
-
-            if (col && valSelect.options.length <= 1) {
-                const uniqueVals = [...new Set(rawDataset.map(r => r[col]))].slice(0, 100);
-                valSelect.innerHTML = '<option value="">-- Semua Nilai --</option>' + 
-                    uniqueVals.map(v => `<option value="${v}">${v}</option>`).join('');
-            }
-
-            const val = valSelect.value;
-            filteredDataset = (col && val) ? rawDataset.filter(r => String(r[col]) === val) : [...rawDataset];
-
-            calculateStatistics();
-            renderCharts();
-            renderVirtualTable();
-            generateAIInsights();
-        }
-
-        function resetGlobalFilter() {
-            document.getElementById('filter-column').value = '';
-            document.getElementById('filter-value').innerHTML = '<option value="">-- Semua Nilai --</option>';
-            filteredDataset = [...rawDataset];
-            calculateStatistics();
-            renderCharts();
-            renderVirtualTable();
-            generateAIInsights();
-        }
-
-        function generateAIInsights() {
-            if (filteredDataset.length === 0) return;
-
-            let catCol = datasetHeaders.find(h => typeof filteredDataset[0][h] === 'string') || datasetHeaders[0];
-            let numCol = datasetHeaders.find(h => typeof filteredDataset[0][h] === 'number') || datasetHeaders[1] || datasetHeaders[0];
-
-            let aggregation = {};
-            filteredDataset.forEach(r => {
-                let key = r[catCol] || 'Lainnya';
-                let val = parseFloat(r[numCol]) || 1;
-                aggregation[key] = (aggregation[key] || 0) + val;
-            });
-
-            let sorted = Object.entries(aggregation).sort((a, b) => b[1] - a[1]);
-            let topCat = sorted[0] ? sorted[0][0] : '-';
-            let topVal = sorted[0] ? sorted[0][1].toLocaleString('id-ID') : '0';
-
-            document.getElementById('quick-ai-insights').innerHTML = `
-                <li><i class="fa-solid fa-circle-check" style="color: var(--success-color);"></i> Parameter utama tertinggi didominasi oleh <strong>${topCat}</strong> (${topVal}).</li>
-                <li><i class="fa-solid fa-chart-line" style="color: var(--accent-color);"></i> Total sampel aktif diproses: <strong>${filteredDataset.length.toLocaleString('id-ID')} baris</strong>.</li>
-            `;
-
-            document.getElementById('full-ai-insights-content').innerHTML = `
-                <h3>Laporan AI Realtime Operasional</h3>
-                <p>Berdasarkan komputasi statistik otomatis terhadap <strong>${filteredDataset.length}</strong> entitas data:</p>
-                <br>
-                <ul>
-                    <li><strong>Konsentrasi Utama:</strong> Kategori <code>${topCat}</code> menyumbang kontribusi terbesar dalam dataset ini.</li>
-                    <li><strong>Skalabilitas Data:</strong> Sistem Virtual Table berjalan stabil dalam menangani ${rawDataset.length.toLocaleString('id-ID')} total baris tanpa hambatan memori.</li>
-                </ul>
-            `;
-        }
-
-        function switchTab(tabName) {
-            activeTab = tabName;
-            document.querySelectorAll('.sidebar-menu a').forEach(a => a.classList.remove('active'));
-            document.querySelectorAll('.section-view').forEach(s => s.classList.remove('active'));
-
-            event.currentTarget.classList.add('active');
-            document.getElementById(`sec-${tabName}`).classList.add('active');
-
-            if (tabName === 'visualisasi') setTimeout(resizeAllCharts, 100);
-        }
-
-        function toggleDarkMode() {
-            isDarkMode = !isDarkMode;
-            document.body.setAttribute('data-theme', isDarkMode ? 'dark' : 'light');
-            renderCharts();
-        }
-
-        function toggleCommandCenter() {
-            document.body.classList.toggle('command-center-mode');
-            if (document.body.classList.contains('command-center-mode')) {
-                showToast('Mode Command Center Aktif.');
-                document.documentElement.requestFullscreen().catch(() => {});
-            } else {
-                if (document.fullscreenElement) document.exitFullscreen();
-            }
-            setTimeout(resizeAllCharts, 200);
-        }
-
-        function updateHeaderMeta() {
-            document.getElementById('header-meta').textContent = 
-                `Jam Operasional: 13:00 - 06:00 WIB • Total ${rawDataset.length.toLocaleString('id-ID')} Baris Data • System Status: OK`;
-        }
-
-        function exportPNG() {
-            showToast('Menyiapkan file PNG...');
-            html2canvas(document.getElementById('capture-area')).then(canvas => {
-                const link = document.createElement('a');
-                link.download = `Dashboard-EHA-TP-Serang-${Date.now()}.png`;
-                link.href = canvas.toDataURL();
-                link.click();
-            });
-        }
-
-        function exportPDF() {
-            showToast('Menerbitkan PDF...');
-            const { jsPDF } = window.jspdf;
-            html2canvas(document.getElementById('capture-area')).then(canvas => {
-                const imgData = canvas.toDataURL('image/png');
-                const pdf = new jsPDF('p', 'mm', 'a4');
-                const pdfWidth = pdf.internal.pageSize.getWidth();
-                const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
-                pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
-                pdf.save(`Laporan-EHA-${Date.now()}.pdf`);
-            });
-        }
-
-        function showToast(message) {
-            const toast = document.getElementById('toast');
-            document.getElementById('toast-message').textContent = message;
-            toast.className = 'toast-notification show';
-            setTimeout(() => { toast.className = 'toast-notification'; }, 3000);
-        }
-    </script>
-</body>
-</html>
+                    <span id="performance-mode-indicator" class="status-badge" style="display:none; background-color: rgba(37
