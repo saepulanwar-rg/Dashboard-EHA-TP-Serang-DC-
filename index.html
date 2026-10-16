@@ -1178,45 +1178,112 @@
             return parseFloat(String(v).replace(/[^0-9.-]/g, '')) || 0;
         }
 
-        async function loadTJPH() {
-            // Hanya tab yang gid-nya sudah berupa angka yang diambil
-            const activeTabs = TJPH_TABS.filter(t => /^\d+$/.test(String(t.gid)));
+        
+async function loadTJPH() {
+    const activeTabs = TJPH_TABS.filter(t =>
+        /^\d+$/.test(String(t.gid))
+    );
 
-            if (activeTabs.length === 0) {
-                tjphStats = [];
-                renderTJPHBar();
-                return;
+    if (activeTabs.length === 0) {
+        tjphStats = [];
+        renderTJPHBar();
+        return;
+    }
+
+    const results = await Promise.allSettled(
+        activeTabs.map(async tab => {
+            const url =
+                `https://docs.google.com/spreadsheets/d/${TJPH_SHEET_ID}/export?format=csv&gid=${tab.gid}`;
+
+            const res = await fetch(url);
+            if (!res.ok) {
+                throw new Error(`Tab ${tab.label} gagal dimuat`);
             }
 
-            const results = await Promise.allSettled(activeTabs.map(async tab => {
-                const url = `https://docs.google.com/spreadsheets/d/${TJPH_SHEET_ID}/export?format=csv&gid=${tab.gid}`;
-                const res = await fetch(url);
-                if (!res.ok) throw new Error(`Tab ${tab.label} gagal dimuat`);
+            const csvText = await res.text();
 
-                const wb = XLSX.read(await res.text(), { type: 'string' });
-                const rows = XLSX.utils.sheet_to_json(wb.Sheets[wb.SheetNames[0]], { defval: '' });
+            // Parse CSV dengan benar, termasuk koma di dalam tanda kutip
+            const wb = XLSX.read(csvText, {
+                type: 'string',
+                raw: true
+            });
 
-                const orderIds = new Set();
-                let cogs = 0, claim = 0;
-                rows.forEach(r => {
-                    const id = String(r['Order ID']).trim();
-                    if (!id) return;
-                    orderIds.add(id);              // Order ID dobel dihitung 1
-                    cogs += toNum(r['COGS']);
-                    claim += toNum(r['Claim / Pax']);
-                });
+            const sheet = wb.Sheets[wb.SheetNames[0]];
+            const rows = XLSX.utils.sheet_to_json(sheet, {
+                defval: '',
+                raw: false
+            });
 
-                return { label: tab.label, orders: orderIds.size, cogs, claim };
-            }));
-
-            const failed = results.filter(r => r.status === 'rejected').length;
-            tjphStats = results.map((r, i) =>
-                r.status === 'fulfilled' ? r.value : { label: activeTabs[i].label, orders: 0, cogs: 0, claim: 0 }
+            // Cari kolom Order ID tanpa terpengaruh spasi atau kapitalisasi
+            const headers = Object.keys(rows[0] || {});
+            const orderKey = headers.find(
+                h => h.trim().toLowerCase() === 'order id'
+            );
+            const cogsKey = headers.find(
+                h => h.trim().toLowerCase() === 'cogs'
+            );
+            const claimKey = headers.find(
+                h => h.trim().toLowerCase() === 'claim / pax'
             );
 
-            if (failed) showToast(`${failed} tab TJPH gagal dimuat. Cek gid & pengaturan share sheet.`);
-            renderTJPHBar();
+            if (!orderKey) {
+                throw new Error(
+                    `Kolom Order ID tidak ditemukan pada ${tab.label}`
+                );
+            }
+
+            const orderIds = new Set();
+            let cogs = 0;
+            let claim = 0;
+
+            rows.forEach(row => {
+                const id = String(row[orderKey] ?? '').trim();
+                if (!id) return;
+
+                orderIds.add(id);
+
+                if (cogsKey) cogs += toNum(row[cogsKey]);
+                if (claimKey) claim += toNum(row[claimKey]);
+            });
+
+            return {
+                label: tab.label,
+                orders: orderIds.size,
+                cogs,
+                claim
+            };
+        })
+    );
+
+    let failed = 0;
+
+    tjphStats = results.map((result, i) => {
+        if (result.status === 'fulfilled') {
+            return result.value;
         }
+
+        failed++;
+        console.error(
+            `Gagal membaca TJPH ${activeTabs[i].label}:`,
+            result.reason
+        );
+
+        return {
+            label: activeTabs[i].label,
+            orders: 0,
+            cogs: 0,
+            claim: 0
+        };
+    });
+
+    if (failed) {
+        showToast(
+            `${failed} tab TJPH gagal dimuat. Buka Console untuk melihat error.`
+        );
+    }
+
+    renderTJPHBar();
+}
 
         function renderTJPHBar() {
             if (!chartInstances.bar) return;
