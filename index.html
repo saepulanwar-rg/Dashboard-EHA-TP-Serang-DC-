@@ -956,6 +956,70 @@
         ];
 
         let tjphStats = [];
+        const REKAPAN_WEBAPP_URL = 'https://script.google.com/a/macros/spx-external.com/s/AKfycbw8OoL57QRik_4pHaWibohZ0bh1lSTb0kkDITREY0fRtgqHKixvXtaCbUJvTUoRUXMcxQ/exec';
+let rekapanStats = [];
+
+function loadRekapan() {
+    if (!REKAPAN_WEBAPP_URL) return;
+
+    const callbackName = 'handleRekapanResponse';
+    const oldScript = document.getElementById('rekapan-data-script');
+    if (oldScript) oldScript.remove();
+
+    window[callbackName] = function (response) {
+        delete window[callbackName];
+        const s = document.getElementById('rekapan-data-script');
+        if (s) s.remove();
+
+        if (!response || !response.success || !Array.isArray(response.data)) {
+            console.error('Respons rekapan tidak valid:', response);
+            showToast('Data rekapan gagal dibaca dari Web App.');
+            return;
+        }
+        rekapanStats = response.data;
+        console.log('Data rekapan berhasil dimuat:', rekapanStats);
+        renderRekapanPies();
+    };
+
+    const script = document.createElement('script');
+    script.id = 'rekapan-data-script';
+    script.src = REKAPAN_WEBAPP_URL + '?callback=' + callbackName + '&_=' + Date.now();
+    script.onerror = function () {
+        delete window[callbackName];
+        script.remove();
+        showToast('Gagal memuat data rekapan. Periksa akses Web App.');
+    };
+    document.body.appendChild(script);
+}
+
+function renderRekapanPies() {
+    if (!chartInstances.pieReceived || !chartInstances.piePacked) return;
+    const textColor = isDarkMode ? '#f8fafc' : '#1f2937';
+
+    const build = (key, chart) => {
+        const data = rekapanStats
+            .map(s => ({ name: s.label, value: s[key] }))
+            .filter(d => d.value > 0);
+        chart.setOption({
+            tooltip: { trigger: 'item', formatter: '{b}<br/>{c} ID ({d}%)' },
+            title: {
+                show: data.length === 0,
+                text: 'Belum ada data',
+                left: 'center', top: 'center',
+                textStyle: { color: textColor, fontSize: 14 }
+            },
+            series: [{
+                type: 'pie',
+                radius: '62%',
+                data: data,
+                label: { color: textColor, formatter: '{b}\n{c} ({d}%)' }
+            }]
+        }, true);
+    };
+
+    build('received', chartInstances.pieReceived);
+    build('packed', chartInstances.piePacked);
+}
 
         /* INITIALIZATION & AUTHENTICATION GUARD */
         window.addEventListener('DOMContentLoaded', () => {
