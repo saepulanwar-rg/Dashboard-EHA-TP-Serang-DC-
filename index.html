@@ -1179,111 +1179,57 @@
         }
 
         
-async function loadTJPH() {
-    const activeTabs = TJPH_TABS.filter(t =>
-        /^\d+$/.test(String(t.gid))
-    );
 
-    if (activeTabs.length === 0) {
-        tjphStats = [];
-        renderTJPHBar();
-        return;
-    }
+function loadTJPH() {
+    const webAppUrl = 'https://script.google.com/a/macros/spxexpress.com/s/AKfycbxMUsAJmy7fS4YN5UWMzV1H6l2ioRzGwrD6bbsOwh2C-KyCgCIDbfCYT_klain3hirf/exec';
 
-    const results = await Promise.allSettled(
-        activeTabs.map(async tab => {
-            const url =
-                `https://docs.google.com/spreadsheets/d/${TJPH_SHEET_ID}/export?format=csv&gid=${tab.gid}`;
+    const callbackName = 'handleTJPHResponse';
 
-            const res = await fetch(url);
-            if (!res.ok) {
-                throw new Error(`Tab ${tab.label} gagal dimuat`);
-            }
+    const oldScript = document.getElementById('tjph-data-script');
+    if (oldScript) oldScript.remove();
 
-            const csvText = await res.text();
+    window[callbackName] = function(response) {
+        delete window[callbackName];
 
-            // Parse CSV dengan benar, termasuk koma di dalam tanda kutip
-            const wb = XLSX.read(csvText, {
-                type: 'string',
-                raw: true
-            });
+        const script = document.getElementById('tjph-data-script');
+        if (script) script.remove();
 
-            const sheet = wb.Sheets[wb.SheetNames[0]];
-            const rows = XLSX.utils.sheet_to_json(sheet, {
-                defval: '',
-                raw: false
-            });
-
-            // Cari kolom Order ID tanpa terpengaruh spasi atau kapitalisasi
-            const headers = Object.keys(rows[0] || {});
-            const orderKey = headers.find(
-                h => h.trim().toLowerCase() === 'order id'
-            );
-            const cogsKey = headers.find(
-                h => h.trim().toLowerCase() === 'cogs'
-            );
-            const claimKey = headers.find(
-                h => h.trim().toLowerCase() === 'claim / pax'
-            );
-
-            if (!orderKey) {
-                throw new Error(
-                    `Kolom Order ID tidak ditemukan pada ${tab.label}`
-                );
-            }
-
-            const orderIds = new Set();
-            let cogs = 0;
-            let claim = 0;
-
-            rows.forEach(row => {
-                const id = String(row[orderKey] ?? '').trim();
-                if (!id) return;
-
-                orderIds.add(id);
-
-                if (cogsKey) cogs += toNum(row[cogsKey]);
-                if (claimKey) claim += toNum(row[claimKey]);
-            });
-
-            return {
-                label: tab.label,
-                orders: orderIds.size,
-                cogs,
-                claim
-            };
-        })
-    );
-
-    let failed = 0;
-
-    tjphStats = results.map((result, i) => {
-        if (result.status === 'fulfilled') {
-            return result.value;
+        if (!response || !response.success || !Array.isArray(response.data)) {
+            console.error('Respons TJPH tidak valid:', response);
+            showToast('Data TJPH gagal dibaca dari Web App.');
+            return;
         }
 
-        failed++;
-        console.error(
-            `Gagal membaca TJPH ${activeTabs[i].label}:`,
-            result.reason
-        );
+        tjphStats = response.data.map(function(item) {
+            return {
+                label: item.label,
+                orders: Number(item.orders) || 0,
+                cogs: Number(item.cogs) || 0,
+                claim: Number(item.claim) || 0
+            };
+        });
 
-        return {
-            label: activeTabs[i].label,
-            orders: 0,
-            cogs: 0,
-            claim: 0
-        };
-    });
+        console.log('Data TJPH berhasil dimuat:', tjphStats);
+        renderTJPHBar();
+    };
 
-    if (failed) {
-        showToast(
-            `${failed} tab TJPH gagal dimuat. Buka Console untuk melihat error.`
-        );
-    }
+    const script = document.createElement('script');
+    script.id = 'tjph-data-script';
+    script.src = webAppUrl
+        + '?callback=' + callbackName
+        + '&_=' + Date.now();
 
-    renderTJPHBar();
+    script.onerror = function() {
+        delete window[callbackName];
+        script.remove();
+
+        console.error('Gagal memuat data TJPH dari Web App.');
+        showToast('Gagal memuat data TJPH. Periksa akses Web App.');
+    };
+
+    document.body.appendChild(script);
 }
+
 
         function renderTJPHBar() {
             if (!chartInstances.bar) return;
