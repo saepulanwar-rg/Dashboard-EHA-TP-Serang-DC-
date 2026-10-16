@@ -425,6 +425,8 @@
             justify-content: space-between;
             align-items: center;
             margin-bottom: 15px;
+            gap: 10px;
+            flex-wrap: wrap;
         }
 
         .chart-title {
@@ -657,7 +659,7 @@
             <i class="fa-solid fa-lock logo-icon"></i>
             <h2>EHA TP Serang DC System</h2>
             <p>Masukkan Nama/Email terdaftar & Kata Sandi</p>
-            
+
             <div class="login-field">
                 <label for="login-identity">Nama / Email Pengguna</label>
                 <input type="text" id="login-identity" placeholder="misal: saepulanwar atau admin@eha.com" autocomplete="off">
@@ -814,7 +816,7 @@
                     <div class="portal-card"><a target="_blank" rel="noopener" href="https://help.shopee.co.id/portal/webform/555dd82115c64cb18325a167d3a8a55f">Damage<small>Webform Klaim</small></a></div>
                     <div class="portal-card"><a target="_blank" rel="noopener" href="https://docs.google.com/spreadsheets/d/1Mj2WsfzhDN9ikaLWv6UjLTFh_EH4OXkcI7TZOqMNjpA/edit?gid=0#gid=0">L&D (Lost & Damage)<small>Database Sheet</small></a></div>
                     <div class="portal-card"><a target="_blank" rel="noopener" href="https://help.shopee.co.id/portal/webform/1ebc9479f8f04ca6856078c8dd911513">Non AWB<small>Webform Input</small></a></div>
-                    <div class="portal-card"><a target="_blank" rel="noopener" href="https://docs.google.com/spreadsheets/d/18hV0EUNd1M5IlgRhQQUm9bSJyZH-h-fjbOzaBJQLABI/edit?gid=851056553#gid=851056553">Data invoice</small>Database Sheet</small></a></div>
+                    <div class="portal-card"><a target="_blank" rel="noopener" href="https://docs.google.com/spreadsheets/d/18hV0EUNd1M5IlgRhQQUm9bSJyZH-h-fjbOzaBJQLABI/edit?gid=851056553#gid=851056553">Data invoice<small>Database Sheet</small></a></div>
                 </div>
 
                 <h2 style="font-size: 16px; margin: 20px 0 12px;">2. Standar Operasional Prosedur (SOP) EHA</h2>
@@ -827,21 +829,28 @@
                 <details><summary>PROSES REPACKING</summary><ol><li>PDA EXCEPTION HANDLING.</li><li>EHA SINGLE INBOUND&RESOLVE. </li><li>PILIH REASON 73 EHA_IN,OFFLINE RESOLVED. </li><li>PILIH REASON 72 LAKBAN ULANG. </li><li>WS IHT DESENTRAL FIXED_EHA,EHA OUTBOUND. </li><li>COMPLETE. </li><li>DATA DI SHEET EHA REPORTING,Sort Reguler / Raw Report EHA. </li><li>Monitoring Tracert EHA TP SERANG 1.</li></ol></details>
                 <details><summary>PROSES RELABEL</summary><ol><li>FMS,EXCEPTION HANDLING AREA,AWB PRINT,SPX Tracking Number:,SCAN AWB. </li><li>CONFRIM,PRINT. </li><li>WS IHT DESENTRAL FIXED_EHA,EHA OUTBOUND,SCAN AWB,COMPLETE. </li><li>DATA DI SHEET EHA Reporting TP Serang,Sort Reguler / Raw Report EHA 1.</li></ol></details>
                 <details><summary>PROSES FEEDBACK EMAIL</summary><ol><li>bikin google drive,SS FMS DAN UNSLOG ,dan cctv in bound dan outbound izinkan google drive ke sharedoc@shopeemobile-external.com, sharedoc@shopee.com, sharedoc@shopee-xpress.com, sharedoc@spx-external.com, support.id@help.spxexpress.com. </li><li>salin link google drive dan sanggah kasih alasan sesuai email. </li></ol></details>
-                <details><summary> BERITA ACARA SALAH SEAL</summary><ol><li>INFO FM DI GRUP SEATALK FM X LM. <ol><li>ubah tanggal,hari,nama fm,NAMA DRIVER,ID DRIVER,NOPOL FMS,NO POL AKTUAL,NO LT. </li><li>TANDA TANGAN TEAM LEAD,TANDA TANGAN TRACER,TANDA TANGAN SECURITY,TANDA TANGAN DRIVER.</li></ol></details>
-                <details><summary>BERITA ACARA SALAH NOPOL</summary><ol><li>INFO MM DI GRUP SEATALK SOC X MM. <ol><li>ubah tanggal,hari,nama fm,NAMA DRIVER,ID DRIVER,NOPOL FMS,NO POL AKTUAL,NO LT. </li><li>TANDA TANGAN TEAM LEAD,TANDA TANGAN TRACER,TANDA TANGAN SECURITY,TANDA TANGAN DRIVER.</li></ol></details>
-                <details><summary>BERITA ACARA KEKURANGAN BARHAL</summary><ol><li>INFO FM DI GRUP SEATALK ESKALASI. <ol><li>ubah tanggal,hari,nama fm,NAMA DRIVER,ID DRIVER,NOPOL FMS,NO POL AKTUAL,NO LT. </li><li>TANDA TANGAN TEAM LEAD,TANDA TANGAN TRACER,TANDA TANGAN DRIVER.</li></ol></details>
-                
-                </section>
+                <details><summary>BERITA ACARA SALAH SEAL</summary><ol><li>INFO FM DI GRUP SEATALK FM X LM. </li><li>ubah tanggal,hari,nama fm,NAMA DRIVER,ID DRIVER,NOPOL FMS,NO POL AKTUAL,NO LT. </li><li>TANDA TANGAN TEAM LEAD,TANDA TANGAN TRACER,TANDA TANGAN SECURITY,TANDA TANGAN DRIVER.</li></ol></details>
+                <details><summary>BERITA ACARA SALAH NOPOL</summary><ol><li>INFO MM DI GRUP SEATALK SOC X MM. </li><li>ubah tanggal,hari,nama fm,NAMA DRIVER,ID DRIVER,NOPOL FMS,NO POL AKTUAL,NO LT. </li><li>TANDA TANGAN TEAM LEAD,TANDA TANGAN TRACER,TANDA TANGAN SECURITY,TANDA TANGAN DRIVER.</li></ol></details>
+                <details><summary>BERITA ACARA KEKURANGAN BARHAL</summary><ol><li>INFO FM DI GRUP SEATALK ESKALASI. </li><li>ubah tanggal,hari,nama fm,NAMA DRIVER,ID DRIVER,NOPOL FMS,NO POL AKTUAL,NO LT. </li><li>TANDA TANGAN TEAM LEAD,TANDA TANGAN TRACER,TANDA TANGAN DRIVER.</li></ol></details>
+
+            </section>
 
             <!-- SECTION: VISUALISASI DATA -->
             <section id="sec-visualisasi" class="section-view">
                 <div class="charts-grid">
                     <div class="chart-card">
-                        <div class="chart-header"><div class="chart-title">Bar Chart (Smart AI Categorical Selection)</div></div>
+                        <div class="chart-header">
+                            <div class="chart-title">Data TJPH per Periode</div>
+                            <select id="tjph-metric" class="select-input" onchange="renderTJPHBar()">
+                                <option value="order">Jumlah Order ID</option>
+                                <option value="cogs">Total COGS (Rp)</option>
+                                <option value="claim">Total Claim / Pax (Rp)</option>
+                            </select>
+                        </div>
                         <div id="chart-bar" class="chart-container"></div>
                     </div>
                     <div class="chart-card">
-                        <div class="chart-header"><div class="chart-title">Pie Chart (Segmentasi Proposional)</div></div>
+                        <div class="chart-header"><div class="chart-title">Pie Chart (Segmentasi Proporsional)</div></div>
                         <div id="chart-pie" class="chart-container"></div>
                     </div>
                     <div class="chart-card">
@@ -926,7 +935,7 @@
         let currentGSheetUrl = '';
         let chartInstances = {};
 
-        const ROW_HEIGHT = 41; 
+        const ROW_HEIGHT = 41;
         const VIEWPORT_HEIGHT = 450;
         const BUFFER_COUNT = 5;
 
@@ -934,14 +943,34 @@
         const ALLOWED_USERS = ['saepulanwar', 'saepulanwar-rg', 'admin@eha.com', 'supervisor@eha.com', 'team@eha.com'];
         const ACCESS_PASSWORD = 'EHA2026';
 
+        /* ============================================================
+           KONFIGURASI DATA TJPH PER PERIODE (1 TAB = 1 PERIODE)
+           Cara ambil gid: buka tab di Google Sheets, lihat URL
+           bagian "gid=ANGKA", lalu isi di bawah ini.
+           Urutkan dari periode terlama ke terbaru.
+           ============================================================ */
+        const TJPH_SHEET_ID = '1dcK5LSIbKdzSc2qNZq-DtO4EP7EtTOAGtw5gVDQR1E4';
+
+        const TJPH_TABS = [
+            { label: '25 - 31 May 2026', gid: 'ISI_GID_TAB_1' },   // <- ganti dengan angka gid
+            { label: '01 - 07 Jun 2026', gid: 'ISI_GID_TAB_2' },   // <- ganti dengan angka gid
+            { label: '08 - 14 Jun 2026', gid: 'ISI_GID_TAB_3' },   // <- ganti dengan angka gid
+            { label: '15 - 21 Jun 2026', gid: '105922047' }
+            // Tambah periode berikutnya di sini, contoh:
+            // { label: '22 - 28 Jun 2026', gid: '123456789' },
+        ];
+
+        let tjphStats = [];
+
         /* INITIALIZATION & AUTHENTICATION GUARD */
         window.addEventListener('DOMContentLoaded', () => {
             checkAuthSession();
             initCharts();
             loadEmbeddedGeminiDataset();
+            loadTJPH();
             startAutoRefreshEngine();
             window.addEventListener('resize', resizeAllCharts);
-            
+
             document.getElementById('login-password').addEventListener('keypress', function (e) {
                 if (e.key === 'Enter') handleLogin();
             });
@@ -1077,6 +1106,7 @@
         function startAutoRefreshEngine() {
             if (realtimeTimer) clearInterval(realtimeTimer);
             realtimeTimer = setInterval(() => {
+                loadTJPH();
                 if (currentGSheetUrl) fetchRealtimeData();
             }, refreshIntervalMs);
         }
@@ -1088,6 +1118,7 @@
         }
 
         function forceRefreshData() {
+            loadTJPH();
             if (currentGSheetUrl) {
                 fetchRealtimeData();
             } else {
@@ -1100,6 +1131,12 @@
         function calculateStatistics() {
             document.getElementById('stat-total-rows').textContent = filteredDataset.length.toLocaleString('id-ID');
             document.getElementById('stat-total-cols').textContent = datasetHeaders.length;
+
+            if (filteredDataset.length === 0) {
+                ['stat-total-cats', 'stat-sum-val', 'stat-avg-val', 'stat-max-val', 'stat-min-val']
+                    .forEach(id => document.getElementById(id).textContent = '-');
+                return;
+            }
 
             let catCol = datasetHeaders.find(h => typeof filteredDataset[0][h] === 'string') || datasetHeaders[0];
             let uniqueCats = new Set(filteredDataset.map(r => r[catCol])).size;
@@ -1134,6 +1171,86 @@
             }
         }
 
+        /* ============================================================
+           DATA TJPH PER PERIODE (BAR CHART)
+           ============================================================ */
+        function toNum(v) {
+            return parseFloat(String(v).replace(/[^0-9.-]/g, '')) || 0;
+        }
+
+        async function loadTJPH() {
+            // Hanya tab yang gid-nya sudah berupa angka yang diambil
+            const activeTabs = TJPH_TABS.filter(t => /^\d+$/.test(String(t.gid)));
+
+            if (activeTabs.length === 0) {
+                tjphStats = [];
+                renderTJPHBar();
+                return;
+            }
+
+            const results = await Promise.allSettled(activeTabs.map(async tab => {
+                const url = `https://docs.google.com/spreadsheets/d/${TJPH_SHEET_ID}/export?format=csv&gid=${tab.gid}`;
+                const res = await fetch(url);
+                if (!res.ok) throw new Error(`Tab ${tab.label} gagal dimuat`);
+
+                const wb = XLSX.read(await res.text(), { type: 'string' });
+                const rows = XLSX.utils.sheet_to_json(wb.Sheets[wb.SheetNames[0]], { defval: '' });
+
+                const orderIds = new Set();
+                let cogs = 0, claim = 0;
+                rows.forEach(r => {
+                    const id = String(r['Order ID']).trim();
+                    if (!id) return;
+                    orderIds.add(id);              // Order ID dobel dihitung 1
+                    cogs += toNum(r['COGS']);
+                    claim += toNum(r['Claim / Pax']);
+                });
+
+                return { label: tab.label, orders: orderIds.size, cogs, claim };
+            }));
+
+            const failed = results.filter(r => r.status === 'rejected').length;
+            tjphStats = results.map((r, i) =>
+                r.status === 'fulfilled' ? r.value : { label: activeTabs[i].label, orders: 0, cogs: 0, claim: 0 }
+            );
+
+            if (failed) showToast(`${failed} tab TJPH gagal dimuat. Cek gid & pengaturan share sheet.`);
+            renderTJPHBar();
+        }
+
+        function renderTJPHBar() {
+            if (!chartInstances.bar) return;
+            const metric = document.getElementById('tjph-metric').value;
+            const names = { order: 'Jumlah Order ID', cogs: 'Total COGS (Rp)', claim: 'Total Claim / Pax (Rp)' };
+            const textColor = isDarkMode ? '#f8fafc' : '#1f2937';
+
+            chartInstances.bar.setOption({
+                tooltip: { trigger: 'axis' },
+                grid: { left: 70, right: 20, top: 40, bottom: 60 },
+                xAxis: {
+                    type: 'category',
+                    name: 'Periode',
+                    nameLocation: 'middle',
+                    nameGap: 42,
+                    data: tjphStats.map(s => s.label),
+                    axisLabel: { color: textColor, interval: 0, rotate: 20 },
+                    nameTextStyle: { color: textColor }
+                },
+                yAxis: {
+                    type: 'value',
+                    name: names[metric],
+                    axisLabel: { color: textColor },
+                    nameTextStyle: { color: textColor }
+                },
+                series: [{
+                    type: 'bar',
+                    data: tjphStats.map(s => ({ order: s.orders, cogs: s.cogs, claim: s.claim }[metric])),
+                    itemStyle: { color: '#2563eb', borderRadius: [4, 4, 0, 0] },
+                    label: { show: true, position: 'top', color: textColor, formatter: p => p.value.toLocaleString('id-ID') }
+                }]
+            }, true);
+        }
+
         /* SMART AI ECHARTS ENGINE */
         function initCharts() {
             chartInstances.bar = echarts.init(document.getElementById('chart-bar'));
@@ -1159,17 +1276,12 @@
             let seriesValues = categories.map(k => aggregation[k]);
             let textColor = isDarkMode ? '#f8fafc' : '#1f2937';
 
-            chartInstances.bar.setOption({
-                tooltip: { trigger: 'axis' },
-                xAxis: { type: 'category', data: categories, axisLabel: { color: textColor } },
-                yAxis: { type: 'value', axisLabel: { color: textColor } },
-                series: [{ data: seriesValues, type: 'bar', itemStyle: { color: '#2563eb', borderRadius: [4, 4, 0, 0] } }]
-            });
+            // Bar chart sekarang dikelola oleh renderTJPHBar() (Data TJPH per Periode)
 
             let pieData = categories.map(k => ({ name: k, value: aggregation[k] }));
             chartInstances.pie.setOption({
                 tooltip: { trigger: 'item' },
-                series: [{ type: 'pie', radius: '65%', data: pieData }]
+                series: [{ type: 'pie', radius: '65%', data: pieData, label: { color: textColor } }]
             });
 
             chartInstances.area.setOption({
@@ -1211,7 +1323,7 @@
 
             const tbody = document.getElementById('virtual-table-body');
             const table = document.getElementById('virtual-table');
-            
+
             table.style.transform = `translateY(${startIndex * ROW_HEIGHT}px)`;
 
             let rowsHtml = '';
@@ -1221,8 +1333,8 @@
             }
             tbody.innerHTML = rowsHtml;
 
-            document.getElementById('table-info-footer').textContent = 
-                `Menampilkan ${startIndex + 1} - ${endIndex} dari total ${filteredDataset.length.toLocaleString('id-ID')} baris data.`;
+            document.getElementById('table-info-footer').textContent =
+                `Menampilkan ${filteredDataset.length === 0 ? 0 : startIndex + 1} - ${endIndex} dari total ${filteredDataset.length.toLocaleString('id-ID')} baris data.`;
         }
 
         function handleTableSearch() {
@@ -1239,7 +1351,7 @@
         /* GLOBAL INTERACTIVE FILTER */
         function updateFilterDropdowns() {
             const colSelect = document.getElementById('filter-column');
-            colSelect.innerHTML = '<option value="">-- Pilih Kolom Filter --</option>' + 
+            colSelect.innerHTML = '<option value="">-- Pilih Kolom Filter --</option>' +
                 datasetHeaders.map(h => `<option value="${h}">${h}</option>`).join('');
         }
 
@@ -1249,7 +1361,7 @@
 
             if (col && valSelect.options.length <= 1) {
                 const uniqueVals = [...new Set(rawDataset.map(r => r[col]))].slice(0, 100);
-                valSelect.innerHTML = '<option value="">-- Semua Nilai --</option>' + 
+                valSelect.innerHTML = '<option value="">-- Semua Nilai --</option>' +
                     uniqueVals.map(v => `<option value="${v}">${v}</option>`).join('');
             }
 
@@ -1322,6 +1434,7 @@
             isDarkMode = !isDarkMode;
             document.body.setAttribute('data-theme', isDarkMode ? 'dark' : 'light');
             renderCharts();
+            renderTJPHBar();
         }
 
         function toggleCommandCenter() {
@@ -1336,7 +1449,7 @@
         }
 
         function updateHeaderMeta() {
-            document.getElementById('header-meta').textContent = 
+            document.getElementById('header-meta').textContent =
                 `Jam Operasional Facility: 13:00 - 06:00 WIB • Total ${rawDataset.length.toLocaleString('id-ID')} Baris Data • System Status: OK`;
         }
 
