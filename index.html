@@ -279,7 +279,7 @@ body.command-center-mode .stat-card-value{color:#38bdf8}
                     <div id="chart-area" class="chart-container"></div>
                 </div>
                 <div class="chart-card">
-                    <div class="chart-header"><div class="chart-title">Line Chart (Fluktuasi & Tren Realtime)</div></div>
+                    <div class="chart-header"><div class="chart-title">Data Gantungan Hourly - SOC_Packed vs RETURN_SOC_Packed per Hari</div></div>
                     <div id="chart-line" class="chart-container"></div>
                 </div>
             </div>
@@ -371,6 +371,8 @@ let tjphStats = [];
 const REKAPAN_WEBAPP_URL = 'https://script.google.com/a/macros/spxexpress.com/s/AKfycbwgDy3kLODJAffOazizSnwW3Hggxp3Xmr6wkJUD_BTojhgtI0sKcmTas5wXaBAV_GL6fQ/exec';
 let rekapanStats = [];
 let gantunganStats = [];
+let gantungan2Stats = [];
+const GANTUNGAN2_SERIES = ['SOC_Packed', 'RETURN_SOC_Packed'];
 
 window.addEventListener('DOMContentLoaded', () => {
     checkAuthSession();
@@ -379,6 +381,7 @@ window.addEventListener('DOMContentLoaded', () => {
     loadTJPH();
     loadRekapan();
     loadGantungan();
+    loadGantungan2();
     startAutoRefreshEngine();
     window.addEventListener('resize', resizeAllCharts);
     document.getElementById('login-password').addEventListener('keypress', function (e) {
@@ -490,6 +493,7 @@ function startAutoRefreshEngine() {
         loadTJPH();
         loadRekapan();
         loadGantungan();
+        loadGantungan2();
         if (currentGSheetUrl) fetchRealtimeData();
     }, refreshIntervalMs);
 }
@@ -504,6 +508,7 @@ function forceRefreshData() {
     loadTJPH();
     loadRekapan();
     loadGantungan();
+    loadGantungan2();
     if (currentGSheetUrl) {
         fetchRealtimeData();
     } else {
@@ -750,6 +755,72 @@ function renderGantunganArea() {
     }, true);
 }
 
+/* DATA GANTUNGAN HOURLY (LINE CHART - SOC_Packed vs RETURN_SOC_Packed per hari) */
+function loadGantungan2() {
+    if (!REKAPAN_WEBAPP_URL) return;
+    const callbackName = 'handleGantungan2Response';
+
+    const oldScript = document.getElementById('gantungan2-data-script');
+    if (oldScript) oldScript.remove();
+
+    window[callbackName] = function (response) {
+        delete window[callbackName];
+        const s = document.getElementById('gantungan2-data-script');
+        if (s) s.remove();
+
+        if (!response || !response.success || !Array.isArray(response.data)) {
+            console.error('Respons gantungan2 tidak valid:', response);
+            showToast('Data gantungan (Packed) gagal dibaca dari Web App.');
+            return;
+        }
+        gantungan2Stats = response.data;
+        console.log('Data gantungan2 berhasil dimuat:', gantungan2Stats);
+        renderGantunganLine();
+    };
+
+    const script = document.createElement('script');
+    script.id = 'gantungan2-data-script';
+    script.src = REKAPAN_WEBAPP_URL + '?type=gantungan2&callback=' + callbackName + '&_=' + Date.now();
+    script.onerror = function () {
+        delete window[callbackName];
+        script.remove();
+        console.error('Gagal memuat data gantungan2 dari Web App.');
+        showToast('Gagal memuat data gantungan (Packed). Periksa akses Web App.');
+    };
+    document.body.appendChild(script);
+}
+
+function renderGantunganLine() {
+    if (!chartInstances.line) return;
+    const textColor = isDarkMode ? '#f8fafc' : '#1f2937';
+    const colors = ['#10b981', '#f59e0b'];
+
+    chartInstances.line.setOption({
+        tooltip: { trigger: 'axis' },
+        legend: { top: 0, textStyle: { color: textColor } },
+        title: {
+            show: gantungan2Stats.length === 0,
+            text: 'Belum ada data',
+            left: 'center', top: 'center',
+            textStyle: { color: textColor, fontSize: 14 }
+        },
+        grid: { left: 60, right: 20, top: 50, bottom: 50 },
+        xAxis: {
+            type: 'category',
+            data: gantungan2Stats.map(s => s.label),
+            axisLabel: { color: textColor, rotate: 20 }
+        },
+        yAxis: { type: 'value', axisLabel: { color: textColor } },
+        series: GANTUNGAN2_SERIES.map((name, i) => ({
+            name: name,
+            type: 'line', smooth: true,
+            data: gantungan2Stats.map(s => (s.values && s.values[name]) || 0),
+            itemStyle: { color: colors[i % colors.length] },
+            label: { show: true, position: 'top', color: textColor, formatter: p => p.value.toLocaleString('id-ID') }
+        }))
+    }, true);
+}
+
 /* ECHARTS */
 function initCharts() {
     chartInstances.bar = echarts.init(document.getElementById('chart-bar'));
@@ -778,12 +849,7 @@ function renderCharts() {
 
     /* Area chart sekarang diisi oleh renderGantunganArea(), bukan di sini. */
 
-    chartInstances.line.setOption({
-        tooltip: { trigger: 'axis' },
-        xAxis: { type: 'category', data: categories, axisLabel: { color: textColor } },
-        yAxis: { type: 'value', axisLabel: { color: textColor } },
-        series: [{ data: seriesValues, type: 'line', smooth: true, itemStyle: { color: '#10b981' } }]
-    });
+    /* Line chart sekarang diisi oleh renderGantunganLine(), bukan di sini. */
 }
 
 function resizeAllCharts() {
@@ -910,6 +976,7 @@ function toggleDarkMode() {
     renderTJPHBar();
     renderRekapanPies();
     renderGantunganArea();
+    renderGantunganLine();
 }
 
 function toggleCommandCenter() {
