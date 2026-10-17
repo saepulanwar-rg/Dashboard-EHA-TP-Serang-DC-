@@ -269,7 +269,13 @@ body.command-center-mode .stat-card-value{color:#38bdf8}
                     <div id="chart-pie-packed" class="chart-container"></div>
                 </div>
                 <div class="chart-card">
-                    <div class="chart-header"><div class="chart-title">Area Chart (Volumetrik Akumulatif)</div></div>
+                    <div class="chart-header">
+                        <div class="chart-title">Data Gantungan Hourly per Hari</div>
+                        <select id="gantungan-mode" class="select-input" onchange="renderGantunganArea()">
+                            <option value="daily">Per Hari</option>
+                            <option value="cumulative">Akumulatif</option>
+                        </select>
+                    </div>
                     <div id="chart-area" class="chart-container"></div>
                 </div>
                 <div class="chart-card">
@@ -359,9 +365,12 @@ const TJPH_TABS = [
 
 let tjphStats = [];
 
-/* KONFIGURASI REKAPAN (Data Lost Scan) */
+/* KONFIGURASI REKAPAN (Data Lost Scan) & GANTUNGAN (tab PER WEEK)
+   Keduanya memakai Web App yang sama. Gantungan memakai parameter ?type=gantungan.
+   Jika Web App dipindah ke akun lain, ganti URL ini dengan URL /exec yang baru. */
 const REKAPAN_WEBAPP_URL = 'https://script.google.com/a/macros/spxexpress.com/s/AKfycbwgDy3kLODJAffOazizSnwW3Hggxp3Xmr6wkJUD_BTojhgtI0sKcmTas5wXaBAV_GL6fQ/exec';
 let rekapanStats = [];
+let gantunganStats = [];
 
 window.addEventListener('DOMContentLoaded', () => {
     checkAuthSession();
@@ -369,6 +378,7 @@ window.addEventListener('DOMContentLoaded', () => {
     loadEmbeddedGeminiDataset();
     loadTJPH();
     loadRekapan();
+    loadGantungan();
     startAutoRefreshEngine();
     window.addEventListener('resize', resizeAllCharts);
     document.getElementById('login-password').addEventListener('keypress', function (e) {
@@ -479,6 +489,7 @@ function startAutoRefreshEngine() {
     realtimeTimer = setInterval(() => {
         loadTJPH();
         loadRekapan();
+        loadGantungan();
         if (currentGSheetUrl) fetchRealtimeData();
     }, refreshIntervalMs);
 }
@@ -492,6 +503,7 @@ function changeRefreshInterval() {
 function forceRefreshData() {
     loadTJPH();
     loadRekapan();
+    loadGantungan();
     if (currentGSheetUrl) {
         fetchRealtimeData();
     } else {
@@ -575,7 +587,7 @@ function loadTJPH() {
         delete window[callbackName];
         script.remove();
         console.error('Gagal memuat data TJPH dari Web App.');
-        showToast('Gagal memuat data TJPH. Periksa akses Web App.');
+        showToast('Gagal memuat data TJPH. Login dengan akun yang punya akses Web App (gunakan Incognito jika punya banyak akun Google).');
     };
     document.body.appendChild(script);
 }
@@ -666,6 +678,78 @@ function renderRekapanPies() {
     build('packed', chartInstances.piePacked);
 }
 
+/* DATA GANTUNGAN HOURLY (AREA CHART - tab PER WEEK, per hari, ID dobel dihitung 1) */
+function loadGantungan() {
+    if (!REKAPAN_WEBAPP_URL) return;
+    const callbackName = 'handleGantunganResponse';
+
+    const oldScript = document.getElementById('gantungan-data-script');
+    if (oldScript) oldScript.remove();
+
+    window[callbackName] = function (response) {
+        delete window[callbackName];
+        const s = document.getElementById('gantungan-data-script');
+        if (s) s.remove();
+
+        if (!response || !response.success || !Array.isArray(response.data)) {
+            console.error('Respons gantungan tidak valid:', response);
+            showToast('Data gantungan gagal dibaca dari Web App.');
+            return;
+        }
+        gantunganStats = response.data.map(function (item) {
+            return { label: item.label, total: Number(item.total) || 0 };
+        });
+        console.log('Data gantungan berhasil dimuat:', gantunganStats);
+        renderGantunganArea();
+    };
+
+    const script = document.createElement('script');
+    script.id = 'gantungan-data-script';
+    script.src = REKAPAN_WEBAPP_URL + '?type=gantungan&callback=' + callbackName + '&_=' + Date.now();
+    script.onerror = function () {
+        delete window[callbackName];
+        script.remove();
+        console.error('Gagal memuat data gantungan dari Web App.');
+        showToast('Gagal memuat data gantungan. Periksa akses Web App.');
+    };
+    document.body.appendChild(script);
+}
+
+function renderGantunganArea() {
+    if (!chartInstances.area) return;
+    const mode = document.getElementById('gantungan-mode').value;
+    const textColor = isDarkMode ? '#f8fafc' : '#1f2937';
+
+    let running = 0;
+    const values = gantunganStats.map(s => mode === 'cumulative' ? (running += s.total) : s.total);
+
+    chartInstances.area.setOption({
+        tooltip: { trigger: 'axis' },
+        title: {
+            show: gantunganStats.length === 0,
+            text: 'Belum ada data',
+            left: 'center', top: 'center',
+            textStyle: { color: textColor, fontSize: 14 }
+        },
+        grid: { left: 60, right: 20, top: 40, bottom: 50 },
+        xAxis: {
+            type: 'category',
+            data: gantunganStats.map(s => s.label),
+            axisLabel: { color: textColor, rotate: 20 }
+        },
+        yAxis: { type: 'value', axisLabel: { color: textColor } },
+        series: [{
+            type: 'line', smooth: true, data: values,
+            areaStyle: { color: 'rgba(37,99,235,0.25)' },
+            itemStyle: { color: '#2563eb' },
+            label: { show: true, position: 'top', color: textColor, formatter: p => p.value.toLocaleString('id-ID') },
+            markLine: (mode === 'daily' && values.length)
+                ? { data: [{ type: 'average', name: 'Rata-rata' }], lineStyle: { color: '#f59e0b' } }
+                : undefined
+        }]
+    }, true);
+}
+
 /* ECHARTS */
 function initCharts() {
     chartInstances.bar = echarts.init(document.getElementById('chart-bar'));
@@ -692,12 +776,7 @@ function renderCharts() {
     let seriesValues = categories.map(k => aggregation[k]);
     let textColor = isDarkMode ? '#f8fafc' : '#1f2937';
 
-    chartInstances.area.setOption({
-        tooltip: { trigger: 'axis' },
-        xAxis: { type: 'category', data: categories, axisLabel: { color: textColor } },
-        yAxis: { type: 'value', axisLabel: { color: textColor } },
-        series: [{ data: seriesValues, type: 'line', areaStyle: { color: 'rgba(37, 99, 235, 0.2)' }, itemStyle: { color: '#2563eb' } }]
-    });
+    /* Area chart sekarang diisi oleh renderGantunganArea(), bukan di sini. */
 
     chartInstances.line.setOption({
         tooltip: { trigger: 'axis' },
@@ -830,6 +909,7 @@ function toggleDarkMode() {
     renderCharts();
     renderTJPHBar();
     renderRekapanPies();
+    renderGantunganArea();
 }
 
 function toggleCommandCenter() {
