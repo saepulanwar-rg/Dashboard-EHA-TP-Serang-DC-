@@ -680,26 +680,134 @@ function loadTJPH() {
 }
 
 function renderTJPHBar() {
-    if (!chartInstances.bar) return;
+    if (!chartInstances.bar || !Array.isArray(tjphStats) || !tjphStats.length) return;
+
     const metric = document.getElementById('tjph-metric').value;
-    const names = { order: 'Jumlah Order ID', cogs: 'Total COGS (Rp)', claim: 'Total Claim / Pax (Rp)' };
-    const textColor = isDarkMode ? '#f8fafc' : '#1f2937';
+    const names = {
+        order: 'Jumlah Order ID',
+        cogs: 'Total COGS (Rp)',
+        claim: 'Total Claim / Pax (Rp)'
+    };
+    const textColor = isDarkMode ? '#e8faff' : '#1f2937';
+    const mutedColor = isDarkMode ? '#8aa9bd' : '#64748b';
+    const values = tjphStats.map(s => Number(({ order: s.orders, cogs: s.cogs, claim: s.claim })[metric]) || 0);
+    const latestIndex = values.length - 1;
+
+    // Label sumbu dibuat ringkas; nama periode lengkap tetap tersedia di tooltip.
+    const shortPeriod = label => {
+        const text = String(label || '').replace(/^.*?PERIODE\s*/i, '').trim();
+        const match = text.match(/(\d{1,2})\s+([A-Za-z]+)\s+\d{4}\s*-\s*(\d{1,2})\s+([A-Za-z]+)\s+\d{4}/);
+        if (match) {
+            const month = m => ({ jan:'Jan', feb:'Feb', mar:'Mar', apr:'Apr', mei:'Mei', may:'Mei', jun:'Jun', jul:'Jul', agu:'Agu', agt:'Agu', aug:'Agu', sep:'Sep', sept:'Sep', okt:'Okt', oct:'Okt', nov:'Nov', des:'Des', dec:'Des' }[String(m).slice(0,3).toLowerCase()] || String(m).slice(0,3));
+            return `${match[1]}–${match[3]} ${month(match[4])}`;
+        }
+        return text.length > 18 ? text.slice(0, 16) + '…' : text;
+    };
+
+    const barData = values.map((value, index) => ({
+        value,
+        itemStyle: {
+            color: index === latestIndex
+                ? new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                    { offset: 0, color: '#d7ffff' },
+                    { offset: 0.35, color: '#42f5ff' },
+                    { offset: 1, color: '#00a9d6' }
+                ])
+                : new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                    { offset: 0, color: '#28e7ff' },
+                    { offset: 1, color: '#0879b8' }
+                ]),
+            borderColor: index === latestIndex ? '#d7ffff' : '#39eaff',
+            borderWidth: index === latestIndex ? 1.5 : 0.7,
+            borderRadius: [7, 7, 1, 1],
+            shadowBlur: index === latestIndex ? 24 : 13,
+            shadowColor: index === latestIndex ? 'rgba(83,255,255,0.9)' : 'rgba(0,220,255,0.48)',
+            shadowOffsetY: 0
+        }
+    }));
 
     chartInstances.bar.setOption({
-        tooltip: { trigger: 'axis' },
-        grid: { left: 70, right: 20, top: 40, bottom: 60 },
-        xAxis: {
-            type: 'category', name: 'Periode', nameLocation: 'middle', nameGap: 42,
-            data: tjphStats.map(s => s.label),
-            axisLabel: { color: textColor, interval: 0, rotate: 20 },
-            nameTextStyle: { color: textColor }
+        backgroundColor: 'transparent',
+        animation: true,
+        animationDuration: 850,
+        animationEasing: 'cubicOut',
+        tooltip: {
+            trigger: 'axis',
+            axisPointer: { type: 'shadow', shadowStyle: { color: 'rgba(0,220,255,0.08)' } },
+            backgroundColor: 'rgba(4,17,32,0.96)',
+            borderColor: 'rgba(35,225,255,0.65)',
+            borderWidth: 1,
+            textStyle: { color: '#e8faff' },
+            extraCssText: 'box-shadow:0 0 20px rgba(0,220,255,.18);border-radius:10px;',
+            formatter: params => {
+                const item = params && params[0];
+                if (!item) return '';
+                const fullLabel = tjphStats[item.dataIndex]?.label || item.name;
+                return `<div style="font-weight:700;color:#54f4ff;margin-bottom:6px">${fullLabel}</div><div>${names[metric]}: <b style="color:#ffffff">${Number(item.value).toLocaleString('id-ID')}</b></div>${item.dataIndex === latestIndex ? '<div style="margin-top:5px;color:#7fffe5;font-size:11px">● PERIODE TERBARU</div>' : ''}`;
+            }
         },
-        yAxis: { type: 'value', name: names[metric], axisLabel: { color: textColor }, nameTextStyle: { color: textColor } },
+        grid: { left: 54, right: 18, top: 42, bottom: 62, containLabel: true },
+        xAxis: {
+            type: 'category',
+            data: tjphStats.map(s => shortPeriod(s.label)),
+            axisTick: { show: false },
+            axisLine: { lineStyle: { color: 'rgba(91,174,202,0.35)' } },
+            axisLabel: {
+                color: mutedColor,
+                fontSize: 11,
+                fontWeight: 600,
+                interval: 0,
+                rotate: 0,
+                margin: 14
+            }
+        },
+        yAxis: {
+            type: 'value',
+            name: names[metric],
+            nameLocation: 'end',
+            nameGap: 14,
+            nameTextStyle: { color: mutedColor, fontSize: 11, padding: [0, 0, 5, 0] },
+            axisLabel: {
+                color: mutedColor,
+                fontSize: 11,
+                formatter: value => Number(value).toLocaleString('id-ID')
+            },
+            axisLine: { show: false },
+            axisTick: { show: false },
+            splitLine: { show: true, lineStyle: { color: 'rgba(105,171,197,0.14)', type: 'dashed', width: 1 }
+            },
+            min: 0
+        },
         series: [{
+            name: names[metric],
             type: 'bar',
-            data: tjphStats.map(s => ({ order: s.orders, cogs: s.cogs, claim: s.claim }[metric])),
-            itemStyle: { color: '#2563eb', borderRadius: [4, 4, 0, 0] },
-            label: { show: true, position: 'top', color: textColor, formatter: p => p.value.toLocaleString('id-ID') }
+            data: barData,
+            barMaxWidth: 54,
+            barMinHeight: 3,
+            showBackground: true,
+            backgroundStyle: { color: 'rgba(64,160,190,0.055)', borderRadius: [7, 7, 1, 1] },
+            emphasis: {
+                focus: 'series',
+                itemStyle: { shadowBlur: 30, shadowColor: 'rgba(69,255,255,1)', borderColor: '#ffffff', borderWidth: 1 }
+            },
+            label: {
+                show: true,
+                position: 'top',
+                distance: 9,
+                color: '#f1feff',
+                fontSize: 13,
+                fontWeight: 700,
+                textShadowColor: 'rgba(0,230,255,0.6)',
+                textShadowBlur: 8,
+                formatter: p => Number(p.value).toLocaleString('id-ID')
+            },
+            markPoint: values.length ? {
+                symbol: 'circle',
+                symbolSize: 8,
+                data: [{ coord: [latestIndex, values[latestIndex]], value: values[latestIndex] }],
+                itemStyle: { color: '#e4ffff', borderColor: '#00eaff', borderWidth: 2, shadowBlur: 16, shadowColor: '#00eaff' },
+                label: { show: false }
+            } : undefined
         }]
     }, true);
 }
