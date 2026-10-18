@@ -93,9 +93,91 @@ body.command-center-mode .stat-card,body.command-center-mode .chart-card,body.co
 body.command-center-mode .stat-card-value{color:#38bdf8}
 .toast-notification{position:fixed;bottom:20px;right:20px;padding:12px 20px;background-color:var(--bg-secondary);color:var(--text-primary);border:1px solid var(--border-color);border-radius:8px;box-shadow:var(--shadow-lg);display:flex;align-items:center;gap:10px;z-index:1000;transform:translateY(100px);opacity:0;transition:all .3s ease}
 .toast-notification.show{transform:translateY(0);opacity:1}
+
+
+/* ============================================================
+   FUTURISTIC NEON THEME — EHA TP SERANG DC
+   Visual-only overrides: keeps existing data and dashboard logic.
+   ============================================================ */
+:root{
+  --bg-primary:#07111f;
+  --bg-secondary:#0b1728;
+  --bg-card:rgba(13,28,48,.94);
+  --text-primary:#e8f7ff;
+  --text-secondary:#8ba9c4;
+  --border-color:rgba(48,209,255,.22);
+  --accent-color:#19d7ff;
+  --accent-hover:#67e8ff;
+  --success-color:#39f5a5;
+  --warning-color:#ffd166;
+  --danger-color:#ff537a;
+  --shadow-sm:0 0 0 1px rgba(25,215,255,.04),0 5px 18px rgba(0,0,0,.25);
+  --shadow-md:0 0 18px rgba(25,215,255,.09),0 8px 24px rgba(0,0,0,.3);
+  --shadow-lg:0 0 28px rgba(25,215,255,.14),0 12px 35px rgba(0,0,0,.4);
+}
+[data-theme="dark"]{
+  --bg-primary:#07111f;
+  --bg-secondary:#0b1728;
+  --bg-card:rgba(13,28,48,.94);
+  --text-primary:#e8f7ff;
+  --text-secondary:#8ba9c4;
+  --border-color:rgba(48,209,255,.22);
+  --accent-color:#19d7ff;
+  --accent-hover:#67e8ff;
+  --success-color:#39f5a5;
+  --warning-color:#ffd166;
+  --danger-color:#ff537a;
+  --shadow-sm:0 0 0 1px rgba(25,215,255,.04),0 5px 18px rgba(0,0,0,.25);
+  --shadow-md:0 0 18px rgba(25,215,255,.09),0 8px 24px rgba(0,0,0,.3);
+  --shadow-lg:0 0 28px rgba(25,215,255,.14),0 12px 35px rgba(0,0,0,.4);
+}
+html{background:#07111f;color-scheme:dark}
+body{background:radial-gradient(ellipse at 75% -15%,rgba(0,183,255,.13),transparent 42%),var(--bg-primary);color:var(--text-primary)}
+.sidebar,.header,.realtime-bar{background:rgba(8,21,38,.96);backdrop-filter:blur(14px);border-color:var(--border-color)}
+.sidebar{box-shadow:8px 0 30px rgba(0,0,0,.16)}
+.sidebar-header{border-color:var(--border-color)}
+.sidebar-header i,.login-card i.logo-icon{color:var(--accent-color);filter:drop-shadow(0 0 8px rgba(25,215,255,.55))}
+.sidebar-menu a{border:1px solid transparent;transition:all .2s ease}
+.sidebar-menu a:hover,.sidebar-menu a.active{background:linear-gradient(90deg,rgba(25,215,255,.14),rgba(25,215,255,.035));border-color:rgba(25,215,255,.25);color:#64eaff;box-shadow:inset 3px 0 0 var(--accent-color),0 0 16px rgba(25,215,255,.06)}
+.header{box-shadow:0 5px 24px rgba(0,0,0,.16)}
+.header-title h1{letter-spacing:.2px;text-shadow:0 0 16px rgba(25,215,255,.14)}
+.stat-card,.chart-card,.table-card,.insight-card,.portal-card,details,.login-card{background:linear-gradient(145deg,rgba(16,35,59,.97),rgba(8,22,39,.98));border:1px solid rgba(48,209,255,.2);box-shadow:var(--shadow-sm);position:relative;overflow:hidden}
+.stat-card:before,.chart-card:before,.insight-card:before,.portal-card:before{content:"";position:absolute;left:0;top:0;width:100%;height:1px;background:linear-gradient(90deg,transparent,rgba(25,215,255,.65),transparent);pointer-events:none}
+.stat-card{transition:transform .22s ease,border-color .22s ease,box-shadow .22s ease}
+.stat-card:hover,.chart-card:hover,.portal-card:hover{border-color:rgba(25,215,255,.48);box-shadow:0 0 20px rgba(25,215,255,.09),0 8px 24px rgba(0,0,0,.24)}
+.stat-card:hover{transform:translateY(-2px)}
+.stat-card-title{color:#8eb0cc;letter-spacing:1px}
+.stat-card-value{color:#e8fbff;text-shadow:0 0 14px rgba(25,215,255,.18)}
+.chart-title,.insight-title{color:#e8f7ff}
+.btn,.select-input,.input-text{background-color:rgba(6,17,32,.92);color:var(--text-primary);border:1px solid rgba(66,180,220,.28);border-radius:8px}
+.btn{transition:all .18s ease;box-shadow:0 2px 8px rgba(0,0,0,.14)}
+.btn:hover{background:rgba(25,215,255,.1);border-color:rgba(25,215,255,.55);color:#8df0ff;box-shadow:0 0 14px rgba(25,215,255,.1)}
+.btn-primary,.login-btn{background:linear-gradient(135deg,#087ea4,#08b8d8);color:#f5fdff;border:1px solid rgba(98,235,255,.55);box-shadow:0 0 16px rgba(0,190,230,.18)}
+.btn-primary:hover,.login-btn:hover{background:linear-gradient(135deg,#0a9bc4,#27d8f3);color:#fff;box-shadow:0 0 22px rgba(25,215,255,.3)}
+.input-text:focus,.select-input:focus,.login-field input:focus{outline:none;border-color:var(--accent-color);box-shadow:0 0 0 3px rgba(25,215,255,.12)}
+.status-badge.active{background:rgba(57,245,165,.1);border:1px solid rgba(57,245,165,.24);color:var(--success-color)}
+.status-badge.error{background:rgba(255,83,122,.1);border:1px solid rgba(255,83,122,.25)}
+.insight-card{border-left:3px solid var(--accent-color)}
+.insight-title{color:var(--accent-color);text-shadow:0 0 12px rgba(25,215,255,.15)}
+.insight-list li{border-color:rgba(48,209,255,.15)}
+.virtual-table-viewport{border-color:var(--border-color)}
+table.virtual-table th{background:#0b2035;color:#a9edff}
+table.virtual-table td{border-color:rgba(48,209,255,.12)}
+table.virtual-table tr:hover td{background:rgba(25,215,255,.045)}
+.portal-card a:hover{color:#64eaff;text-shadow:0 0 10px rgba(25,215,255,.2)}
+.toast-notification{background:rgba(8,24,42,.97);border-color:rgba(25,215,255,.35);box-shadow:0 0 24px rgba(25,215,255,.13)}
+#login-overlay{background:radial-gradient(ellipse at center,rgba(8,75,105,.34),transparent 55%),rgba(3,9,18,.96)}
+.login-card{box-shadow:0 0 40px rgba(25,215,255,.1),0 25px 65px rgba(0,0,0,.45)}
+body.command-center-mode .header{background:#030912;color:#e8f7ff;border-bottom:1px solid rgba(25,215,255,.2)}
+body.command-center-mode{background:#030912;color:#e8f7ff}
+body.command-center-mode .stat-card,body.command-center-mode .chart-card,body.command-center-mode .insight-card,body.command-center-mode .portal-card,body.command-center-mode details{background:linear-gradient(145deg,#0b1d32,#06101e);border-color:rgba(25,215,255,.25);color:#e8f7ff}
+body.command-center-mode .stat-card-value{color:#64eaff;text-shadow:0 0 16px rgba(25,215,255,.25)}
+::selection{background:rgba(25,215,255,.3);color:#fff}
+@media(max-width:900px){.header{height:auto;min-height:65px;padding:12px 16px;align-items:flex-start;gap:12px;flex-wrap:wrap}.header-controls{flex-wrap:wrap}.realtime-bar{padding:10px 16px;flex-wrap:wrap;gap:12px}.content-body{padding:16px}.charts-grid{grid-template-columns:1fr}.chart-container{height:300px}}
+
 </style>
 </head>
-<body>
+<body data-theme="dark">
 
 <!-- LOGIN -->
 <div id="login-overlay">
@@ -343,7 +425,7 @@ let filteredDataset = [];
 let datasetHeaders = [];
 let realtimeTimer = null;
 let refreshIntervalMs = 30000;
-let isDarkMode = false;
+let isDarkMode = true;
 let activeTab = 'ringkasan';
 let currentGSheetUrl = '';
 let chartInstances = {};
