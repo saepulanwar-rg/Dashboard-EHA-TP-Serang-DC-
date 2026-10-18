@@ -848,29 +848,66 @@ function loadRekapan() {
 
 function renderRekapanPies() {
     if (!chartInstances.pieReceived || !chartInstances.piePacked) return;
-    const textColor = isDarkMode ? '#f8fafc' : '#1f2937';
+    const textColor = isDarkMode ? '#e8fbff' : '#1f2937';
+    const mutedColor = isDarkMode ? '#7394a9' : '#94a3b8';
+    const neonPalette = ['#00e5ff', '#39ffb6', '#a3ff5f', '#ffc857', '#ff5bd6', '#6c8cff'];
 
-    const build = (key, chart) => {
+    const build = (key, chart, accent) => {
         const data = rekapanStats
-            .map(s => ({ name: s.label, value: s[key] }))
+            .map(s => ({ name: s.label, value: Number(s[key]) || 0 }))
             .filter(d => d.value > 0);
         chart.setOption({
-            tooltip: { trigger: 'item', formatter: '{b}<br/>{c} ID ({d}%)' },
+            backgroundColor: 'transparent',
+            animationDuration: 1100,
+            animationEasing: 'cubicOut',
+            color: neonPalette,
+            tooltip: {
+                trigger: 'item',
+                backgroundColor: 'rgba(3, 15, 31, 0.96)',
+                borderColor: accent,
+                borderWidth: 1,
+                textStyle: { color: '#e8fbff' },
+                extraCssText: 'box-shadow:0 0 18px ' + accent + '55; border-radius:10px;',
+                formatter: p => `<b>${p.name}</b><br/>${Number(p.value).toLocaleString('id-ID')} ID <span style="color:${accent}">(${p.percent}%)</span>`
+            },
             title: {
                 show: data.length === 0,
-                text: 'Belum ada data',
-                left: 'center', top: 'center',
-                textStyle: { color: textColor, fontSize: 14 }
+                text: 'BELUM ADA DATA', left: 'center', top: 'center',
+                textStyle: { color: textColor, fontSize: 13, fontWeight: 600 }
             },
             series: [{
-                type: 'pie', radius: '62%', data: data,
-                label: { color: textColor, formatter: '{b}\n{c} ({d}%)' }
+                name: key === 'received' ? 'SOC_Received' : 'SOC_Packed',
+                type: 'pie',
+                radius: ['38%', '63%'],
+                center: ['50%', '52%'],
+                avoidLabelOverlap: true,
+                minAngle: 3,
+                itemStyle: {
+                    borderColor: isDarkMode ? '#0a192a' : '#ffffff',
+                    borderWidth: 2,
+                    borderRadius: 5,
+                    shadowBlur: isDarkMode ? 16 : 4,
+                    shadowColor: isDarkMode ? 'rgba(0,229,255,.20)' : 'rgba(15,23,42,.10)'
+                },
+                emphasis: {
+                    scale: true, scaleSize: 8,
+                    itemStyle: { shadowBlur: 28, shadowColor: accent }
+                },
+                label: {
+                    show: true, color: textColor, fontSize: 11, fontWeight: 600,
+                    lineHeight: 14, formatter: p => `${p.name}\n${Number(p.value).toLocaleString('id-ID')} (${p.percent}%)`
+                },
+                labelLine: {
+                    show: true, length: 13, length2: 9,
+                    lineStyle: { color: accent, width: 1.4, opacity: .85 }
+                },
+                data: data
             }]
         }, true);
     };
 
-    build('received', chartInstances.pieReceived);
-    build('packed', chartInstances.piePacked);
+    build('received', chartInstances.pieReceived, '#00e5ff');
+    build('packed', chartInstances.piePacked, '#39ffb6');
 }
 
 /* DATA GANTUNGAN HOURLY (AREA CHART - tab PER WEEK, per hari, ID dobel dihitung 1) */
@@ -912,34 +949,63 @@ function loadGantungan() {
 
 function renderGantunganArea() {
     if (!chartInstances.area) return;
-    const mode = document.getElementById('gantungan-mode').value;
-    const textColor = isDarkMode ? '#f8fafc' : '#1f2937';
-
+    const modeEl = document.getElementById('gantungan-mode');
+    const mode = modeEl ? modeEl.value : 'daily';
+    const textColor = isDarkMode ? '#e8fbff' : '#1f2937';
+    const mutedColor = isDarkMode ? '#7895aa' : '#94a3b8';
     let running = 0;
-    const values = gantunganStats.map(s => mode === 'cumulative' ? (running += s.total) : s.total);
+    const values = gantunganStats.map(s => mode === 'cumulative' ? (running += Number(s.total) || 0) : (Number(s.total) || 0));
+    const maxVal = Math.max(0, ...values);
 
     chartInstances.area.setOption({
-        tooltip: { trigger: 'axis' },
+        backgroundColor: 'transparent',
+        animationDuration: 1100,
+        animationEasing: 'cubicOut',
+        color: ['#00e5ff'],
+        tooltip: {
+            trigger: 'axis',
+            backgroundColor: 'rgba(3, 15, 31, 0.96)',
+            borderColor: '#00e5ff', borderWidth: 1,
+            textStyle: { color: '#e8fbff' },
+            extraCssText: 'box-shadow:0 0 18px rgba(0,229,255,.25);border-radius:10px;',
+            formatter: params => {
+                const p = params[0];
+                return `<b>${p.axisValue}</b><br/><span style="color:#00e5ff">●</span> ${mode === 'cumulative' ? 'Akumulatif' : 'SOC_Received'}: <b>${Number(p.value).toLocaleString('id-ID')}</b>`;
+            }
+        },
         title: {
             show: gantunganStats.length === 0,
-            text: 'Belum ada data',
-            left: 'center', top: 'center',
-            textStyle: { color: textColor, fontSize: 14 }
+            text: 'BELUM ADA DATA', left: 'center', top: 'center',
+            textStyle: { color: textColor, fontSize: 13, fontWeight: 600 }
         },
-        grid: { left: 60, right: 20, top: 40, bottom: 50 },
+        grid: { left: 58, right: 22, top: 38, bottom: 54, containLabel: true },
         xAxis: {
-            type: 'category',
+            type: 'category', boundaryGap: false,
             data: gantunganStats.map(s => s.label),
-            axisLabel: { color: textColor, rotate: 20 }
+            axisLine: { lineStyle: { color: mutedColor, opacity: .45 } },
+            axisTick: { show: false },
+            axisLabel: { color: textColor, rotate: 20, fontSize: 10, margin: 13 },
+            splitLine: { show: false }
         },
-        yAxis: { type: 'value', axisLabel: { color: textColor } },
+        yAxis: {
+            type: 'value', min: 0,
+            axisLabel: { color: mutedColor, fontSize: 10 },
+            axisLine: { show: false }, axisTick: { show: false },
+            splitLine: { lineStyle: { color: isDarkMode ? 'rgba(83,133,163,.18)' : 'rgba(148,163,184,.22)', type: 'dashed' } }
+        },
         series: [{
-            type: 'line', smooth: true, data: values,
-            areaStyle: { color: 'rgba(37,99,235,0.25)' },
-            itemStyle: { color: '#2563eb' },
-            label: { show: true, position: 'top', color: textColor, formatter: p => p.value.toLocaleString('id-ID') },
+            name: mode === 'cumulative' ? 'Akumulatif' : 'SOC_Received',
+            type: 'line', smooth: .42, data: values,
+            showSymbol: true, symbol: 'circle', symbolSize: 7,
+            lineStyle: { color: '#00e5ff', width: 3, shadowBlur: 12, shadowColor: 'rgba(0,229,255,.85)' },
+            itemStyle: { color: '#071a2d', borderColor: '#75f8ff', borderWidth: 2, shadowBlur: 10, shadowColor: '#00e5ff' },
+            areaStyle: { color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                { offset: 0, color: 'rgba(0,229,255,.38)' },
+                { offset: 1, color: 'rgba(0,229,255,.015)' }
+            ]) },
+            label: { show: true, position: 'top', color: textColor, fontSize: 10, fontWeight: 600, formatter: p => Number(p.value).toLocaleString('id-ID') },
             markLine: (mode === 'daily' && values.length)
-                ? { data: [{ type: 'average', name: 'Rata-rata' }], lineStyle: { color: '#f59e0b' } }
+                ? { symbol: 'none', data: [{ type: 'average', name: 'Rata-rata' }], lineStyle: { color: '#ffc857', type: 'dashed', width: 1.5 }, label: { color: '#ffc857', formatter: 'Rata-rata' } }
                 : undefined
         }]
     }, true);
@@ -982,31 +1048,56 @@ function loadGantungan2() {
 
 function renderGantunganLine() {
     if (!chartInstances.line) return;
-    const textColor = isDarkMode ? '#f8fafc' : '#1f2937';
-    const colors = ['#10b981', '#f59e0b'];
+    const textColor = isDarkMode ? '#e8fbff' : '#1f2937';
+    const mutedColor = isDarkMode ? '#7895aa' : '#94a3b8';
+    const colors = ['#00e5ff', '#ffb84d'];
 
     chartInstances.line.setOption({
-        tooltip: { trigger: 'axis' },
-        legend: { top: 0, textStyle: { color: textColor } },
+        backgroundColor: 'transparent',
+        animationDuration: 1100,
+        animationEasing: 'cubicOut',
+        color: colors,
+        tooltip: {
+            trigger: 'axis',
+            backgroundColor: 'rgba(3, 15, 31, 0.96)',
+            borderColor: '#00e5ff', borderWidth: 1,
+            textStyle: { color: '#e8fbff' },
+            extraCssText: 'box-shadow:0 0 18px rgba(0,229,255,.22);border-radius:10px;',
+            axisPointer: { type: 'cross', crossStyle: { color: '#70efff' } }
+        },
+        legend: {
+            top: 0, left: 'center', itemWidth: 12, itemHeight: 8,
+            textStyle: { color: textColor, fontSize: 11 },
+            data: GANTUNGAN2_SERIES
+        },
         title: {
             show: gantungan2Stats.length === 0,
-            text: 'Belum ada data',
-            left: 'center', top: 'center',
-            textStyle: { color: textColor, fontSize: 14 }
+            text: 'BELUM ADA DATA', left: 'center', top: 'center',
+            textStyle: { color: textColor, fontSize: 13, fontWeight: 600 }
         },
-        grid: { left: 60, right: 20, top: 50, bottom: 50 },
+        grid: { left: 58, right: 22, top: 48, bottom: 54, containLabel: true },
         xAxis: {
-            type: 'category',
+            type: 'category', boundaryGap: false,
             data: gantungan2Stats.map(s => s.label),
-            axisLabel: { color: textColor, rotate: 20 }
+            axisLine: { lineStyle: { color: mutedColor, opacity: .45 } },
+            axisTick: { show: false },
+            axisLabel: { color: textColor, rotate: 20, fontSize: 10, margin: 13 },
+            splitLine: { show: false }
         },
-        yAxis: { type: 'value', axisLabel: { color: textColor } },
+        yAxis: {
+            type: 'value', min: 0,
+            axisLabel: { color: mutedColor, fontSize: 10 },
+            axisLine: { show: false }, axisTick: { show: false },
+            splitLine: { lineStyle: { color: isDarkMode ? 'rgba(83,133,163,.18)' : 'rgba(148,163,184,.22)', type: 'dashed' } }
+        },
         series: GANTUNGAN2_SERIES.map((name, i) => ({
             name: name,
-            type: 'line', smooth: true,
-            data: gantungan2Stats.map(s => (s.values && s.values[name]) || 0),
-            itemStyle: { color: colors[i % colors.length] },
-            label: { show: true, position: 'top', color: textColor, formatter: p => p.value.toLocaleString('id-ID') }
+            type: 'line', smooth: .38, data: gantungan2Stats.map(s => (s.values && Number(s.values[name])) || 0),
+            showSymbol: true, symbol: 'circle', symbolSize: 6,
+            lineStyle: { color: colors[i], width: 2.8, shadowBlur: 10, shadowColor: colors[i] },
+            itemStyle: { color: '#071a2d', borderColor: colors[i], borderWidth: 2, shadowBlur: 8, shadowColor: colors[i] },
+            emphasis: { focus: 'series', itemStyle: { shadowBlur: 18, shadowColor: colors[i] } },
+            label: { show: true, position: 'top', color: textColor, fontSize: 9, fontWeight: 600, formatter: p => Number(p.value).toLocaleString('id-ID') }
         }))
     }, true);
 }
