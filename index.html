@@ -281,15 +281,15 @@ body.command-center-mode .stat-card-value{color:#64eaff;text-shadow:0 0 16px rgb
 
         <!-- RINGKASAN -->
         <section id="sec-ringkasan" class="section-view active">
-            <div class="stats-grid">
-                <div class="stat-card"><div class="stat-card-title">Total Baris Data</div><div class="stat-card-value" id="stat-total-rows">0</div></div>
-                <div class="stat-card"><div class="stat-card-title">Total Kolom</div><div class="stat-card-value" id="stat-total-cols">0</div></div>
-                <div class="stat-card"><div class="stat-card-title">Total Kategori</div><div class="stat-card-value" id="stat-total-cats">0</div></div>
-                <div class="stat-card"><div class="stat-card-title">Nilai Akumulasi (Total)</div><div class="stat-card-value" id="stat-sum-val">0</div></div>
-                <div class="stat-card"><div class="stat-card-title">Nilai Rata-Rata</div><div class="stat-card-value" id="stat-avg-val">0</div></div>
-                <div class="stat-card"><div class="stat-card-title">Nilai Tertinggi</div><div class="stat-card-value" id="stat-max-val">0</div></div>
-                <div class="stat-card"><div class="stat-card-title">Nilai Terendah</div><div class="stat-card-value" id="stat-min-val">0</div></div>
-            </div>
+           <div class="stats-grid">
+    <div class="stat-card"><div class="stat-card-title">Hari Tercatat</div><div class="stat-card-value" id="rk-hari">0</div></div>
+    <div class="stat-card"><div class="stat-card-title">Total Gantungan SOC_Received</div><div class="stat-card-value" id="rk-total-received">0</div></div>
+    <div class="stat-card"><div class="stat-card-title">Total Gantungan SOC_Packed + Return</div><div class="stat-card-value" id="rk-total-packed">0</div></div>
+    <div class="stat-card"><div class="stat-card-title">Rata-rata Received / Hari</div><div class="stat-card-value" id="rk-avg-received">0</div></div>
+    <div class="stat-card"><div class="stat-card-title">Rata-rata Packed / Hari</div><div class="stat-card-value" id="rk-avg-packed">0</div></div>
+    <div class="stat-card"><div class="stat-card-title">Puncak Received</div><div class="stat-card-value" id="rk-max-received">0</div></div>
+    <div class="stat-card"><div class="stat-card-title">Puncak Packed + Return</div><div class="stat-card-value" id="rk-max-packed">0</div></div>
+</div>
             <div class="insight-card">
                 <div class="insight-header">
                     <i class="fa-solid fa-robot" style="font-size:20px;color:var(--accent-color);"></i>
@@ -360,9 +360,7 @@ body.command-center-mode .stat-card-value{color:#64eaff;text-shadow:0 0 16px rgb
                     </div>
                     <div id="chart-area" class="chart-container"></div>
                 </div>
-                <div class="chart-card">
-                    <div class="chart-header"><div class="chart-title">Data Gantungan Hourly - SOC_Packed vs RETURN_SOC_Packed per Hari</div></div>
-                    <div id="chart-line" class="chart-container"></div>
+               <div class="chart-header"><div class="chart-title">Data Gantungan Hourly - SOC_Packed (gabungan) vs RETURN_SOC_Packed per Hari</div></div>
                 </div>
             </div>
         </section>
@@ -600,7 +598,7 @@ function forceRefreshData() {
 }
 
 /* STATISTIK */
-function calculateStatistics() {
+function calculateStatistics() { renderRingkasan(); } {
     document.getElementById('stat-total-rows').textContent = filteredDataset.length.toLocaleString('id-ID');
     document.getElementById('stat-total-cols').textContent = datasetHeaders.length;
 
@@ -932,7 +930,7 @@ function loadGantungan() {
             return { label: item.label, total: Number(item.total) || 0 };
         });
         console.log('Data gantungan berhasil dimuat:', gantunganStats);
-        renderGantunganArea();
+        renderGantunganArea();renderRingkasan();
     };
 
     const script = document.createElement('script');
@@ -1032,6 +1030,7 @@ function loadGantungan2() {
         gantungan2Stats = response.data;
         console.log('Data gantungan2 berhasil dimuat:', gantungan2Stats);
         renderGantunganLine();
+        renderRingkasan();
     };
 
     const script = document.createElement('script');
@@ -1051,6 +1050,10 @@ function renderGantunganLine() {
     const textColor = isDarkMode ? '#e8fbff' : '#1f2937';
     const mutedColor = isDarkMode ? '#7895aa' : '#94a3b8';
     const colors = ['#00e5ff', '#ffb84d'];
+    const defs = [
+        { key: 'SOC_Packed', name: 'SOC_Packed + Return (gabungan)' },
+        { key: 'RETURN_SOC_Packed', name: 'RETURN_SOC_Packed' }
+    ];
 
     chartInstances.line.setOption({
         backgroundColor: 'transparent',
@@ -1068,7 +1071,7 @@ function renderGantunganLine() {
         legend: {
             top: 0, left: 'center', itemWidth: 12, itemHeight: 8,
             textStyle: { color: textColor, fontSize: 11 },
-            data: GANTUNGAN2_SERIES
+            data: defs.map(d => d.name)
         },
         title: {
             show: gantungan2Stats.length === 0,
@@ -1090,9 +1093,10 @@ function renderGantunganLine() {
             axisLine: { show: false }, axisTick: { show: false },
             splitLine: { lineStyle: { color: isDarkMode ? 'rgba(83,133,163,.18)' : 'rgba(148,163,184,.22)', type: 'dashed' } }
         },
-        series: GANTUNGAN2_SERIES.map((name, i) => ({
-            name: name,
-            type: 'line', smooth: .38, data: gantungan2Stats.map(s => (s.values && Number(s.values[name])) || 0),
+        series: defs.map((d, i) => ({
+            name: d.name,
+            type: 'line', smooth: .38,
+            data: gantungan2Stats.map(s => (s.values && Number(s.values[d.key])) || 0),
             showSymbol: true, symbol: 'circle', symbolSize: 6,
             lineStyle: { color: colors[i], width: 2.8, shadowBlur: 10, shadowColor: colors[i] },
             itemStyle: { color: '#071a2d', borderColor: colors[i], borderWidth: 2, shadowBlur: 8, shadowColor: colors[i] },
@@ -1101,7 +1105,6 @@ function renderGantunganLine() {
         }))
     }, true);
 }
-
 /* ECHARTS */
 function initCharts() {
     chartInstances.bar = echarts.init(document.getElementById('chart-bar'));
@@ -1207,40 +1210,67 @@ function resetGlobalFilter() {
 }
 
 /* AI INSIGHT */
-function generateAIInsights() {
-    if (filteredDataset.length === 0) return;
+/* RINGKASAN UTAMA + AI SUMMARY (sumber: data gantungan dari Web App) */
+const RINGKASAN_BULAN = '2026-10';   // ganti tiap bulan baru, samakan dengan BULAN_REKAP di GS
 
-    let catCol = datasetHeaders.find(h => typeof filteredDataset[0][h] === 'string') || datasetHeaders[0];
-    let numCol = datasetHeaders.find(h => typeof filteredDataset[0][h] === 'number') || datasetHeaders[1] || datasetHeaders[0];
+function fmtNum(n) { return Number(n || 0).toLocaleString('id-ID'); }
 
-    let aggregation = {};
-    filteredDataset.forEach(r => {
-        let key = r[catCol] || 'Lainnya';
-        let val = parseFloat(r[numCol]) || 1;
-        aggregation[key] = (aggregation[key] || 0) + val;
-    });
-
-    let sorted = Object.entries(aggregation).sort((a, b) => b[1] - a[1]);
-    let topCat = sorted[0] ? sorted[0][0] : '-';
-    let topVal = sorted[0] ? sorted[0][1].toLocaleString('id-ID') : '0';
-
-    document.getElementById('quick-ai-insights').innerHTML = `
-        <li><i class="fa-solid fa-circle-check" style="color:var(--success-color);"></i> Kategori dengan nilai tertinggi didominasi oleh <strong>${topCat}</strong> (${topVal}).</li>
-        <li><i class="fa-solid fa-chart-line" style="color:var(--accent-color);"></i> Total entitas aktif diproses secara otomatis: <strong>${filteredDataset.length.toLocaleString('id-ID')} baris</strong>.</li>
-    `;
-
-    document.getElementById('full-ai-insights-content').innerHTML = `
-        <h3>Laporan AI Realtime Operasional</h3>
-        <p>Berdasarkan komputasi statistik otomatis terhadap <strong>${filteredDataset.length.toLocaleString('id-ID')}</strong> entitas data:</p>
-        <br>
-        <ul>
-            <li><strong>Konsentrasi Utama:</strong> Kategori <code>${topCat}</code> menyumbang akumulasi kontribusi terbesar dalam dataset ini.</li>
-            <li><strong>Skalabilitas Data:</strong> Enterprise Virtual Table Rendering Engine berjalan stabil dalam menangani ${rawDataset.length.toLocaleString('id-ID')} total baris tanpa hambatan memori.</li>
-        </ul>
-    `;
+function tglPendek(label) {
+    const b = ['Jan','Feb','Mar','Apr','Mei','Jun','Jul','Agu','Sep','Okt','Nov','Des'];
+    const p = String(label).split('-');
+    return p.length === 3 ? parseInt(p[2], 10) + ' ' + b[parseInt(p[1], 10) - 1] : label;
 }
 
-/* NAVIGASI */
+function hitungStat(rows, getVal) {
+    let total = 0, hari = 0, max = null;
+    rows.forEach(r => {
+        if (String(r.label).slice(0, 7) !== RINGKASAN_BULAN) return;
+        const v = getVal(r);
+        total += v; hari++;
+        if (!max || v > max.value) max = { label: r.label, value: v };
+    });
+    return { total, hari, rata: hari ? Math.round(total / hari) : 0, max };
+}
+
+function renderRingkasan() {
+    const rec = hitungStat(gantunganStats, s => Number(s.total) || 0);
+    const pak = hitungStat(gantungan2Stats, s => (s.values && Number(s.values.SOC_Packed)) || 0);
+    const set = (id, txt) => { const el = document.getElementById(id); if (el) el.textContent = txt; };
+
+    set('rk-hari', fmtNum(Math.max(rec.hari, pak.hari)));
+    set('rk-total-received', fmtNum(rec.total));
+    set('rk-total-packed', fmtNum(pak.total));
+    set('rk-avg-received', fmtNum(rec.rata));
+    set('rk-avg-packed', fmtNum(pak.rata));
+    set('rk-max-received', rec.max ? fmtNum(rec.max.value) + ' (' + tglPendek(rec.max.label) + ')' : '-');
+    set('rk-max-packed', pak.max ? fmtNum(pak.max.value) + ' (' + tglPendek(pak.max.label) + ')' : '-');
+
+    const quick = document.getElementById('quick-ai-insights');
+    if (quick) {
+        if (!rec.hari && !pak.hari) {
+            quick.innerHTML = '<li>Memuat data gantungan...</li>';
+        } else {
+            quick.innerHTML = `
+                <li><i class="fa-solid fa-circle-check" style="color:var(--success-color);"></i> Gantungan <strong>SOC_Packed + Return</strong> tertinggi pada <strong>${pak.max ? tglPendek(pak.max.label) : '-'}</strong> (${pak.max ? fmtNum(pak.max.value) : 0} ID).</li>
+                <li><i class="fa-solid fa-chart-line" style="color:var(--accent-color);"></i> Gantungan <strong>SOC_Received</strong> tertinggi pada <strong>${rec.max ? tglPendek(rec.max.label) : '-'}</strong> (${rec.max ? fmtNum(rec.max.value) : 0} ID).</li>
+                <li><i class="fa-solid fa-boxes-stacked" style="color:var(--warning-color);"></i> Total periode ${RINGKASAN_BULAN}: Received <strong>${fmtNum(rec.total)}</strong> ID, Packed + Return <strong>${fmtNum(pak.total)}</strong> ID (ID dobel dihitung 1x di tanggal pertama).</li>`;
+        }
+    }
+
+    const full = document.getElementById('full-ai-insights-content');
+    if (full) {
+        full.innerHTML = `
+            <h3>Laporan Data Gantungan ${RINGKASAN_BULAN}</h3>
+            <br>
+            <ul>
+                <li><strong>SOC_Received:</strong> total ${fmtNum(rec.total)} ID dalam ${rec.hari} hari, rata-rata ${fmtNum(rec.rata)} ID per hari. Puncak ${rec.max ? fmtNum(rec.max.value) + ' ID pada ' + tglPendek(rec.max.label) : '-'}.</li>
+                <li><strong>SOC_Packed + RETURN_SOC_Packed:</strong> total ${fmtNum(pak.total)} ID dalam ${pak.hari} hari, rata-rata ${fmtNum(pak.rata)} ID per hari. Puncak ${pak.max ? fmtNum(pak.max.value) + ' ID pada ' + tglPendek(pak.max.label) : '-'}.</li>
+                <li><strong>Aturan hitung:</strong> satu ID hanya dihitung 1x, di tanggal pertama ia muncul.</li>
+            </ul>`;
+    }
+}
+
+function generateAIInsights() { renderRingkasan(); }
 function switchTab(tabName) {
     activeTab = tabName;
     document.querySelectorAll('.sidebar-menu a').forEach(a => a.classList.remove('active'));
@@ -1273,9 +1303,8 @@ function toggleCommandCenter() {
 
 function updateHeaderMeta() {
     document.getElementById('header-meta').textContent =
-        `Jam Operasional Facility: 13:00 - 06:00 WIB • Total ${rawDataset.length.toLocaleString('id-ID')} Baris Data • System Status: OK`;
+        'Jam Operasional Facility: 13:00 - 06:00 WIB • Data Gantungan ' + RINGKASAN_BULAN + ' • System Status: OK';
 }
-
 function exportPNG() {
     showToast('Menyiapkan file PNG...');
     html2canvas(document.getElementById('capture-area')).then(canvas => {
