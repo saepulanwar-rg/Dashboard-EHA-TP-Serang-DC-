@@ -360,7 +360,9 @@ body.command-center-mode .stat-card-value{color:#64eaff;text-shadow:0 0 16px rgb
                     </div>
                     <div id="chart-area" class="chart-container"></div>
                 </div>
-               <div class="chart-header"><div class="chart-title">Data Gantungan Hourly - SOC_Packed (gabungan) vs RETURN_SOC_Packed per Hari</div></div>
+                <div class="chart-card">
+                    <div class="chart-header"><div class="chart-title">Data Gantungan Hourly - SOC_Packed (gabungan) vs RETURN_SOC_Packed per Hari</div></div>
+                    <div id="chart-line" class="chart-container"></div>
                 </div>
             </div>
         </section>
@@ -598,7 +600,8 @@ function forceRefreshData() {
 }
 
 /* STATISTIK */
-function calculateStatistics() { renderRingkasan(); } {
+function calculateStatistics() { renderRingkasan(); }
+function statistikLamaTidakDipakai() {
     document.getElementById('stat-total-rows').textContent = filteredDataset.length.toLocaleString('id-ID');
     document.getElementById('stat-total-cols').textContent = datasetHeaders.length;
 
