@@ -93,91 +93,9 @@ body.command-center-mode .stat-card,body.command-center-mode .chart-card,body.co
 body.command-center-mode .stat-card-value{color:#38bdf8}
 .toast-notification{position:fixed;bottom:20px;right:20px;padding:12px 20px;background-color:var(--bg-secondary);color:var(--text-primary);border:1px solid var(--border-color);border-radius:8px;box-shadow:var(--shadow-lg);display:flex;align-items:center;gap:10px;z-index:1000;transform:translateY(100px);opacity:0;transition:all .3s ease}
 .toast-notification.show{transform:translateY(0);opacity:1}
-
-
-/* ============================================================
-   FUTURISTIC NEON THEME — EHA TP SERANG DC
-   Visual-only overrides: keeps existing data and dashboard logic.
-   ============================================================ */
-:root{
-  --bg-primary:#07111f;
-  --bg-secondary:#0b1728;
-  --bg-card:rgba(13,28,48,.94);
-  --text-primary:#e8f7ff;
-  --text-secondary:#8ba9c4;
-  --border-color:rgba(48,209,255,.22);
-  --accent-color:#19d7ff;
-  --accent-hover:#67e8ff;
-  --success-color:#39f5a5;
-  --warning-color:#ffd166;
-  --danger-color:#ff537a;
-  --shadow-sm:0 0 0 1px rgba(25,215,255,.04),0 5px 18px rgba(0,0,0,.25);
-  --shadow-md:0 0 18px rgba(25,215,255,.09),0 8px 24px rgba(0,0,0,.3);
-  --shadow-lg:0 0 28px rgba(25,215,255,.14),0 12px 35px rgba(0,0,0,.4);
-}
-[data-theme="dark"]{
-  --bg-primary:#07111f;
-  --bg-secondary:#0b1728;
-  --bg-card:rgba(13,28,48,.94);
-  --text-primary:#e8f7ff;
-  --text-secondary:#8ba9c4;
-  --border-color:rgba(48,209,255,.22);
-  --accent-color:#19d7ff;
-  --accent-hover:#67e8ff;
-  --success-color:#39f5a5;
-  --warning-color:#ffd166;
-  --danger-color:#ff537a;
-  --shadow-sm:0 0 0 1px rgba(25,215,255,.04),0 5px 18px rgba(0,0,0,.25);
-  --shadow-md:0 0 18px rgba(25,215,255,.09),0 8px 24px rgba(0,0,0,.3);
-  --shadow-lg:0 0 28px rgba(25,215,255,.14),0 12px 35px rgba(0,0,0,.4);
-}
-html{background:#07111f;color-scheme:dark}
-body{background:radial-gradient(ellipse at 75% -15%,rgba(0,183,255,.13),transparent 42%),var(--bg-primary);color:var(--text-primary)}
-.sidebar,.header,.realtime-bar{background:rgba(8,21,38,.96);backdrop-filter:blur(14px);border-color:var(--border-color)}
-.sidebar{box-shadow:8px 0 30px rgba(0,0,0,.16)}
-.sidebar-header{border-color:var(--border-color)}
-.sidebar-header i,.login-card i.logo-icon{color:var(--accent-color);filter:drop-shadow(0 0 8px rgba(25,215,255,.55))}
-.sidebar-menu a{border:1px solid transparent;transition:all .2s ease}
-.sidebar-menu a:hover,.sidebar-menu a.active{background:linear-gradient(90deg,rgba(25,215,255,.14),rgba(25,215,255,.035));border-color:rgba(25,215,255,.25);color:#64eaff;box-shadow:inset 3px 0 0 var(--accent-color),0 0 16px rgba(25,215,255,.06)}
-.header{box-shadow:0 5px 24px rgba(0,0,0,.16)}
-.header-title h1{letter-spacing:.2px;text-shadow:0 0 16px rgba(25,215,255,.14)}
-.stat-card,.chart-card,.table-card,.insight-card,.portal-card,details,.login-card{background:linear-gradient(145deg,rgba(16,35,59,.97),rgba(8,22,39,.98));border:1px solid rgba(48,209,255,.2);box-shadow:var(--shadow-sm);position:relative;overflow:hidden}
-.stat-card:before,.chart-card:before,.insight-card:before,.portal-card:before{content:"";position:absolute;left:0;top:0;width:100%;height:1px;background:linear-gradient(90deg,transparent,rgba(25,215,255,.65),transparent);pointer-events:none}
-.stat-card{transition:transform .22s ease,border-color .22s ease,box-shadow .22s ease}
-.stat-card:hover,.chart-card:hover,.portal-card:hover{border-color:rgba(25,215,255,.48);box-shadow:0 0 20px rgba(25,215,255,.09),0 8px 24px rgba(0,0,0,.24)}
-.stat-card:hover{transform:translateY(-2px)}
-.stat-card-title{color:#8eb0cc;letter-spacing:1px}
-.stat-card-value{color:#e8fbff;text-shadow:0 0 14px rgba(25,215,255,.18)}
-.chart-title,.insight-title{color:#e8f7ff}
-.btn,.select-input,.input-text{background-color:rgba(6,17,32,.92);color:var(--text-primary);border:1px solid rgba(66,180,220,.28);border-radius:8px}
-.btn{transition:all .18s ease;box-shadow:0 2px 8px rgba(0,0,0,.14)}
-.btn:hover{background:rgba(25,215,255,.1);border-color:rgba(25,215,255,.55);color:#8df0ff;box-shadow:0 0 14px rgba(25,215,255,.1)}
-.btn-primary,.login-btn{background:linear-gradient(135deg,#087ea4,#08b8d8);color:#f5fdff;border:1px solid rgba(98,235,255,.55);box-shadow:0 0 16px rgba(0,190,230,.18)}
-.btn-primary:hover,.login-btn:hover{background:linear-gradient(135deg,#0a9bc4,#27d8f3);color:#fff;box-shadow:0 0 22px rgba(25,215,255,.3)}
-.input-text:focus,.select-input:focus,.login-field input:focus{outline:none;border-color:var(--accent-color);box-shadow:0 0 0 3px rgba(25,215,255,.12)}
-.status-badge.active{background:rgba(57,245,165,.1);border:1px solid rgba(57,245,165,.24);color:var(--success-color)}
-.status-badge.error{background:rgba(255,83,122,.1);border:1px solid rgba(255,83,122,.25)}
-.insight-card{border-left:3px solid var(--accent-color)}
-.insight-title{color:var(--accent-color);text-shadow:0 0 12px rgba(25,215,255,.15)}
-.insight-list li{border-color:rgba(48,209,255,.15)}
-.virtual-table-viewport{border-color:var(--border-color)}
-table.virtual-table th{background:#0b2035;color:#a9edff}
-table.virtual-table td{border-color:rgba(48,209,255,.12)}
-table.virtual-table tr:hover td{background:rgba(25,215,255,.045)}
-.portal-card a:hover{color:#64eaff;text-shadow:0 0 10px rgba(25,215,255,.2)}
-.toast-notification{background:rgba(8,24,42,.97);border-color:rgba(25,215,255,.35);box-shadow:0 0 24px rgba(25,215,255,.13)}
-#login-overlay{background:radial-gradient(ellipse at center,rgba(8,75,105,.34),transparent 55%),rgba(3,9,18,.96)}
-.login-card{box-shadow:0 0 40px rgba(25,215,255,.1),0 25px 65px rgba(0,0,0,.45)}
-body.command-center-mode .header{background:#030912;color:#e8f7ff;border-bottom:1px solid rgba(25,215,255,.2)}
-body.command-center-mode{background:#030912;color:#e8f7ff}
-body.command-center-mode .stat-card,body.command-center-mode .chart-card,body.command-center-mode .insight-card,body.command-center-mode .portal-card,body.command-center-mode details{background:linear-gradient(145deg,#0b1d32,#06101e);border-color:rgba(25,215,255,.25);color:#e8f7ff}
-body.command-center-mode .stat-card-value{color:#64eaff;text-shadow:0 0 16px rgba(25,215,255,.25)}
-::selection{background:rgba(25,215,255,.3);color:#fff}
-@media(max-width:900px){.header{height:auto;min-height:65px;padding:12px 16px;align-items:flex-start;gap:12px;flex-wrap:wrap}.header-controls{flex-wrap:wrap}.realtime-bar{padding:10px 16px;flex-wrap:wrap;gap:12px}.content-body{padding:16px}.charts-grid{grid-template-columns:1fr}.chart-container{height:300px}}
-
 </style>
 </head>
-<body data-theme="dark">
+<body>
 
 <!-- LOGIN -->
 <div id="login-overlay">
@@ -281,15 +199,16 @@ body.command-center-mode .stat-card-value{color:#64eaff;text-shadow:0 0 16px rgb
 
         <!-- RINGKASAN -->
         <section id="sec-ringkasan" class="section-view active">
-           <div class="stats-grid">
-    <div class="stat-card"><div class="stat-card-title">Hari Tercatat</div><div class="stat-card-value" id="rk-hari">0</div></div>
-    <div class="stat-card"><div class="stat-card-title">Total Gantungan SOC_Received</div><div class="stat-card-value" id="rk-total-received">0</div></div>
-    <div class="stat-card"><div class="stat-card-title">Total Gantungan SOC_Packed + Return</div><div class="stat-card-value" id="rk-total-packed">0</div></div>
-    <div class="stat-card"><div class="stat-card-title">Rata-rata Received / Hari</div><div class="stat-card-value" id="rk-avg-received">0</div></div>
-    <div class="stat-card"><div class="stat-card-title">Rata-rata Packed / Hari</div><div class="stat-card-value" id="rk-avg-packed">0</div></div>
-    <div class="stat-card"><div class="stat-card-title">Puncak Received</div><div class="stat-card-value" id="rk-max-received">0</div></div>
-    <div class="stat-card"><div class="stat-card-title">Puncak Packed + Return</div><div class="stat-card-value" id="rk-max-packed">0</div></div>
-</div>
+            <div class="stats-grid">
+                <div class="stat-card"><div class="stat-card-title">Tanggal Data Terakhir</div><div class="stat-card-value" id="rs-tanggal">-</div></div>
+                <div class="stat-card"><div class="stat-card-title">SOC_Received (Tgl Terakhir)</div><div class="stat-card-value" id="rs-recv-hari">-</div></div>
+                <div class="stat-card"><div class="stat-card-title">SOC_Packed + Return (Tgl Terakhir)</div><div class="stat-card-value" id="rs-pack-hari">-</div></div>
+                <div class="stat-card"><div class="stat-card-title">Return_SOC_Packed (Tgl Terakhir)</div><div class="stat-card-value" id="rs-ret-hari">-</div></div>
+                <div class="stat-card"><div class="stat-card-title">Total SOC_Received Bulan Ini</div><div class="stat-card-value" id="rs-recv-bulan">-</div></div>
+                <div class="stat-card"><div class="stat-card-title">Total SOC_Packed + Return Bulan Ini</div><div class="stat-card-value" id="rs-pack-bulan">-</div></div>
+                <div class="stat-card"><div class="stat-card-title">Rata-rata Received per Hari</div><div class="stat-card-value" id="rs-avg">-</div></div>
+                <div class="stat-card"><div class="stat-card-title">Puncak Received Bulan Ini</div><div class="stat-card-value" id="rs-puncak">-</div></div>
+            </div>
             <div class="insight-card">
                 <div class="insight-header">
                     <i class="fa-solid fa-robot" style="font-size:20px;color:var(--accent-color);"></i>
@@ -306,7 +225,7 @@ body.command-center-mode .stat-card-value{color:#64eaff;text-shadow:0 0 16px rgb
                 <div class="portal-card"><a target="_blank" rel="noopener" href="https://docs.google.com/spreadsheets/d/1HYCvIkFWzC_ambQ3gYmtr25sDwWRrDwFO1pJLfEK584/edit?gid=0#gid=0">TJPH Periode<small>Sheet TJPH</small></a></div>
                 <div class="portal-card"><a target="_blank" rel="noopener" href="https://help.shopee.co.id/portal/webform/09f4d645465c4b5086c3bede5a039ca0">TJPH 3PL<small>Webform Sanggah</small></a></div>
                 <div class="portal-card"><a target="_blank" rel="noopener" href="https://docs.google.com/spreadsheets/d/1ec9TFM9FrdApRMDHdDSCdq12Rhfnsw4heDP8uYOG2AI/edit?gid=0#gid=0">Stuck Parcel<small>Sheet Monitoring</small></a></div>
-                <div class="portal-card"><a target="_blank" rel="noopener" href="https://docs.google.com/spreadsheets/d/1RScdiUHE5NURtRDrKhhl0A0XXjRF6IO9sAMT8Q85akg/edit?gid=1763349419#gid=1763349419">Data Lost<small>Sheet Pelaporan</small></a></div>
+                <div class="portal-card"><a target="_blank" rel="noopener" href="https://docs.google.com/spreadsheets/d/1IPevtMcE7drxDycmoFrTfUZPcXWjWCGhNpqwk3Xxhdc/edit?gid=1763349419#gid=1763349419">Data Lost<small>Sheet Pelaporan</small></a></div>
                 <div class="portal-card"><a target="_blank" rel="noopener" href="https://help.shopee.co.id/portal/webform/555dd82115c64cb18325a167d3a8a55f">Damage<small>Webform Klaim</small></a></div>
                 <div class="portal-card"><a target="_blank" rel="noopener" href="https://docs.google.com/spreadsheets/d/1Mj2WsfzhDN9ikaLWv6UjLTFh_EH4OXkcI7TZOqMNjpA/edit?gid=0#gid=0">L&D (Lost & Damage)<small>Database Sheet</small></a></div>
                 <div class="portal-card"><a target="_blank" rel="noopener" href="https://help.shopee.co.id/portal/webform/1ebc9479f8f04ca6856078c8dd911513">Non AWB<small>Webform Input</small></a></div>
@@ -352,7 +271,7 @@ body.command-center-mode .stat-card-value{color:#64eaff;text-shadow:0 0 16px rgb
                 </div>
                 <div class="chart-card">
                     <div class="chart-header">
-                        <div class="chart-title">Data Gantungan Hourly - SOC_Received per Hari</div>
+                        <div class="chart-title">Data Gantungan Hourly - SOC_Received per Hari (31 Hari Terakhir)</div>
                         <select id="gantungan-mode" class="select-input" onchange="renderGantunganArea()">
                             <option value="daily">Per Hari</option>
                             <option value="cumulative">Akumulatif</option>
@@ -361,7 +280,7 @@ body.command-center-mode .stat-card-value{color:#64eaff;text-shadow:0 0 16px rgb
                     <div id="chart-area" class="chart-container"></div>
                 </div>
                 <div class="chart-card">
-                    <div class="chart-header"><div class="chart-title">Data Gantungan Hourly - SOC_Packed (gabungan) vs RETURN_SOC_Packed per Hari</div></div>
+                    <div class="chart-header"><div class="chart-title">Data Gantungan Hourly - SOC_Packed vs RETURN_SOC_Packed per Hari</div></div>
                     <div id="chart-line" class="chart-container"></div>
                 </div>
             </div>
@@ -425,7 +344,7 @@ let filteredDataset = [];
 let datasetHeaders = [];
 let realtimeTimer = null;
 let refreshIntervalMs = 30000;
-let isDarkMode = true;
+let isDarkMode = false;
 let activeTab = 'ringkasan';
 let currentGSheetUrl = '';
 let chartInstances = {};
@@ -464,6 +383,7 @@ window.addEventListener('DOMContentLoaded', () => {
     loadRekapan();
     loadGantungan();
     loadGantungan2();
+    loadRingkasan();
     startAutoRefreshEngine();
     window.addEventListener('resize', resizeAllCharts);
     document.getElementById('login-password').addEventListener('keypress', function (e) {
@@ -576,6 +496,7 @@ function startAutoRefreshEngine() {
         loadRekapan();
         loadGantungan();
         loadGantungan2();
+        loadRingkasan();
         if (currentGSheetUrl) fetchRealtimeData();
     }, refreshIntervalMs);
 }
@@ -591,6 +512,7 @@ function forceRefreshData() {
     loadRekapan();
     loadGantungan();
     loadGantungan2();
+    loadRingkasan();
     if (currentGSheetUrl) {
         fetchRealtimeData();
     } else {
@@ -599,41 +521,102 @@ function forceRefreshData() {
     }
 }
 
-/* STATISTIK */
-function calculateStatistics() { renderRingkasan(); }
-function statistikLamaTidakDipakai() {
-    document.getElementById('stat-total-rows').textContent = filteredDataset.length.toLocaleString('id-ID');
-    document.getElementById('stat-total-cols').textContent = datasetHeaders.length;
-
-    if (filteredDataset.length === 0) {
-        ['stat-total-cats', 'stat-sum-val', 'stat-avg-val', 'stat-max-val', 'stat-min-val']
-            .forEach(id => document.getElementById(id).textContent = '-');
-        return;
-    }
-
-    let catCol = datasetHeaders.find(h => typeof filteredDataset[0][h] === 'string') || datasetHeaders[0];
-    document.getElementById('stat-total-cats').textContent = new Set(filteredDataset.map(r => r[catCol])).size.toLocaleString('id-ID');
-
-    let numericCol = datasetHeaders.find(h => filteredDataset.some(row => typeof row[h] === 'number' || (!isNaN(parseFloat(row[h])) && isFinite(row[h]))));
-
-    if (numericCol) {
-        let sum = 0, max = -Infinity, min = Infinity, count = 0;
-        filteredDataset.forEach(row => {
-            let val = parseFloat(row[numericCol]);
-            if (!isNaN(val)) { sum += val; if (val > max) max = val; if (val < min) min = val; count++; }
-        });
-        let avg = count > 0 ? sum / count : 0;
-        document.getElementById('stat-sum-val').textContent = sum.toLocaleString('id-ID');
-        document.getElementById('stat-avg-val').textContent = Math.round(avg).toLocaleString('id-ID');
-        document.getElementById('stat-max-val').textContent = max === -Infinity ? 0 : max.toLocaleString('id-ID');
-        document.getElementById('stat-min-val').textContent = min === Infinity ? 0 : min.toLocaleString('id-ID');
-    } else {
-        ['stat-sum-val', 'stat-avg-val', 'stat-max-val', 'stat-min-val'].forEach(id => document.getElementById(id).textContent = '-');
-    }
-}
+/* STATISTIK: kartu Ringkasan kini memakai angka asli (lihat renderRingkasan) */
+function calculateStatistics() { /* tidak dipakai lagi */ }
 
 function toNum(v) {
     return parseFloat(String(v).replace(/[^0-9.-]/g, '')) || 0;
+}
+
+/* RINGKASAN UTAMA (angka asli dari tab PER WEEK lewat Web App) */
+let ringkasanData = null;
+const BULAN_ID = ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des'];
+
+function tglIndo(label, tanpaTahun) {
+    const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(label || '');
+    if (!m) return label || '-';
+    return parseInt(m[3], 10) + ' ' + BULAN_ID[parseInt(m[2], 10) - 1] + (tanpaTahun ? '' : ' ' + m[1]);
+}
+function fmtAngka(n, desimal) {
+    return Number(n || 0).toLocaleString('id-ID', { maximumFractionDigits: desimal || 0 });
+}
+function setText(id, v) {
+    const el = document.getElementById(id);
+    if (el) el.textContent = v;
+}
+
+function loadRingkasan() {
+    if (!REKAPAN_WEBAPP_URL) return;
+    const callbackName = 'handleRingkasanResponse';
+
+    const oldScript = document.getElementById('ringkasan-data-script');
+    if (oldScript) oldScript.remove();
+
+    window[callbackName] = function (response) {
+        delete window[callbackName];
+        const s = document.getElementById('ringkasan-data-script');
+        if (s) s.remove();
+
+        if (!response || !response.success || !response.data) {
+            console.error('Respons ringkasan tidak valid:', response);
+            showToast('Data ringkasan gagal dibaca dari Web App.');
+            return;
+        }
+        ringkasanData = response.data;
+        console.log('Data ringkasan berhasil dimuat:', ringkasanData);
+        renderRingkasan();
+    };
+
+    const script = document.createElement('script');
+    script.id = 'ringkasan-data-script';
+    script.src = REKAPAN_WEBAPP_URL + '?type=ringkasan&callback=' + callbackName + '&_=' + Date.now();
+    script.onerror = function () {
+        delete window[callbackName];
+        script.remove();
+        console.error('Gagal memuat data ringkasan dari Web App.');
+        showToast('Gagal memuat data ringkasan. Periksa akses Web App.');
+    };
+    document.body.appendChild(script);
+}
+
+function renderRingkasan() {
+    const d = ringkasanData;
+    if (!d) return;
+
+    setText('rs-tanggal', tglIndo(d.tanggalTerakhir));
+    setText('rs-recv-hari', fmtAngka(d.receivedHari));
+    setText('rs-pack-hari', fmtAngka(d.packedHari));
+    setText('rs-ret-hari', fmtAngka(d.returnHari));
+    setText('rs-recv-bulan', fmtAngka(d.receivedBulan));
+    setText('rs-pack-bulan', fmtAngka(d.packedBulan));
+    setText('rs-avg', fmtAngka(d.rataReceived, 1));
+    setText('rs-puncak', d.puncakReceived && d.puncakReceived.label
+        ? fmtAngka(d.puncakReceived.total) + ' (' + tglIndo(d.puncakReceived.label, true) + ')'
+        : '-');
+
+    const tgl = tglIndo(d.tanggalTerakhir);
+    const pembanding = d.receivedHari >= d.rataReceived ? 'di atas atau sama dengan' : 'di bawah';
+    const puncak = d.puncakReceived && d.puncakReceived.label
+        ? fmtAngka(d.puncakReceived.total) + ' pada ' + tglIndo(d.puncakReceived.label)
+        : '-';
+
+    document.getElementById('quick-ai-insights').innerHTML = `
+        <li><i class="fa-solid fa-circle-check" style="color:var(--success-color);"></i> Data terakhir tanggal <strong>${tgl}</strong>: SOC_Received <strong>${fmtAngka(d.receivedHari)}</strong>, SOC_Packed + Return <strong>${fmtAngka(d.packedHari)}</strong> (Return ${fmtAngka(d.returnHari)}).</li>
+        <li><i class="fa-solid fa-chart-line" style="color:var(--accent-color);"></i> Total bulan berjalan dalam <strong>${fmtAngka(d.hariData)} hari</strong> data: SOC_Received <strong>${fmtAngka(d.receivedBulan)}</strong>, SOC_Packed + Return <strong>${fmtAngka(d.packedBulan)}</strong>.</li>
+        <li><i class="fa-solid fa-gauge-high" style="color:var(--warning-color);"></i> SOC_Received tanggal terakhir (${fmtAngka(d.receivedHari)}) <strong>${pembanding}</strong> rata-rata bulan ini (${fmtAngka(d.rataReceived, 1)} per hari).</li>
+    `;
+
+    document.getElementById('full-ai-insights-content').innerHTML = `
+        <h3>Laporan Operasional Realtime</h3>
+        <p>Dihitung otomatis dari <strong>${fmtAngka(d.totalBaris)}</strong> baris di tab PER WEEK. Setiap ID hanya dihitung sekali, di tanggal pertama ia muncul.</p>
+        <br>
+        <ul>
+            <li><strong>Tanggal data terakhir:</strong> ${tgl}.</li>
+            <li><strong>SOC_Received:</strong> ${fmtAngka(d.receivedBulan)} ID bulan ini, rata-rata ${fmtAngka(d.rataReceived, 1)} per hari, puncak ${puncak}.</li>
+            <li><strong>SOC_Packed + Return:</strong> ${fmtAngka(d.packedBulan)} ID bulan ini, di antaranya ${fmtAngka(d.returnBulan)} berstatus RETURN_SOC_Packed.</li>
+        </ul>
+    `;
+    updateHeaderMeta();
 }
 
 /* DATA TJPH (BAR CHART) */
@@ -681,134 +664,26 @@ function loadTJPH() {
 }
 
 function renderTJPHBar() {
-    if (!chartInstances.bar || !Array.isArray(tjphStats) || !tjphStats.length) return;
-
+    if (!chartInstances.bar) return;
     const metric = document.getElementById('tjph-metric').value;
-    const names = {
-        order: 'Jumlah Order ID',
-        cogs: 'Total COGS (Rp)',
-        claim: 'Total Claim / Pax (Rp)'
-    };
-    const textColor = isDarkMode ? '#e8faff' : '#1f2937';
-    const mutedColor = isDarkMode ? '#8aa9bd' : '#64748b';
-    const values = tjphStats.map(s => Number(({ order: s.orders, cogs: s.cogs, claim: s.claim })[metric]) || 0);
-    const latestIndex = values.length - 1;
-
-    // Label sumbu dibuat ringkas; nama periode lengkap tetap tersedia di tooltip.
-    const shortPeriod = label => {
-        const text = String(label || '').replace(/^.*?PERIODE\s*/i, '').trim();
-        const match = text.match(/(\d{1,2})\s+([A-Za-z]+)\s+\d{4}\s*-\s*(\d{1,2})\s+([A-Za-z]+)\s+\d{4}/);
-        if (match) {
-            const month = m => ({ jan:'Jan', feb:'Feb', mar:'Mar', apr:'Apr', mei:'Mei', may:'Mei', jun:'Jun', jul:'Jul', agu:'Agu', agt:'Agu', aug:'Agu', sep:'Sep', sept:'Sep', okt:'Okt', oct:'Okt', nov:'Nov', des:'Des', dec:'Des' }[String(m).slice(0,3).toLowerCase()] || String(m).slice(0,3));
-            return `${match[1]}–${match[3]} ${month(match[4])}`;
-        }
-        return text.length > 18 ? text.slice(0, 16) + '…' : text;
-    };
-
-    const barData = values.map((value, index) => ({
-        value,
-        itemStyle: {
-            color: index === latestIndex
-                ? new echarts.graphic.LinearGradient(0, 0, 0, 1, [
-                    { offset: 0, color: '#d7ffff' },
-                    { offset: 0.35, color: '#42f5ff' },
-                    { offset: 1, color: '#00a9d6' }
-                ])
-                : new echarts.graphic.LinearGradient(0, 0, 0, 1, [
-                    { offset: 0, color: '#28e7ff' },
-                    { offset: 1, color: '#0879b8' }
-                ]),
-            borderColor: index === latestIndex ? '#d7ffff' : '#39eaff',
-            borderWidth: index === latestIndex ? 1.5 : 0.7,
-            borderRadius: [7, 7, 1, 1],
-            shadowBlur: index === latestIndex ? 24 : 13,
-            shadowColor: index === latestIndex ? 'rgba(83,255,255,0.9)' : 'rgba(0,220,255,0.48)',
-            shadowOffsetY: 0
-        }
-    }));
+    const names = { order: 'Jumlah Order ID', cogs: 'Total COGS (Rp)', claim: 'Total Claim / Pax (Rp)' };
+    const textColor = isDarkMode ? '#f8fafc' : '#1f2937';
 
     chartInstances.bar.setOption({
-        backgroundColor: 'transparent',
-        animation: true,
-        animationDuration: 850,
-        animationEasing: 'cubicOut',
-        tooltip: {
-            trigger: 'axis',
-            axisPointer: { type: 'shadow', shadowStyle: { color: 'rgba(0,220,255,0.08)' } },
-            backgroundColor: 'rgba(4,17,32,0.96)',
-            borderColor: 'rgba(35,225,255,0.65)',
-            borderWidth: 1,
-            textStyle: { color: '#e8faff' },
-            extraCssText: 'box-shadow:0 0 20px rgba(0,220,255,.18);border-radius:10px;',
-            formatter: params => {
-                const item = params && params[0];
-                if (!item) return '';
-                const fullLabel = tjphStats[item.dataIndex]?.label || item.name;
-                return `<div style="font-weight:700;color:#54f4ff;margin-bottom:6px">${fullLabel}</div><div>${names[metric]}: <b style="color:#ffffff">${Number(item.value).toLocaleString('id-ID')}</b></div>${item.dataIndex === latestIndex ? '<div style="margin-top:5px;color:#7fffe5;font-size:11px">● PERIODE TERBARU</div>' : ''}`;
-            }
-        },
-        grid: { left: 54, right: 18, top: 42, bottom: 62, containLabel: true },
+        tooltip: { trigger: 'axis' },
+        grid: { left: 70, right: 20, top: 40, bottom: 60 },
         xAxis: {
-            type: 'category',
-            data: tjphStats.map(s => shortPeriod(s.label)),
-            axisTick: { show: false },
-            axisLine: { lineStyle: { color: 'rgba(91,174,202,0.35)' } },
-            axisLabel: {
-                color: mutedColor,
-                fontSize: 11,
-                fontWeight: 600,
-                interval: 0,
-                rotate: 0,
-                margin: 14
-            }
+            type: 'category', name: 'Periode', nameLocation: 'middle', nameGap: 42,
+            data: tjphStats.map(s => s.label),
+            axisLabel: { color: textColor, interval: 0, rotate: 20 },
+            nameTextStyle: { color: textColor }
         },
-        yAxis: {
-            type: 'value',
-            name: names[metric],
-            nameLocation: 'end',
-            nameGap: 14,
-            nameTextStyle: { color: mutedColor, fontSize: 11, padding: [0, 0, 5, 0] },
-            axisLabel: {
-                color: mutedColor,
-                fontSize: 11,
-                formatter: value => Number(value).toLocaleString('id-ID')
-            },
-            axisLine: { show: false },
-            axisTick: { show: false },
-            splitLine: { show: true, lineStyle: { color: 'rgba(105,171,197,0.14)', type: 'dashed', width: 1 }
-            },
-            min: 0
-        },
+        yAxis: { type: 'value', name: names[metric], axisLabel: { color: textColor }, nameTextStyle: { color: textColor } },
         series: [{
-            name: names[metric],
             type: 'bar',
-            data: barData,
-            barMaxWidth: 54,
-            barMinHeight: 3,
-            showBackground: true,
-            backgroundStyle: { color: 'rgba(64,160,190,0.055)', borderRadius: [7, 7, 1, 1] },
-            emphasis: {
-                focus: 'series',
-                itemStyle: { shadowBlur: 30, shadowColor: 'rgba(69,255,255,1)', borderColor: '#ffffff', borderWidth: 1 }
-            },
-            label: {
-                show: true,
-                position: 'top',
-                distance: 9,
-                color: '#f1feff',
-                fontSize: 13,
-                fontWeight: 700,
-                textShadowColor: 'rgba(0,230,255,0.6)',
-                textShadowBlur: 8,
-                formatter: p => Number(p.value).toLocaleString('id-ID')
-            },
-            markPoint: values.length ? {
-                symbol: 'circle',
-                symbolSize: 8,
-                data: [{ coord: [latestIndex, values[latestIndex]], value: values[latestIndex] }],
-                itemStyle: { color: '#e4ffff', borderColor: '#00eaff', borderWidth: 2, shadowBlur: 16, shadowColor: '#00eaff' },
-                label: { show: false }
-            } : undefined
+            data: tjphStats.map(s => ({ order: s.orders, cogs: s.cogs, claim: s.claim }[metric])),
+            itemStyle: { color: '#2563eb', borderRadius: [4, 4, 0, 0] },
+            label: { show: true, position: 'top', color: textColor, formatter: p => p.value.toLocaleString('id-ID') }
         }]
     }, true);
 }
@@ -849,66 +724,29 @@ function loadRekapan() {
 
 function renderRekapanPies() {
     if (!chartInstances.pieReceived || !chartInstances.piePacked) return;
-    const textColor = isDarkMode ? '#e8fbff' : '#1f2937';
-    const mutedColor = isDarkMode ? '#7394a9' : '#94a3b8';
-    const neonPalette = ['#00e5ff', '#39ffb6', '#a3ff5f', '#ffc857', '#ff5bd6', '#6c8cff'];
+    const textColor = isDarkMode ? '#f8fafc' : '#1f2937';
 
-    const build = (key, chart, accent) => {
+    const build = (key, chart) => {
         const data = rekapanStats
-            .map(s => ({ name: s.label, value: Number(s[key]) || 0 }))
+            .map(s => ({ name: s.label, value: s[key] }))
             .filter(d => d.value > 0);
         chart.setOption({
-            backgroundColor: 'transparent',
-            animationDuration: 1100,
-            animationEasing: 'cubicOut',
-            color: neonPalette,
-            tooltip: {
-                trigger: 'item',
-                backgroundColor: 'rgba(3, 15, 31, 0.96)',
-                borderColor: accent,
-                borderWidth: 1,
-                textStyle: { color: '#e8fbff' },
-                extraCssText: 'box-shadow:0 0 18px ' + accent + '55; border-radius:10px;',
-                formatter: p => `<b>${p.name}</b><br/>${Number(p.value).toLocaleString('id-ID')} ID <span style="color:${accent}">(${p.percent}%)</span>`
-            },
+            tooltip: { trigger: 'item', formatter: '{b}<br/>{c} ID ({d}%)' },
             title: {
                 show: data.length === 0,
-                text: 'BELUM ADA DATA', left: 'center', top: 'center',
-                textStyle: { color: textColor, fontSize: 13, fontWeight: 600 }
+                text: 'Belum ada data',
+                left: 'center', top: 'center',
+                textStyle: { color: textColor, fontSize: 14 }
             },
             series: [{
-                name: key === 'received' ? 'SOC_Received' : 'SOC_Packed',
-                type: 'pie',
-                radius: ['38%', '63%'],
-                center: ['50%', '52%'],
-                avoidLabelOverlap: true,
-                minAngle: 3,
-                itemStyle: {
-                    borderColor: isDarkMode ? '#0a192a' : '#ffffff',
-                    borderWidth: 2,
-                    borderRadius: 5,
-                    shadowBlur: isDarkMode ? 16 : 4,
-                    shadowColor: isDarkMode ? 'rgba(0,229,255,.20)' : 'rgba(15,23,42,.10)'
-                },
-                emphasis: {
-                    scale: true, scaleSize: 8,
-                    itemStyle: { shadowBlur: 28, shadowColor: accent }
-                },
-                label: {
-                    show: true, color: textColor, fontSize: 11, fontWeight: 600,
-                    lineHeight: 14, formatter: p => `${p.name}\n${Number(p.value).toLocaleString('id-ID')} (${p.percent}%)`
-                },
-                labelLine: {
-                    show: true, length: 13, length2: 9,
-                    lineStyle: { color: accent, width: 1.4, opacity: .85 }
-                },
-                data: data
+                type: 'pie', radius: '62%', data: data,
+                label: { color: textColor, formatter: '{b}\n{c} ({d}%)' }
             }]
         }, true);
     };
 
-    build('received', chartInstances.pieReceived, '#00e5ff');
-    build('packed', chartInstances.piePacked, '#39ffb6');
+    build('received', chartInstances.pieReceived);
+    build('packed', chartInstances.piePacked);
 }
 
 /* DATA GANTUNGAN HOURLY (AREA CHART - tab PER WEEK, per hari, ID dobel dihitung 1) */
@@ -933,7 +771,7 @@ function loadGantungan() {
             return { label: item.label, total: Number(item.total) || 0 };
         });
         console.log('Data gantungan berhasil dimuat:', gantunganStats);
-        renderGantunganArea();renderRingkasan();
+        renderGantunganArea();
     };
 
     const script = document.createElement('script');
@@ -950,63 +788,34 @@ function loadGantungan() {
 
 function renderGantunganArea() {
     if (!chartInstances.area) return;
-    const modeEl = document.getElementById('gantungan-mode');
-    const mode = modeEl ? modeEl.value : 'daily';
-    const textColor = isDarkMode ? '#e8fbff' : '#1f2937';
-    const mutedColor = isDarkMode ? '#7895aa' : '#94a3b8';
+    const mode = document.getElementById('gantungan-mode').value;
+    const textColor = isDarkMode ? '#f8fafc' : '#1f2937';
+
     let running = 0;
-    const values = gantunganStats.map(s => mode === 'cumulative' ? (running += Number(s.total) || 0) : (Number(s.total) || 0));
-    const maxVal = Math.max(0, ...values);
+    const values = gantunganStats.map(s => mode === 'cumulative' ? (running += s.total) : s.total);
 
     chartInstances.area.setOption({
-        backgroundColor: 'transparent',
-        animationDuration: 1100,
-        animationEasing: 'cubicOut',
-        color: ['#00e5ff'],
-        tooltip: {
-            trigger: 'axis',
-            backgroundColor: 'rgba(3, 15, 31, 0.96)',
-            borderColor: '#00e5ff', borderWidth: 1,
-            textStyle: { color: '#e8fbff' },
-            extraCssText: 'box-shadow:0 0 18px rgba(0,229,255,.25);border-radius:10px;',
-            formatter: params => {
-                const p = params[0];
-                return `<b>${p.axisValue}</b><br/><span style="color:#00e5ff">●</span> ${mode === 'cumulative' ? 'Akumulatif' : 'SOC_Received'}: <b>${Number(p.value).toLocaleString('id-ID')}</b>`;
-            }
-        },
+        tooltip: { trigger: 'axis' },
         title: {
             show: gantunganStats.length === 0,
-            text: 'BELUM ADA DATA', left: 'center', top: 'center',
-            textStyle: { color: textColor, fontSize: 13, fontWeight: 600 }
+            text: 'Belum ada data',
+            left: 'center', top: 'center',
+            textStyle: { color: textColor, fontSize: 14 }
         },
-        grid: { left: 58, right: 22, top: 38, bottom: 54, containLabel: true },
+        grid: { left: 60, right: 20, top: 40, bottom: 50 },
         xAxis: {
-            type: 'category', boundaryGap: false,
+            type: 'category',
             data: gantunganStats.map(s => s.label),
-            axisLine: { lineStyle: { color: mutedColor, opacity: .45 } },
-            axisTick: { show: false },
-            axisLabel: { color: textColor, rotate: 20, fontSize: 10, margin: 13 },
-            splitLine: { show: false }
+            axisLabel: { color: textColor, rotate: 20 }
         },
-        yAxis: {
-            type: 'value', min: 0,
-            axisLabel: { color: mutedColor, fontSize: 10 },
-            axisLine: { show: false }, axisTick: { show: false },
-            splitLine: { lineStyle: { color: isDarkMode ? 'rgba(83,133,163,.18)' : 'rgba(148,163,184,.22)', type: 'dashed' } }
-        },
+        yAxis: { type: 'value', axisLabel: { color: textColor } },
         series: [{
-            name: mode === 'cumulative' ? 'Akumulatif' : 'SOC_Received',
-            type: 'line', smooth: .42, data: values,
-            showSymbol: true, symbol: 'circle', symbolSize: 7,
-            lineStyle: { color: '#00e5ff', width: 3, shadowBlur: 12, shadowColor: 'rgba(0,229,255,.85)' },
-            itemStyle: { color: '#071a2d', borderColor: '#75f8ff', borderWidth: 2, shadowBlur: 10, shadowColor: '#00e5ff' },
-            areaStyle: { color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
-                { offset: 0, color: 'rgba(0,229,255,.38)' },
-                { offset: 1, color: 'rgba(0,229,255,.015)' }
-            ]) },
-            label: { show: true, position: 'top', color: textColor, fontSize: 10, fontWeight: 600, formatter: p => Number(p.value).toLocaleString('id-ID') },
+            type: 'line', smooth: true, data: values,
+            areaStyle: { color: 'rgba(37,99,235,0.25)' },
+            itemStyle: { color: '#2563eb' },
+            label: { show: true, position: 'top', color: textColor, formatter: p => p.value.toLocaleString('id-ID') },
             markLine: (mode === 'daily' && values.length)
-                ? { symbol: 'none', data: [{ type: 'average', name: 'Rata-rata' }], lineStyle: { color: '#ffc857', type: 'dashed', width: 1.5 }, label: { color: '#ffc857', formatter: 'Rata-rata' } }
+                ? { data: [{ type: 'average', name: 'Rata-rata' }], lineStyle: { color: '#f59e0b' } }
                 : undefined
         }]
     }, true);
@@ -1033,7 +842,6 @@ function loadGantungan2() {
         gantungan2Stats = response.data;
         console.log('Data gantungan2 berhasil dimuat:', gantungan2Stats);
         renderGantunganLine();
-        renderRingkasan();
     };
 
     const script = document.createElement('script');
@@ -1050,64 +858,35 @@ function loadGantungan2() {
 
 function renderGantunganLine() {
     if (!chartInstances.line) return;
-    const textColor = isDarkMode ? '#e8fbff' : '#1f2937';
-    const mutedColor = isDarkMode ? '#7895aa' : '#94a3b8';
-    const colors = ['#00e5ff', '#ffb84d'];
-    const defs = [
-        { key: 'SOC_Packed', name: 'SOC_Packed + Return (gabungan)' },
-        { key: 'RETURN_SOC_Packed', name: 'RETURN_SOC_Packed' }
-    ];
+    const textColor = isDarkMode ? '#f8fafc' : '#1f2937';
+    const colors = ['#10b981', '#f59e0b'];
 
     chartInstances.line.setOption({
-        backgroundColor: 'transparent',
-        animationDuration: 1100,
-        animationEasing: 'cubicOut',
-        color: colors,
-        tooltip: {
-            trigger: 'axis',
-            backgroundColor: 'rgba(3, 15, 31, 0.96)',
-            borderColor: '#00e5ff', borderWidth: 1,
-            textStyle: { color: '#e8fbff' },
-            extraCssText: 'box-shadow:0 0 18px rgba(0,229,255,.22);border-radius:10px;',
-            axisPointer: { type: 'cross', crossStyle: { color: '#70efff' } }
-        },
-        legend: {
-            top: 0, left: 'center', itemWidth: 12, itemHeight: 8,
-            textStyle: { color: textColor, fontSize: 11 },
-            data: defs.map(d => d.name)
-        },
+        tooltip: { trigger: 'axis' },
+        legend: { top: 0, textStyle: { color: textColor } },
         title: {
             show: gantungan2Stats.length === 0,
-            text: 'BELUM ADA DATA', left: 'center', top: 'center',
-            textStyle: { color: textColor, fontSize: 13, fontWeight: 600 }
+            text: 'Belum ada data',
+            left: 'center', top: 'center',
+            textStyle: { color: textColor, fontSize: 14 }
         },
-        grid: { left: 58, right: 22, top: 48, bottom: 54, containLabel: true },
+        grid: { left: 60, right: 20, top: 50, bottom: 50 },
         xAxis: {
-            type: 'category', boundaryGap: false,
+            type: 'category',
             data: gantungan2Stats.map(s => s.label),
-            axisLine: { lineStyle: { color: mutedColor, opacity: .45 } },
-            axisTick: { show: false },
-            axisLabel: { color: textColor, rotate: 20, fontSize: 10, margin: 13 },
-            splitLine: { show: false }
+            axisLabel: { color: textColor, rotate: 20 }
         },
-        yAxis: {
-            type: 'value', min: 0,
-            axisLabel: { color: mutedColor, fontSize: 10 },
-            axisLine: { show: false }, axisTick: { show: false },
-            splitLine: { lineStyle: { color: isDarkMode ? 'rgba(83,133,163,.18)' : 'rgba(148,163,184,.22)', type: 'dashed' } }
-        },
-        series: defs.map((d, i) => ({
-            name: d.name,
-            type: 'line', smooth: .38,
-            data: gantungan2Stats.map(s => (s.values && Number(s.values[d.key])) || 0),
-            showSymbol: true, symbol: 'circle', symbolSize: 6,
-            lineStyle: { color: colors[i], width: 2.8, shadowBlur: 10, shadowColor: colors[i] },
-            itemStyle: { color: '#071a2d', borderColor: colors[i], borderWidth: 2, shadowBlur: 8, shadowColor: colors[i] },
-            emphasis: { focus: 'series', itemStyle: { shadowBlur: 18, shadowColor: colors[i] } },
-            label: { show: true, position: 'top', color: textColor, fontSize: 9, fontWeight: 600, formatter: p => Number(p.value).toLocaleString('id-ID') }
+        yAxis: { type: 'value', axisLabel: { color: textColor } },
+        series: GANTUNGAN2_SERIES.map((name, i) => ({
+            name: name,
+            type: 'line', smooth: true,
+            data: gantungan2Stats.map(s => (s.values && s.values[name]) || 0),
+            itemStyle: { color: colors[i % colors.length] },
+            label: { show: true, position: 'top', color: textColor, formatter: p => p.value.toLocaleString('id-ID') }
         }))
     }, true);
 }
+
 /* ECHARTS */
 function initCharts() {
     chartInstances.bar = echarts.init(document.getElementById('chart-bar'));
@@ -1212,68 +991,10 @@ function resetGlobalFilter() {
     generateAIInsights();
 }
 
-/* AI INSIGHT */
-/* RINGKASAN UTAMA + AI SUMMARY (sumber: data gantungan dari Web App) */
-const RINGKASAN_BULAN = '2026-10';   // ganti tiap bulan baru, samakan dengan BULAN_REKAP di GS
+/* AI INSIGHT: teks ringkasan kini dibuat dari angka asli (lihat renderRingkasan) */
+function generateAIInsights() { /* tidak dipakai lagi */ }
 
-function fmtNum(n) { return Number(n || 0).toLocaleString('id-ID'); }
-
-function tglPendek(label) {
-    const b = ['Jan','Feb','Mar','Apr','Mei','Jun','Jul','Agu','Sep','Okt','Nov','Des'];
-    const p = String(label).split('-');
-    return p.length === 3 ? parseInt(p[2], 10) + ' ' + b[parseInt(p[1], 10) - 1] : label;
-}
-
-function hitungStat(rows, getVal) {
-    let total = 0, hari = 0, max = null;
-    rows.forEach(r => {
-        if (String(r.label).slice(0, 7) !== RINGKASAN_BULAN) return;
-        const v = getVal(r);
-        total += v; hari++;
-        if (!max || v > max.value) max = { label: r.label, value: v };
-    });
-    return { total, hari, rata: hari ? Math.round(total / hari) : 0, max };
-}
-
-function renderRingkasan() {
-    const rec = hitungStat(gantunganStats, s => Number(s.total) || 0);
-    const pak = hitungStat(gantungan2Stats, s => (s.values && Number(s.values.SOC_Packed)) || 0);
-    const set = (id, txt) => { const el = document.getElementById(id); if (el) el.textContent = txt; };
-
-    set('rk-hari', fmtNum(Math.max(rec.hari, pak.hari)));
-    set('rk-total-received', fmtNum(rec.total));
-    set('rk-total-packed', fmtNum(pak.total));
-    set('rk-avg-received', fmtNum(rec.rata));
-    set('rk-avg-packed', fmtNum(pak.rata));
-    set('rk-max-received', rec.max ? fmtNum(rec.max.value) + ' (' + tglPendek(rec.max.label) + ')' : '-');
-    set('rk-max-packed', pak.max ? fmtNum(pak.max.value) + ' (' + tglPendek(pak.max.label) + ')' : '-');
-
-    const quick = document.getElementById('quick-ai-insights');
-    if (quick) {
-        if (!rec.hari && !pak.hari) {
-            quick.innerHTML = '<li>Memuat data gantungan...</li>';
-        } else {
-            quick.innerHTML = `
-                <li><i class="fa-solid fa-circle-check" style="color:var(--success-color);"></i> Gantungan <strong>SOC_Packed + Return</strong> tertinggi pada <strong>${pak.max ? tglPendek(pak.max.label) : '-'}</strong> (${pak.max ? fmtNum(pak.max.value) : 0} ID).</li>
-                <li><i class="fa-solid fa-chart-line" style="color:var(--accent-color);"></i> Gantungan <strong>SOC_Received</strong> tertinggi pada <strong>${rec.max ? tglPendek(rec.max.label) : '-'}</strong> (${rec.max ? fmtNum(rec.max.value) : 0} ID).</li>
-                <li><i class="fa-solid fa-boxes-stacked" style="color:var(--warning-color);"></i> Total periode ${RINGKASAN_BULAN}: Received <strong>${fmtNum(rec.total)}</strong> ID, Packed + Return <strong>${fmtNum(pak.total)}</strong> ID (ID dobel dihitung 1x di tanggal pertama).</li>`;
-        }
-    }
-
-    const full = document.getElementById('full-ai-insights-content');
-    if (full) {
-        full.innerHTML = `
-            <h3>Laporan Data Gantungan ${RINGKASAN_BULAN}</h3>
-            <br>
-            <ul>
-                <li><strong>SOC_Received:</strong> total ${fmtNum(rec.total)} ID dalam ${rec.hari} hari, rata-rata ${fmtNum(rec.rata)} ID per hari. Puncak ${rec.max ? fmtNum(rec.max.value) + ' ID pada ' + tglPendek(rec.max.label) : '-'}.</li>
-                <li><strong>SOC_Packed + RETURN_SOC_Packed:</strong> total ${fmtNum(pak.total)} ID dalam ${pak.hari} hari, rata-rata ${fmtNum(pak.rata)} ID per hari. Puncak ${pak.max ? fmtNum(pak.max.value) + ' ID pada ' + tglPendek(pak.max.label) : '-'}.</li>
-                <li><strong>Aturan hitung:</strong> satu ID hanya dihitung 1x, di tanggal pertama ia muncul.</li>
-            </ul>`;
-    }
-}
-
-function generateAIInsights() { renderRingkasan(); }
+/* NAVIGASI */
 function switchTab(tabName) {
     activeTab = tabName;
     document.querySelectorAll('.sidebar-menu a').forEach(a => a.classList.remove('active'));
@@ -1305,9 +1026,11 @@ function toggleCommandCenter() {
 }
 
 function updateHeaderMeta() {
+    const total = ringkasanData ? ringkasanData.totalBaris : rawDataset.length;
     document.getElementById('header-meta').textContent =
-        'Jam Operasional Facility: 13:00 - 06:00 WIB • Data Gantungan ' + RINGKASAN_BULAN + ' • System Status: OK';
+        `Jam Operasional Facility: 13:00 - 06:00 WIB • Total ${Number(total).toLocaleString('id-ID')} Baris Data • System Status: OK`;
 }
+
 function exportPNG() {
     showToast('Menyiapkan file PNG...');
     html2canvas(document.getElementById('capture-area')).then(canvas => {
