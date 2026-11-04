@@ -140,9 +140,52 @@ body.command-center-mode{background:#050b14}
 .stat-card:nth-child(2){animation-delay:.05s}.stat-card:nth-child(3){animation-delay:.1s}.stat-card:nth-child(4){animation-delay:.15s}
 .stat-card:nth-child(5){animation-delay:.2s}.stat-card:nth-child(6){animation-delay:.25s}.stat-card:nth-child(7){animation-delay:.3s}.stat-card:nth-child(8){animation-delay:.35s}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+
+/* ===== TEMA NEON GELAP (satu-satunya tema) ===== */
+:root{--bg-primary:#060913;--bg-secondary:#0a1022;--bg-card:#0d1428;--text-primary:#e6f0ff;--text-secondary:#8fa3c7;--border-color:rgba(56,189,248,.16);--accent-color:#22d3ee;--accent-hover:#67e8f9;--success-color:#39ff88;--warning-color:#ffb800;--danger-color:#ff4d6d;--neon-cyan:#22d3ee;--neon-pink:#ff2bd6;--neon-purple:#a855f7;--neon-lime:#a3ff12;--grad-accent:linear-gradient(120deg,#22d3ee,#a855f7 55%,#ff2bd6);--shadow-sm:0 1px 2px rgba(0,0,0,.6);--shadow-md:0 6px 18px -6px rgba(0,0,0,.7);--shadow-lg:0 0 28px -6px rgba(34,211,238,.35)}
+body,body[data-theme="dark"]{background:radial-gradient(900px 520px at 88% -8%,rgba(168,85,247,.20),transparent 62%),radial-gradient(800px 480px at -8% 108%,rgba(34,211,238,.16),transparent 60%),linear-gradient(rgba(34,211,238,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(34,211,238,.035) 1px,transparent 1px),var(--bg-primary);background-size:auto,auto,44px 44px,44px 44px}
+body.command-center-mode{background:#03060d}
+option{background:#0a1022;color:#e6f0ff}
+::-webkit-scrollbar-thumb{background:rgba(34,211,238,.35)}
+::-webkit-scrollbar-thumb:hover{background:rgba(34,211,238,.6)}
+.sidebar{border-right:1px solid rgba(34,211,238,.18);box-shadow:4px 0 30px -14px rgba(34,211,238,.45)}
+.sidebar-header i{filter:drop-shadow(0 0 8px rgba(34,211,238,.7))}
+.sidebar-menu a:hover,.sidebar-menu a.active{background:linear-gradient(90deg,rgba(34,211,238,.16),rgba(34,211,238,.02));color:var(--neon-cyan);text-shadow:0 0 12px rgba(34,211,238,.7)}
+.sidebar-menu a.active::before{background:linear-gradient(180deg,#22d3ee,#a855f7);box-shadow:0 0 12px #22d3ee}
+.header{background:rgba(10,16,34,.88);border-bottom:1px solid transparent;border-image:linear-gradient(90deg,#22d3ee,#a855f7,#ff2bd6) 1;box-shadow:0 10px 30px -18px rgba(168,85,247,.7)}
+.header-title h1{filter:drop-shadow(0 0 10px rgba(34,211,238,.5))}
+.realtime-bar{background:rgba(10,16,34,.88)}
+.btn{border-color:rgba(34,211,238,.25)}
+.btn:hover{background:rgba(34,211,238,.08);border-color:var(--neon-cyan);box-shadow:0 0 16px -2px rgba(34,211,238,.6)}
+.btn-primary{background:var(--grad-accent);color:#060913;font-weight:700;border:none;box-shadow:0 0 20px -4px rgba(34,211,238,.85)}
+.btn-primary:hover{background:var(--grad-accent);box-shadow:0 0 26px -2px rgba(168,85,247,.9);filter:brightness(1.1)}
+.select-input,.input-text,.login-field input{background:rgba(6,9,19,.75);border:1px solid rgba(34,211,238,.25);color:var(--text-primary)}
+.select-input:focus,.input-text:focus,.login-field input:focus{border-color:var(--neon-cyan);box-shadow:0 0 0 3px rgba(34,211,238,.22),0 0 16px -2px rgba(34,211,238,.5)}
+.status-badge.active{background:rgba(57,255,136,.12);box-shadow:0 0 14px -4px #39ff88}
+.status-badge.active .status-dot{box-shadow:0 0 8px #39ff88}
+.status-badge.error{box-shadow:0 0 14px -4px #ff4d6d}
+.chart-card,.stat-card,.table-card,.insight-card,.portal-card,details{border:1px solid var(--border-color);background:linear-gradient(180deg,rgba(34,211,238,.05),transparent 45%),var(--bg-card)}
+.chart-card:hover{border-color:rgba(34,211,238,.6);box-shadow:0 0 0 1px rgba(34,211,238,.25),0 0 30px -6px rgba(34,211,238,.5)}
+.stat-card:hover{border-color:var(--acc);box-shadow:0 0 0 1px var(--acc),0 0 30px -8px var(--acc)}
+.portal-card:hover{border-color:var(--neon-cyan);box-shadow:0 0 18px -4px rgba(34,211,238,.5)}
+.chart-title{text-shadow:0 0 12px rgba(34,211,238,.35)}
+.chart-title::before{box-shadow:0 0 10px #22d3ee}
+.chart-header{border-bottom-color:rgba(34,211,238,.18)}
+.acc-blue{--acc:#22d3ee}.acc-green{--acc:#39ff88}.acc-violet{--acc:#a855f7}.acc-amber{--acc:#ffb800}.acc-rose{--acc:#ff2bd6}
+.stat-card::before{box-shadow:0 0 14px var(--acc)}
+.stat-card::after{opacity:.10}
+.stat-icon{color:#060913;box-shadow:0 0 18px var(--acc)}
+.stat-card-value{color:#fff;text-shadow:0 0 14px var(--acc)}
+.insight-card{border-left:4px solid #22d3ee;box-shadow:-8px 0 26px -14px #22d3ee;background:linear-gradient(135deg,rgba(168,85,247,.12),rgba(34,211,238,.05) 55%,transparent),var(--bg-card)}
+.insight-title{text-shadow:0 0 14px rgba(34,211,238,.6)}
+.insight-list li i{background:rgba(34,211,238,.14);box-shadow:0 0 12px -2px rgba(34,211,238,.5)}
+.login-card{border:1px solid rgba(34,211,238,.4);box-shadow:0 0 50px -10px rgba(34,211,238,.55),0 20px 40px -10px rgba(0,0,0,.7)}
+.login-card i.logo-icon{filter:drop-shadow(0 0 12px rgba(34,211,238,.7))}
+.toast-notification{border-color:rgba(34,211,238,.5);box-shadow:0 0 22px -4px rgba(34,211,238,.5)}
+table.virtual-table th{color:var(--neon-cyan)}
 </style>
 </head>
-<body>
+<body data-theme="dark">
 
 <!-- LOGIN -->
 <div id="login-overlay">
@@ -180,9 +223,6 @@ body.command-center-mode{background:#050b14}
         <li><a href="#" onclick="switchTab('about')"><i class="fa-solid fa-circle-info"></i> Tentang Aplikasi</a></li>
     </ul>
     <div class="sidebar-footer">
-        <button class="btn" style="width:100%;justify-content:center;margin-bottom:8px;" onclick="toggleDarkMode()">
-            <i class="fa-solid fa-moon"></i> Mode Gelap / Terang
-        </button>
         <div>Copyright © 2026 by PurworejoIT.com & lynk.id/berdigital</div>
     </div>
 </aside>
@@ -393,7 +433,7 @@ let filteredDataset = [];
 let datasetHeaders = [];
 let realtimeTimer = null;
 let refreshIntervalMs = 30000;
-let isDarkMode = false;
+let isDarkMode = true; // dashboard hanya memakai tema gelap neon
 let activeTab = 'ringkasan';
 let currentGSheetUrl = '';
 let chartInstances = {};
@@ -711,21 +751,20 @@ function renderRingkasan() {
 }
 
 /* TEMA GRAFIK (dipakai semua grafik agar tampil seragam) */
-const CHART_COLORS = ['#3b82f6', '#10b981', '#f59e0b', '#8b5cf6', '#f43f5e', '#06b6d4'];
+const CHART_COLORS = ['#22d3ee', '#ff2bd6', '#a3ff12', '#a855f7', '#ffb800', '#3b82ff'];
 
 function chartTheme() {
-    const dark = isDarkMode;
     return {
-        text: dark ? '#e2e8f0' : '#334155',
-        muted: dark ? '#94a3b8' : '#64748b',
-        grid: dark ? 'rgba(148,163,184,.16)' : 'rgba(100,116,139,.18)',
-        card: dark ? '#1e293b' : '#ffffff',
+        text: '#e6f0ff',
+        muted: '#8fa3c7',
+        grid: 'rgba(56,189,248,.14)',
+        card: '#0d1428',
         tip: {
-            backgroundColor: dark ? '#0f172a' : '#ffffff',
-            borderColor: dark ? '#334155' : '#e2e8f0',
+            backgroundColor: 'rgba(8,13,28,.96)',
+            borderColor: 'rgba(34,211,238,.55)',
             borderWidth: 1, padding: [8, 12],
-            textStyle: { color: dark ? '#e2e8f0' : '#1f2937' },
-            extraCssText: 'border-radius:10px;box-shadow:0 8px 24px rgba(0,0,0,.25);'
+            textStyle: { color: '#e6f0ff' },
+            extraCssText: 'border-radius:10px;box-shadow:0 0 22px rgba(34,211,238,.35);'
         }
     };
 }
@@ -809,7 +848,7 @@ function renderTJPHBar() {
 
     chartInstances.bar.setOption({
         color: CHART_COLORS,
-        tooltip: Object.assign({ trigger: 'axis', axisPointer: { type: 'shadow', shadowStyle: { color: 'rgba(59,130,246,.08)' } }, valueFormatter: penuh }, t.tip),
+        tooltip: Object.assign({ trigger: 'axis', axisPointer: { type: 'shadow', shadowStyle: { color: 'rgba(34,211,238,.08)' } }, valueFormatter: penuh }, t.tip),
         title: { show: tjphStats.length === 0, text: 'Belum ada data', left: 'center', top: 'center', textStyle: { color: t.muted, fontSize: 14, fontWeight: 500 } },
         grid: { left: 16, right: 16, top: 48, bottom: 8, containLabel: true },
         xAxis: catAxis(t, tjphStats.map(s => s.label), 12),
@@ -817,8 +856,8 @@ function renderTJPHBar() {
         series: [{
             type: 'bar', barMaxWidth: 64,
             data: tjphStats.map(s => ({ order: s.orders, cogs: s.cogs, claim: s.claim }[metric])),
-            itemStyle: { borderRadius: [10, 10, 0, 0], color: vGradient('#60a5fa', '#4f46e5') },
-            emphasis: { itemStyle: { color: vGradient('#93c5fd', '#6366f1') } },
+            itemStyle: { borderRadius: [10, 10, 0, 0], color: vGradient('#22d3ee', '#3b4cff'), shadowBlur: 18, shadowColor: 'rgba(34,211,238,.55)' },
+            emphasis: { itemStyle: { color: vGradient('#67e8f9', '#a855f7'), shadowBlur: 26, shadowColor: 'rgba(168,85,247,.7)' } },
             label: { show: true, position: 'top', color: t.text, fontWeight: 600, formatter: p => ringkas(p.value) }
         }]
     }, true);
@@ -874,13 +913,13 @@ function renderRekapanPies() {
             legend: { show: data.length > 0, bottom: 0, icon: 'circle', itemWidth: 8, itemHeight: 8, textStyle: { color: t.muted } },
             title: data.length === 0
                 ? { text: 'Belum ada data', left: 'center', top: 'center', textStyle: { color: t.muted, fontSize: 14, fontWeight: 500 } }
-                : { text: total.toLocaleString('id-ID'), subtext: 'Total ID', left: 'center', top: '36%', textStyle: { color: t.text, fontSize: 26, fontWeight: 700 }, subtextStyle: { color: t.muted, fontSize: 12 } },
+                : { text: total.toLocaleString('id-ID'), subtext: 'Total ID', left: 'center', top: '36%', textStyle: { color: '#fff', fontSize: 26, fontWeight: 700, textShadowColor: '#22d3ee', textShadowBlur: 12 }, subtextStyle: { color: t.muted, fontSize: 12 } },
             series: [{
                 type: 'pie', radius: ['46%', '68%'], center: ['50%', '45%'],
-                itemStyle: { borderRadius: 8, borderColor: t.card, borderWidth: 3 },
+                itemStyle: { borderRadius: 8, borderColor: t.card, borderWidth: 3, shadowBlur: 16, shadowColor: 'rgba(34,211,238,.35)' },
                 label: { show: true, position: 'outside', color: t.text, fontWeight: 600, formatter: '{c}' },
                 labelLine: { length: 10, length2: 8, smooth: true, lineStyle: { color: t.grid } },
-                emphasis: { scale: true, scaleSize: 6, label: { fontSize: 14 } },
+                emphasis: { scale: true, scaleSize: 6, itemStyle: { shadowBlur: 28, shadowColor: 'rgba(255,43,214,.6)' }, label: { fontSize: 14 } },
                 data: data
             }]
         }, true);
@@ -938,24 +977,24 @@ function renderGantunganArea() {
     const tampilLabel = values.length <= 16;
 
     chartInstances.area.setOption({
-        tooltip: Object.assign({ trigger: 'axis', axisPointer: { type: 'line', lineStyle: { color: '#3b82f6', type: 'dashed' } }, valueFormatter: v => Number(v).toLocaleString('id-ID') }, t.tip),
+        tooltip: Object.assign({ trigger: 'axis', axisPointer: { type: 'line', lineStyle: { color: '#22d3ee', type: 'dashed' } }, valueFormatter: v => Number(v).toLocaleString('id-ID') }, t.tip),
         title: { show: gantunganStats.length === 0, text: 'Belum ada data', left: 'center', top: 'center', textStyle: { color: t.muted, fontSize: 14, fontWeight: 500 } },
         grid: { left: 16, right: 20, top: 44, bottom: 8, containLabel: true },
         xAxis: catAxis(t, labels, 0),
         yAxis: valAxis(t, mode === 'cumulative' ? 'Akumulatif ID' : 'ID per hari'),
         series: [{
             type: 'line', smooth: true, data: values,
-            symbol: 'circle', symbolSize: 7, showSymbol: values.length <= 31,
-            lineStyle: { width: 3, color: '#3b82f6' },
-            itemStyle: { color: '#3b82f6', borderColor: t.card, borderWidth: 2 },
-            areaStyle: { color: vGradient('rgba(59,130,246,.45)', 'rgba(59,130,246,.02)') },
+            symbol: 'circle', symbolSize: 8, showSymbol: values.length <= 31,
+            lineStyle: { width: 3, color: '#22d3ee', shadowBlur: 14, shadowColor: '#22d3ee' },
+            itemStyle: { color: '#22d3ee', borderColor: '#fff', borderWidth: 1.5, shadowBlur: 10, shadowColor: '#22d3ee' },
+            areaStyle: { color: vGradient('rgba(34,211,238,.45)', 'rgba(34,211,238,.02)') },
             label: { show: tampilLabel, position: 'top', color: t.text, fontSize: 11, fontWeight: 600, formatter: p => Number(p.value).toLocaleString('id-ID') },
             markPoint: (!tampilLabel && values.length)
-                ? { data: [{ type: 'max', name: 'Tertinggi' }], symbolSize: 46, itemStyle: { color: '#3b82f6' }, label: { color: '#fff', fontWeight: 700 } }
+                ? { data: [{ type: 'max', name: 'Tertinggi' }], symbolSize: 46, itemStyle: { color: '#22d3ee', shadowBlur: 14, shadowColor: '#22d3ee' }, label: { color: '#060913', fontWeight: 700 } }
                 : undefined,
             markLine: (mode === 'daily' && values.length)
-                ? { symbol: 'none', data: [{ type: 'average', name: 'Rata-rata' }], lineStyle: { color: '#f59e0b', type: 'dashed', width: 1.5 },
-                    label: { color: '#f59e0b', position: 'insideEndTop', formatter: p => 'Rata-rata ' + Number(p.value).toLocaleString('id-ID', { maximumFractionDigits: 1 }) } }
+                ? { symbol: 'none', data: [{ type: 'average', name: 'Rata-rata' }], lineStyle: { color: '#ff2bd6', type: 'dashed', width: 1.5, shadowBlur: 8, shadowColor: '#ff2bd6' },
+                    label: { color: '#ff2bd6', position: 'insideEndTop', formatter: p => 'Rata-rata ' + Number(p.value).toLocaleString('id-ID', { maximumFractionDigits: 1 }) } }
                 : undefined
         }]
     }, true);
@@ -999,13 +1038,13 @@ function loadGantungan2() {
 function renderGantunganLine() {
     if (!chartInstances.line) return;
     const t = chartTheme();
-    const warna = ['#10b981', '#f59e0b'];
+    const warna = ['#a3ff12', '#ff2bd6'];
     const labels = gantungan2Stats.map(s => tglIndo(s.label, true));
     const tampilLabel = gantungan2Stats.length <= 16;
 
     chartInstances.line.setOption({
         color: warna,
-        tooltip: Object.assign({ trigger: 'axis', axisPointer: { type: 'line', lineStyle: { color: '#10b981', type: 'dashed' } }, valueFormatter: v => Number(v).toLocaleString('id-ID') }, t.tip),
+        tooltip: Object.assign({ trigger: 'axis', axisPointer: { type: 'line', lineStyle: { color: '#a3ff12', type: 'dashed' } }, valueFormatter: v => Number(v).toLocaleString('id-ID') }, t.tip),
         legend: { top: 0, icon: 'roundRect', itemWidth: 14, itemHeight: 6, textStyle: { color: t.muted } },
         title: { show: gantungan2Stats.length === 0, text: 'Belum ada data', left: 'center', top: 'center', textStyle: { color: t.muted, fontSize: 14, fontWeight: 500 } },
         grid: { left: 16, right: 20, top: 48, bottom: 8, containLabel: true },
@@ -1014,10 +1053,10 @@ function renderGantunganLine() {
         series: GANTUNGAN2_SERIES.map((name, i) => ({
             name: name, type: 'line', smooth: true,
             data: gantungan2Stats.map(s => (s.values && s.values[name]) || 0),
-            symbol: 'circle', symbolSize: 7, showSymbol: gantungan2Stats.length <= 31,
-            lineStyle: { width: 3, color: warna[i % warna.length] },
-            itemStyle: { color: warna[i % warna.length], borderColor: t.card, borderWidth: 2 },
-            areaStyle: { color: vGradient(i === 0 ? 'rgba(16,185,129,.30)' : 'rgba(245,158,11,.22)', 'rgba(0,0,0,0)') },
+            symbol: 'circle', symbolSize: 8, showSymbol: gantungan2Stats.length <= 31,
+            lineStyle: { width: 3, color: warna[i % warna.length], shadowBlur: 14, shadowColor: warna[i % warna.length] },
+            itemStyle: { color: warna[i % warna.length], borderColor: '#fff', borderWidth: 1.5, shadowBlur: 10, shadowColor: warna[i % warna.length] },
+            areaStyle: { color: vGradient(i === 0 ? 'rgba(163,255,18,.28)' : 'rgba(255,43,214,.24)', 'rgba(0,0,0,0)') },
             label: { show: tampilLabel, position: 'top', color: t.text, fontSize: 11, fontWeight: 600, formatter: p => p.value ? Number(p.value).toLocaleString('id-ID') : '' }
         }))
     }, true);
@@ -1140,16 +1179,6 @@ function switchTab(tabName) {
     if (tabName === 'visualisasi') setTimeout(resizeAllCharts, 100);
 }
 
-function toggleDarkMode() {
-    isDarkMode = !isDarkMode;
-    document.body.setAttribute('data-theme', isDarkMode ? 'dark' : 'light');
-    renderCharts();
-    renderTJPHBar();
-    renderRekapanPies();
-    renderGantunganArea();
-    renderGantunganLine();
-}
-
 function toggleCommandCenter() {
     document.body.classList.toggle('command-center-mode');
     if (document.body.classList.contains('command-center-mode')) {
@@ -1169,7 +1198,7 @@ function updateHeaderMeta() {
 
 function exportPNG() {
     showToast('Menyiapkan file PNG...');
-    html2canvas(document.getElementById('capture-area')).then(canvas => {
+    html2canvas(document.getElementById('capture-area'), { backgroundColor: '#060913' }).then(canvas => {
         const link = document.createElement('a');
         link.download = `Dashboard-Enterprise-${Date.now()}.png`;
         link.href = canvas.toDataURL();
@@ -1180,7 +1209,7 @@ function exportPNG() {
 function exportPDF() {
     showToast('Menerbitkan laporan PDF...');
     const { jsPDF } = window.jspdf;
-    html2canvas(document.getElementById('capture-area')).then(canvas => {
+    html2canvas(document.getElementById('capture-area'), { backgroundColor: '#060913' }).then(canvas => {
         const imgData = canvas.toDataURL('image/png');
         const pdf = new jsPDF('p', 'mm', 'a4');
         const pdfWidth = pdf.internal.pageSize.getWidth();
