@@ -169,6 +169,8 @@ body.command-center-mode .stat-card-value{color:#38bdf8}
             <button class="btn btn-primary" onclick="connectGoogleSheets()">Hubungkan</button>
         </div>
         <div style="display:flex;align-items:center;gap:15px;">
+            <label style="font-size:12px;color:var(--text-secondary);">Bulan:</label>
+            <select id="bulan-select" class="select-input" onchange="changeBulan()"><option value="">Otomatis (terbaru)</option></select>
             <label style="font-size:12px;color:var(--text-secondary);">Auto Refresh:</label>
             <select id="auto-refresh-interval" class="select-input" onchange="changeRefreshInterval()">
                 <option value="10000">10 Detik</option>
@@ -204,10 +206,10 @@ body.command-center-mode .stat-card-value{color:#38bdf8}
                 <div class="stat-card"><div class="stat-card-title">SOC_Received (Tgl Terakhir)</div><div class="stat-card-value" id="rs-recv-hari">-</div></div>
                 <div class="stat-card"><div class="stat-card-title">SOC_Packed + Return (Tgl Terakhir)</div><div class="stat-card-value" id="rs-pack-hari">-</div></div>
                 <div class="stat-card"><div class="stat-card-title">Return_SOC_Packed (Tgl Terakhir)</div><div class="stat-card-value" id="rs-ret-hari">-</div></div>
-                <div class="stat-card"><div class="stat-card-title">Total SOC_Received Bulan Ini</div><div class="stat-card-value" id="rs-recv-bulan">-</div></div>
-                <div class="stat-card"><div class="stat-card-title">Total SOC_Packed + Return Bulan Ini</div><div class="stat-card-value" id="rs-pack-bulan">-</div></div>
+                <div class="stat-card"><div class="stat-card-title">Total SOC_Received (Bulan Terpilih)</div><div class="stat-card-value" id="rs-recv-bulan">-</div></div>
+                <div class="stat-card"><div class="stat-card-title">Total SOC_Packed + Return (Bulan Terpilih)</div><div class="stat-card-value" id="rs-pack-bulan">-</div></div>
                 <div class="stat-card"><div class="stat-card-title">Rata-rata Received per Hari</div><div class="stat-card-value" id="rs-avg">-</div></div>
-                <div class="stat-card"><div class="stat-card-title">Puncak Received Bulan Ini</div><div class="stat-card-value" id="rs-puncak">-</div></div>
+                <div class="stat-card"><div class="stat-card-title">Puncak Received (Bulan Terpilih)</div><div class="stat-card-value" id="rs-puncak">-</div></div>
             </div>
             <div class="insight-card">
                 <div class="insight-header">
@@ -225,7 +227,7 @@ body.command-center-mode .stat-card-value{color:#38bdf8}
                 <div class="portal-card"><a target="_blank" rel="noopener" href="https://docs.google.com/spreadsheets/d/1HYCvIkFWzC_ambQ3gYmtr25sDwWRrDwFO1pJLfEK584/edit?gid=0#gid=0">TJPH Periode<small>Sheet TJPH</small></a></div>
                 <div class="portal-card"><a target="_blank" rel="noopener" href="https://help.shopee.co.id/portal/webform/09f4d645465c4b5086c3bede5a039ca0">TJPH 3PL<small>Webform Sanggah</small></a></div>
                 <div class="portal-card"><a target="_blank" rel="noopener" href="https://docs.google.com/spreadsheets/d/1ec9TFM9FrdApRMDHdDSCdq12Rhfnsw4heDP8uYOG2AI/edit?gid=0#gid=0">Stuck Parcel<small>Sheet Monitoring</small></a></div>
-                <div class="portal-card"><a target="_blank" rel="noopener" href="https://docs.google.com/spreadsheets/d/1RScdiUHE5NURtRDrKhhl0A0XXjRF6IO9sAMT8Q85akg/edit?gid=191062988#gid=191062988">Data Lost<small>Sheet Pelaporan</small></a></div>
+                <div class="portal-card"><a target="_blank" rel="noopener" href="https://docs.google.com/spreadsheets/d/1IPevtMcE7drxDycmoFrTfUZPcXWjWCGhNpqwk3Xxhdc/edit?gid=1763349419#gid=1763349419">Data Lost<small>Sheet Pelaporan</small></a></div>
                 <div class="portal-card"><a target="_blank" rel="noopener" href="https://help.shopee.co.id/portal/webform/555dd82115c64cb18325a167d3a8a55f">Damage<small>Webform Klaim</small></a></div>
                 <div class="portal-card"><a target="_blank" rel="noopener" href="https://docs.google.com/spreadsheets/d/1Mj2WsfzhDN9ikaLWv6UjLTFh_EH4OXkcI7TZOqMNjpA/edit?gid=0#gid=0">L&D (Lost & Damage)<small>Database Sheet</small></a></div>
                 <div class="portal-card"><a target="_blank" rel="noopener" href="https://help.shopee.co.id/portal/webform/1ebc9479f8f04ca6856078c8dd911513">Non AWB<small>Webform Input</small></a></div>
@@ -262,16 +264,16 @@ body.command-center-mode .stat-card-value{color:#38bdf8}
                     <div id="chart-bar" class="chart-container"></div>
                 </div>
                 <div class="chart-card">
-                    <div class="chart-header"><div class="chart-title">DATA LOST SCAN - SOC_Received</div></div>
+                    <div class="chart-header"><div class="chart-title">DATA LOST SCAN - SOC_Received <span class="bln-label" style="font-weight:400;color:var(--text-secondary);"></span></div></div>
                     <div id="chart-pie-received" class="chart-container"></div>
                 </div>
                 <div class="chart-card">
-                    <div class="chart-header"><div class="chart-title">DATA LOST SCAN - SOC_Packed</div></div>
+                    <div class="chart-header"><div class="chart-title">DATA LOST SCAN - SOC_Packed <span class="bln-label" style="font-weight:400;color:var(--text-secondary);"></span></div></div>
                     <div id="chart-pie-packed" class="chart-container"></div>
                 </div>
                 <div class="chart-card">
                     <div class="chart-header">
-                        <div class="chart-title">Data Gantungan Hourly - SOC_Received per Hari (Bulan Berjalan)</div>
+                        <div class="chart-title">Data Gantungan Hourly - SOC_Received per Hari <span class="bln-label" style="font-weight:400;color:var(--text-secondary);"></span></div>
                         <select id="gantungan-mode" class="select-input" onchange="renderGantunganArea()">
                             <option value="daily">Per Hari</option>
                             <option value="cumulative">Akumulatif</option>
@@ -280,7 +282,7 @@ body.command-center-mode .stat-card-value{color:#38bdf8}
                     <div id="chart-area" class="chart-container"></div>
                 </div>
                 <div class="chart-card">
-                    <div class="chart-header"><div class="chart-title">Data Gantungan Hourly - SOC_Packed vs RETURN_SOC_Packed per Hari</div></div>
+                    <div class="chart-header"><div class="chart-title">Data Gantungan Hourly - SOC_Packed vs RETURN_SOC_Packed per Hari <span class="bln-label" style="font-weight:400;color:var(--text-secondary);"></span></div></div>
                     <div id="chart-line" class="chart-container"></div>
                 </div>
             </div>
@@ -569,7 +571,7 @@ function loadRingkasan() {
 
     const script = document.createElement('script');
     script.id = 'ringkasan-data-script';
-    script.src = REKAPAN_WEBAPP_URL + '?type=ringkasan&callback=' + callbackName + '&_=' + Date.now();
+    script.src = REKAPAN_WEBAPP_URL + '?type=ringkasan&callback=' + callbackName + paramBulan() + '&_=' + Date.now();
     script.onerror = function () {
         delete window[callbackName];
         script.remove();
@@ -579,9 +581,50 @@ function loadRingkasan() {
     document.body.appendChild(script);
 }
 
+/* PILIHAN BULAN: kosong = otomatis bulan terbaru di data */
+let bulanDipilih = '';
+const BULAN_PANJANG = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
+
+function paramBulan() {
+    return bulanDipilih ? '&bulan=' + encodeURIComponent(bulanDipilih) : '';
+}
+function bulanLabel(b) {
+    const m = /^(\d{4})-(\d{2})$/.exec(b || '');
+    return m ? BULAN_PANJANG[parseInt(m[2], 10) - 1] + ' ' + m[1] : '';
+}
+function setLabelBulan(b) {
+    const teks = b ? '· ' + bulanLabel(b) : '';
+    document.querySelectorAll('.bln-label').forEach(function (el) { el.textContent = teks; });
+}
+function syncBulanDropdown(d) {
+    const sel = document.getElementById('bulan-select');
+    if (!sel || !Array.isArray(d.bulanTersedia)) return;
+    const kunci = d.bulanTersedia.join(',');
+    if (sel.dataset.kunci !== kunci) {
+        sel.innerHTML = '<option value="">Otomatis (terbaru)</option>' +
+            d.bulanTersedia.slice().reverse().map(function (b) {
+                return '<option value="' + b + '">' + bulanLabel(b) + '</option>';
+            }).join('');
+        sel.dataset.kunci = kunci;
+    }
+    if (bulanDipilih && d.bulanTersedia.indexOf(bulanDipilih) === -1) bulanDipilih = '';
+    sel.value = bulanDipilih;
+}
+function changeBulan() {
+    bulanDipilih = document.getElementById('bulan-select').value;
+    loadRekapan();
+    loadGantungan();
+    loadGantungan2();
+    loadRingkasan();
+    showToast(bulanDipilih ? 'Menampilkan ' + bulanLabel(bulanDipilih) : 'Menampilkan bulan terbaru');
+}
+
 function renderRingkasan() {
     const d = ringkasanData;
     if (!d) return;
+
+    syncBulanDropdown(d);
+    setLabelBulan(d.bulan);
 
     setText('rs-tanggal', tglIndo(d.tanggalTerakhir));
     setText('rs-recv-hari', fmtAngka(d.receivedHari));
@@ -594,6 +637,7 @@ function renderRingkasan() {
         ? fmtAngka(d.puncakReceived.total) + ' (' + tglIndo(d.puncakReceived.label, true) + ')'
         : '-');
 
+    const bln = bulanLabel(d.bulan) || 'bulan ini';
     const tgl = tglIndo(d.tanggalTerakhir);
     const pembanding = d.receivedHari >= d.rataReceived ? 'di atas atau sama dengan' : 'di bawah';
     const puncak = d.puncakReceived && d.puncakReceived.label
@@ -601,19 +645,19 @@ function renderRingkasan() {
         : '-';
 
     document.getElementById('quick-ai-insights').innerHTML = `
-        <li><i class="fa-solid fa-circle-check" style="color:var(--success-color);"></i> Data terakhir tanggal <strong>${tgl}</strong>: SOC_Received <strong>${fmtAngka(d.receivedHari)}</strong>, SOC_Packed + Return <strong>${fmtAngka(d.packedHari)}</strong> (Return ${fmtAngka(d.returnHari)}).</li>
-        <li><i class="fa-solid fa-chart-line" style="color:var(--accent-color);"></i> Total bulan berjalan dalam <strong>${fmtAngka(d.hariData)} hari</strong> data: SOC_Received <strong>${fmtAngka(d.receivedBulan)}</strong>, SOC_Packed + Return <strong>${fmtAngka(d.packedBulan)}</strong>.</li>
-        <li><i class="fa-solid fa-gauge-high" style="color:var(--warning-color);"></i> SOC_Received tanggal terakhir (${fmtAngka(d.receivedHari)}) <strong>${pembanding}</strong> rata-rata bulan ini (${fmtAngka(d.rataReceived, 1)} per hari).</li>
+        <li><i class="fa-solid fa-circle-check" style="color:var(--success-color);"></i> Data terakhir <strong>${bln}</strong> tanggal <strong>${tgl}</strong>: SOC_Received <strong>${fmtAngka(d.receivedHari)}</strong>, SOC_Packed + Return <strong>${fmtAngka(d.packedHari)}</strong> (Return ${fmtAngka(d.returnHari)}).</li>
+        <li><i class="fa-solid fa-chart-line" style="color:var(--accent-color);"></i> Total <strong>${bln}</strong> dalam <strong>${fmtAngka(d.hariData)} hari</strong> data: SOC_Received <strong>${fmtAngka(d.receivedBulan)}</strong>, SOC_Packed + Return <strong>${fmtAngka(d.packedBulan)}</strong>.</li>
+        <li><i class="fa-solid fa-gauge-high" style="color:var(--warning-color);"></i> SOC_Received tanggal terakhir (${fmtAngka(d.receivedHari)}) <strong>${pembanding}</strong> rata-rata ${bln} (${fmtAngka(d.rataReceived, 1)} per hari).</li>
     `;
 
     document.getElementById('full-ai-insights-content').innerHTML = `
-        <h3>Laporan Operasional Realtime</h3>
+        <h3>Laporan Operasional Realtime - ${bln}</h3>
         <p>Dihitung otomatis dari <strong>${fmtAngka(d.totalBaris)}</strong> baris di tab PER WEEK. Setiap ID hanya dihitung sekali, di tanggal pertama ia muncul.</p>
         <br>
         <ul>
             <li><strong>Tanggal data terakhir:</strong> ${tgl}.</li>
-            <li><strong>SOC_Received:</strong> ${fmtAngka(d.receivedBulan)} ID bulan ini, rata-rata ${fmtAngka(d.rataReceived, 1)} per hari, puncak ${puncak}.</li>
-            <li><strong>SOC_Packed + Return:</strong> ${fmtAngka(d.packedBulan)} ID bulan ini, di antaranya ${fmtAngka(d.returnBulan)} berstatus RETURN_SOC_Packed.</li>
+            <li><strong>SOC_Received:</strong> ${fmtAngka(d.receivedBulan)} ID, rata-rata ${fmtAngka(d.rataReceived, 1)} per hari, puncak ${puncak}.</li>
+            <li><strong>SOC_Packed + Return:</strong> ${fmtAngka(d.packedBulan)} ID, di antaranya ${fmtAngka(d.returnBulan)} berstatus RETURN_SOC_Packed.</li>
         </ul>
     `;
     updateHeaderMeta();
@@ -713,7 +757,7 @@ function loadRekapan() {
 
     const script = document.createElement('script');
     script.id = 'rekapan-data-script';
-    script.src = REKAPAN_WEBAPP_URL + '?callback=' + callbackName + '&_=' + Date.now();
+    script.src = REKAPAN_WEBAPP_URL + '?callback=' + callbackName + paramBulan() + '&_=' + Date.now();
     script.onerror = function () {
         delete window[callbackName];
         script.remove();
@@ -776,7 +820,7 @@ function loadGantungan() {
 
     const script = document.createElement('script');
     script.id = 'gantungan-data-script';
-    script.src = REKAPAN_WEBAPP_URL + '?type=gantungan&callback=' + callbackName + '&_=' + Date.now();
+    script.src = REKAPAN_WEBAPP_URL + '?type=gantungan&callback=' + callbackName + paramBulan() + '&_=' + Date.now();
     script.onerror = function () {
         delete window[callbackName];
         script.remove();
@@ -846,7 +890,7 @@ function loadGantungan2() {
 
     const script = document.createElement('script');
     script.id = 'gantungan2-data-script';
-    script.src = REKAPAN_WEBAPP_URL + '?type=gantungan2&callback=' + callbackName + '&_=' + Date.now();
+    script.src = REKAPAN_WEBAPP_URL + '?type=gantungan2&callback=' + callbackName + paramBulan() + '&_=' + Date.now();
     script.onerror = function () {
         delete window[callbackName];
         script.remove();
