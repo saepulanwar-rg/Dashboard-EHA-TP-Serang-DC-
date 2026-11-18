@@ -1236,9 +1236,12 @@ function showToast(message) {
 </script>
 <script>
 if ('serviceWorker' in navigator && location.protocol !== 'file:') {
-  window.addEventListener('load', () => navigator.serviceWorker.register('sw.js').catch(()=>{}));
+    window.addEventListener('load', () => {
+        navigator.serviceWorker.register('sw.js').catch(console.error);
+    });
 }
-    <script src="kpi-charts.js"></script>
 </script>
+
+<script src="kpi-charts.js"></script>
 </body>
 </html>
