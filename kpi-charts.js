@@ -1,7 +1,7 @@
 /* Grafik tambahan: SPXID - OPS KPI Monitoring Dashboard_SOC - Daily_Table
    Dipasang di tab "Visualisasi Data". Memakai helper dari index.html (chartTheme, CHART_COLORS, dst). */
 (function () {
-  const KPI_WEBAPP_URL = ''; // isi HANYA jika kpi-apps-script.gs dipasang sebagai Web App terpisah; kosong = pakai REKAPAN_WEBAPP_URL
+  const KPI_WEBAPP_URL = 'https://script.google.com/a/macros/spxexpress.com/s/AKfycbxaYJwEYm9OBHs7QL1gmsX0UXP__zCFHO3loBOnAIInkgjTTgW6Zng5z_T5InFh5UdbcQ/exec'; // Endpoint KPI yang sudah berhasil dites
   const KPI_HEADER_ROW = 1; // nomor baris header di sheet; ubah jika header ada di baris lain
   const KEY = 'kpi_cfg_v1';
   let kpi = { headers: [], rows: [] };
@@ -64,8 +64,18 @@
   function agg(rows, v, mode) {
     if (!rows.length) return 0;
     if (!v || mode === 'count') return rows.length;
-    const s = rows.reduce((a, r) => a + n(r[v]), 0);
-    return mode === 'avg' ? s / rows.length : s;
+
+    // Abaikan nilai kosong dan tanda '-' agar rata-rata tidak dianggap nol.
+    const valid = rows
+      .map(r => r[v])
+      .filter(x => x !== '' && x !== null && x !== undefined && x !== '-')
+      .map(n)
+      .filter(Number.isFinite);
+
+    if (!valid.length) return 0;
+
+    const total = valid.reduce((a, x) => a + x, 0);
+    return mode === 'avg' ? total / valid.length : total;
   }
   const r2 = x => Math.round(x * 100) / 100;
 
