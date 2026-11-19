@@ -863,6 +863,12 @@ function loadKpi() {
             showToast('Data KPI gagal dibaca dari Web App.');
             return;
         }
+        if (!Array.isArray(response.data.rows)) {
+            console.error('Respons KPI bukan format KPI (Web App kemungkinan belum versi terbaru):', response.data);
+            setText('kpi-info', 'Web App belum mengirim data KPI. Pastikan Code.gs terbaru sudah di-deploy sebagai New version.');
+            showToast('Data KPI belum tersedia. Deploy Code.gs terbaru sebagai New version.');
+            return;
+        }
         kpiData = response.data;
         console.log('Data KPI berhasil dimuat:', kpiData);
         renderKpi();
