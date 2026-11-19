@@ -504,6 +504,9 @@ let tjphStats = [];
    Keduanya memakai Web App yang sama. Gantungan memakai parameter ?type=gantungan.
    Jika Web App dipindah ke akun lain, ganti URL ini dengan URL /exec yang baru. */
 const REKAPAN_WEBAPP_URL = 'https://script.google.com/a/macros/spxexpress.com/s/AKfycbwgDy3kLODJAffOazizSnwW3Hggxp3Xmr6wkJUD_BTojhgtI0sKcmTas5wXaBAV_GL6fQ/exec';
+/* Web App untuk halaman KPI Operasional. Bawaan: sama dengan REKAPAN_WEBAPP_URL.
+   Kalau kode KPI ada di proyek Apps Script terpisah, isi dengan URL /exec proyek itu. */
+const KPI_WEBAPP_URL = REKAPAN_WEBAPP_URL;
 let rekapanStats = [];
 let gantunganStats = [];
 let gantungan2Stats = [];
@@ -846,7 +849,7 @@ function rataKpi(rows, key) {
 }
 
 function loadKpi() {
-    if (!REKAPAN_WEBAPP_URL) return;
+    if (!KPI_WEBAPP_URL) return;
     const callbackName = 'handleKpiResponse';
 
     const oldScript = document.getElementById('kpi-data-script');
@@ -876,7 +879,7 @@ function loadKpi() {
 
     const script = document.createElement('script');
     script.id = 'kpi-data-script';
-    script.src = REKAPAN_WEBAPP_URL + '?type=kpi&callback=' + callbackName + '&_=' + Date.now();
+    script.src = KPI_WEBAPP_URL + '?type=kpi&callback=' + callbackName + '&_=' + Date.now();
     script.onerror = function () {
         delete window[callbackName];
         script.remove();
