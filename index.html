@@ -194,6 +194,14 @@ table.kpi-table{width:100%;border-collapse:collapse}
 .kpi-bad{color:#ff2bd6;text-shadow:0 0 10px rgba(255,43,214,.5)}
 .kpi-warn{color:#ffb800}
 .kpi-muted{color:var(--text-secondary)}
+
+.kpi-form{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:14px;align-items:end;margin-top:6px}
+.kpi-field label{display:block;font-size:11px;color:var(--text-secondary);margin-bottom:6px;text-transform:uppercase;letter-spacing:.04em}
+.kpi-field input[type="date"]{color-scheme:dark}
+.kpi-field-btn .btn{width:100%;justify-content:center;padding:10px 14px}
+.kpi-pesan{margin-top:14px;font-size:12.5px;color:var(--text-secondary);line-height:1.5}
+.kpi-pesan.ok{color:#39ff88;text-shadow:0 0 10px rgba(57,255,136,.4)}
+.kpi-pesan.err{color:#ff4d6d}
 </style>
 </head>
 <body data-theme="dark">
@@ -413,6 +421,21 @@ table.kpi-table{width:100%;border-collapse:collapse}
                     <div id="chart-kpi-pct" class="chart-container"></div>
                 </div>
             </div>
+            <div class="chart-card" style="margin-bottom:25px;">
+                <div class="chart-header"><div class="chart-title">Input KPI Harian</div></div>
+                <div class="kpi-form">
+                    <div class="kpi-field"><label for="kin-tanggal">Tanggal</label><input type="date" id="kin-tanggal" class="input-text" onchange="gantiTanggalKpi()"></div>
+                    <div class="kpi-field"><label for="kin-stuck">Stuck &gt; 48 h (%)</label><input type="text" id="kin-stuck" class="input-text" inputmode="decimal" autocomplete="off" placeholder="0,00" oninput="kpiKotor()"></div>
+                    <div class="kpi-field"><label for="kin-comp">Completion within Cutoff (%)</label><input type="text" id="kin-comp" class="input-text" inputmode="decimal" autocomplete="off" placeholder="100,00" oninput="kpiKotor()"></div>
+                    <div class="kpi-field"><label for="kin-relabel">Relabel Cache (%)</label><input type="text" id="kin-relabel" class="input-text" inputmode="decimal" autocomplete="off" placeholder="kosongkan jika "-"" oninput="kpiKotor()"></div>
+                    <div class="kpi-field"><label for="kin-prod">ManDays</label><input type="text" id="kin-prod" class="input-text" inputmode="decimal" autocomplete="off" placeholder="mis. 2500" oninput="kpiKotor()"></div>
+                    <div class="kpi-field"><label for="kin-clean">TP Clean Floor (%)</label><input type="text" id="kin-clean" class="input-text" inputmode="decimal" autocomplete="off" placeholder="99,90" oninput="kpiKotor()"></div>
+                    <div class="kpi-field"><label for="kin-fifo">TP FIFO Bulky (%)</label><input type="text" id="kin-fifo" class="input-text" inputmode="decimal" autocomplete="off" placeholder="99,90" oninput="kpiKotor()"></div>
+                    <div class="kpi-field"><label for="kin-pin">PIN Input</label><input type="password" id="kin-pin" class="input-text" autocomplete="off" placeholder="PIN"></div>
+                    <div class="kpi-field kpi-field-btn"><button class="btn btn-primary" id="kin-btn" onclick="simpanKpiDariForm()"><i class="fa-solid fa-floppy-disk"></i> Simpan</button></div>
+                </div>
+                <div class="kpi-pesan" id="kin-pesan">Pilih tanggal. Kolom terisi otomatis kalau tanggalnya sudah ada, dan menyimpan akan memperbarui data itu. Kolom kosong tampil "-". % MTD dihitung otomatis dari ManDays dan target.</div>
+            </div>
             <div class="table-card">
                 <div class="table-toolbar"><div class="chart-title">Tabel KPI Harian (SPXID - OPS KPI Monitoring SOC)</div></div>
                 <div class="kpi-table-wrap"><table class="kpi-table" id="kpi-table"><thead></thead><tbody></tbody></table></div>
@@ -506,7 +529,7 @@ let tjphStats = [];
 const REKAPAN_WEBAPP_URL = 'https://script.google.com/a/macros/spxexpress.com/s/AKfycbwgDy3kLODJAffOazizSnwW3Hggxp3Xmr6wkJUD_BTojhgtI0sKcmTas5wXaBAV_GL6fQ/exec';
 /* Web App untuk halaman KPI Operasional. Bawaan: sama dengan REKAPAN_WEBAPP_URL.
    Kalau kode KPI ada di proyek Apps Script terpisah, isi dengan URL /exec proyek itu. */
-const KPI_WEBAPP_URL = 'https://script.google.com/a/macros/spxexpress.com/s/AKfycbyd65jFH388JbOoqcM86tTdeTpDMtw8G4UfWiVf7iEa7okZtDB9kqR3wVxbCr-3GWKnAg/exec';
+const KPI_WEBAPP_URL = REKAPAN_WEBAPP_URL;
 let rekapanStats = [];
 let gantunganStats = [];
 let gantungan2Stats = [];
@@ -522,6 +545,7 @@ window.addEventListener('DOMContentLoaded', () => {
     loadGantungan2();
     loadRingkasan();
     loadKpi();
+    initFormKpi();
     startAutoRefreshEngine();
     window.addEventListener('resize', resizeAllCharts);
     document.getElementById('login-password').addEventListener('keypress', function (e) {
@@ -889,6 +913,120 @@ function loadKpi() {
     document.body.appendChild(script);
 }
 
+/* INPUT KPI HARIAN: simpan lewat Web App ke tab INPUT_KPI */
+let formKpiKotor = false;
+
+function kpiKotor() { formKpiKotor = true; }
+
+function hariIniISO() {
+    const d = new Date();
+    return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
+}
+function pesanKpi(teks, status) {
+    const el = document.getElementById('kin-pesan');
+    if (!el) return;
+    el.textContent = teks;
+    el.className = 'kpi-pesan' + (status ? ' ' + status : '');
+}
+
+function initFormKpi() {
+    const tgl = document.getElementById('kin-tanggal');
+    if (tgl && !tgl.value) tgl.value = hariIniISO();
+    try {
+        const pin = sessionStorage.getItem('kpi_pin');
+        if (pin) document.getElementById('kin-pin').value = pin;
+    } catch (e) { /* abaikan */ }
+}
+
+// Isi kolom dari data tanggal yang dipilih (kalau ada); kalau tidak ada, kosongkan
+function isiFormDariTanggal(tampilPesan) {
+    const tgl = document.getElementById('kin-tanggal').value;
+    const baris = kpiData && Array.isArray(kpiData.rows) ? kpiData.rows.find(r => r.label === tgl) : null;
+    const v = x => x === null || x === undefined ? '' : String(Math.round(x * 100) / 100).replace('.', ',');
+    const set = (id, x) => { document.getElementById(id).value = v(x); };
+    set('kin-stuck', baris && baris.stuck);
+    set('kin-comp', baris && baris.completion);
+    set('kin-relabel', baris && baris.relabel);
+    set('kin-prod', baris && baris.productivity);
+    set('kin-clean', baris && baris.cleanFloor);
+    set('kin-fifo', baris && baris.fifoBulky);
+    if (tgl && tampilPesan) {
+        pesanKpi(baris
+            ? tglIndo(tgl) + ' sudah ada datanya. Mengubah lalu menyimpan akan memperbarui data itu.'
+            : tglIndo(tgl) + ' belum ada datanya. Isi kolom yang tersedia lalu Simpan.', '');
+    }
+}
+
+function gantiTanggalKpi() {
+    formKpiKotor = false;
+    isiFormDariTanggal(true);
+}
+
+function simpanKpiDariForm() {
+    const ambil = id => document.getElementById(id).value.trim();
+    const tanggal = ambil('kin-tanggal');
+    const pin = ambil('kin-pin');
+    if (!tanggal) { pesanKpi('Pilih tanggal dulu.', 'err'); return; }
+    if (!pin) { pesanKpi('Masukkan PIN input.', 'err'); return; }
+
+    const nilai = { stuck: ambil('kin-stuck'), comp: ambil('kin-comp'), relabel: ambil('kin-relabel'), prod: ambil('kin-prod'), clean: ambil('kin-clean'), fifo: ambil('kin-fifo') };
+    if (Object.keys(nilai).every(k => nilai[k] === '')) { pesanKpi('Isi minimal satu nilai KPI.', 'err'); return; }
+
+    const btn = document.getElementById('kin-btn');
+    btn.disabled = true;
+    pesanKpi('Menyimpan...', '');
+    try { sessionStorage.setItem('kpi_pin', pin); } catch (e) { /* abaikan */ }
+
+    const callbackName = 'handleKpiSimpanResponse';
+    const oldScript = document.getElementById('kpi-simpan-script');
+    if (oldScript) oldScript.remove();
+
+    let selesai = false;
+    const akhiri = function () {
+        selesai = true;
+        btn.disabled = false;
+        const sc = document.getElementById('kpi-simpan-script');
+        if (sc) sc.remove();
+        delete window[callbackName];
+    };
+
+    window[callbackName] = function (resp) {
+        if (selesai) return;
+        akhiri();
+        if (!resp || !resp.success) {
+            const err = String((resp && resp.error) || 'respons tidak valid').replace(/^Error:\s*/, '');
+            pesanKpi('Gagal menyimpan: ' + err, 'err');
+            showToast('Gagal menyimpan KPI.');
+            return;
+        }
+        const label = resp.data && resp.data.label;
+        pesanKpi('Tersimpan: ' + tglIndo(label) + (resp.data && resp.data.ditimpa ? ' (memperbarui data yang ada).' : '.'), 'ok');
+        showToast('KPI ' + tglIndo(label, true) + ' tersimpan.');
+        formKpiKotor = false;
+        loadKpi();
+    };
+
+    const q = ['type=kpi_simpan', 'callback=' + callbackName, 'pin=' + encodeURIComponent(pin), 'tanggal=' + encodeURIComponent(tanggal)];
+    Object.keys(nilai).forEach(k => q.push(k + '=' + encodeURIComponent(nilai[k])));
+    q.push('_=' + Date.now());
+
+    const script = document.createElement('script');
+    script.id = 'kpi-simpan-script';
+    script.src = KPI_WEBAPP_URL + '?' + q.join('&');
+    script.onerror = function () {
+        if (selesai) return;
+        akhiri();
+        pesanKpi('Gagal menyimpan: Web App tidak dapat dijangkau. Periksa akses dan versi deployment.', 'err');
+    };
+    document.body.appendChild(script);
+
+    setTimeout(function () {
+        if (selesai) return;
+        akhiri();
+        pesanKpi('Tidak ada respons dari Web App. Data mungkin belum tersimpan, cek tabel di bawah.', 'err');
+    }, 20000);
+}
+
 function renderKpi() {
     const d = kpiData;
     if (!d) return;
@@ -1007,6 +1145,7 @@ function renderKpi() {
             '<td class="' + kelas(r.pctMtd, r.pctMtd >= 100) + '">' + fmtPct(r.pctMtd) + '</td>' +
             '</tr>').join('');
     }
+    if (!formKpiKotor) isiFormDariTanggal(false);
     setText('kpi-info', rows.length
         ? 'Menampilkan ' + rows.length + ' hari data, ' + tglIndo(rows[0].label) + ' sampai ' + tglIndo(rows[rows.length - 1].label) + '. Hijau = memenuhi, merah muda = di bawah acuan.'
         : 'Belum ada data KPI.');
