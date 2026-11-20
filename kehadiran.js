@@ -17,7 +17,7 @@
     const kpi = Array.from(menu.children).find(x => /KPI/.test(x.textContent));
     menu.insertBefore(li, kpi ? kpi.nextSibling : null);
     const kartu = (acc, ic, judul, id) => '<div class="stat-card ' + acc + '"><div class="stat-icon"><i class="fa-solid ' + ic + '"></i></div><div class="stat-card-title">' + judul + '</div><div class="stat-card-value" id="' + id + '">-</div></div>';
-    body.insertAdjacentHTML('beforeend', '<section id="sec-kehadiran" class="section-view">' +
+    body.insertAdjacentHTML('beforeend', '<section id="sec-kehadiran" class="section-view"><div class="chart-card" style="margin-bottom:20px;padding:12px 20px;"><span style="font-size:13px;font-weight:600;margin-right:10px;"><i class="fa-solid fa-users"></i> Kelompok:</span><select id="kh-grup" class="select-input"><option value="">Semua</option></select></div>' +
       '<div class="stats-grid">' + kartu('acc-green', 'fa-user-check', 'Persentase Masuk (Periode)', 'kh-total') + kartu('acc-blue', 'fa-calendar-day', 'Persentase Masuk Hari Terakhir', 'kh-last') +
       kartu('acc-green', 'fa-circle-check', 'Total Hadir', 'kh-hadir') + kartu('acc-rose', 'fa-user-xmark', 'Alpa (A)', 'kh-alpa') + kartu('acc-amber', 'fa-briefcase-medical', 'Sakit (S)', 'kh-sakit') + kartu('acc-violet', 'fa-umbrella-beach', 'Izin / Cuti (I)', 'kh-izin') + '</div>' +
       '<div class="charts-grid">' +
@@ -28,6 +28,7 @@
       '<div class="kpi-table-wrap"><table class="kpi-table" id="kh-table"><thead></thead><tbody></tbody></table></div>' +
       '<div style="margin-top:10px;font-size:12px;color:var(--text-secondary);" id="kh-info">Memuat data kehadiran...</div></div></section>');
     $('kh-filter').addEventListener('change', renderTabel);
+    $('kh-grup').addEventListener('change', function () { terapkan(); renderKh(); });
   }
 
   function charts() {
@@ -37,10 +38,10 @@
   function renderTabel() {
     if (!data) return;
     const f = $('kh-filter').value;
-    $('kh-table').querySelector('thead').innerHTML = '<tr><th>Nama</th><th>Team</th><th>Job Desk</th><th>Hadir</th><th>Alpa</th><th>Sakit</th><th>Izin</th><th>% Masuk</th></tr>';
+    $('kh-table').querySelector('thead').innerHTML = '<tr><th>Nama</th><th>Kelompok</th><th>Team</th><th>Job Desk</th><th>Hadir</th><th>Alpa</th><th>Sakit</th><th>Izin</th><th>% Masuk</th></tr>';
     $('kh-table').querySelector('tbody').innerHTML = data.orang.filter(o => !f || o.team === f).map(o => {
       const p = pct(o);
-      return '<tr><td>' + esc(o.nama) + '</td><td>' + esc(o.team) + '</td><td>' + esc(o.jobdesk) + '</td><td>' + o.hadir + '</td><td>' + o.alpa + '</td><td>' + o.sakit + '</td><td>' + o.izin + '</td><td class="' + kls(p) + '">' + fmtPct(p) + '</td></tr>';
+      return '<tr><td>' + esc(o.nama) + '</td><td>' + esc(o.grup) + '</td><td>' + esc(o.team) + '</td><td>' + esc(o.jobdesk) + '</td><td>' + o.hadir + '</td><td>' + o.alpa + '</td><td>' + o.sakit + '</td><td>' + o.izin + '</td><td class="' + kls(p) + '">' + fmtPct(p) + '</td></tr>';
     }).join('');
   }
 
@@ -81,6 +82,30 @@
     }, true);
   }
 
+  let all = null;
+  const F = ['hadir', 'alpa', 'sakit', 'izin', 'jadwal'];
+  function gabung(list) {
+    const out = { start: list[0].start, end: list[0].end, hari: [], tim: [], orang: [], total: { hadir: 0, alpa: 0, sakit: 0, izin: 0, jadwal: 0 } }, idx = {};
+    list.forEach(x => {
+      if (x.start < out.start) out.start = x.start;
+      if (x.end > out.end) out.end = x.end;
+      x.hari.forEach(h => { let k = idx[h.label]; if (!k) { k = idx[h.label] = { label: h.label, hadir: 0, alpa: 0, sakit: 0, izin: 0, jadwal: 0 }; out.hari.push(k); } F.forEach(f => k[f] += h[f]); });
+      out.tim = out.tim.concat(x.tim);
+      out.orang = out.orang.concat(x.orang.map(o => Object.assign({ grup: x.nama }, o)));
+      F.forEach(f => out.total[f] += x.total[f]);
+    });
+    out.hari.sort((a, b) => a.label < b.label ? -1 : 1);
+    return out;
+  }
+  function terapkan() {
+    if (!all) return;
+    const sel = $('kh-grup'), cur = sel.value;
+    sel.innerHTML = '<option value="">Semua</option>' + all.grup.map(x => '<option value="' + esc(x.nama) + '">' + esc(x.nama) + '</option>').join('');
+    sel.value = all.grup.some(x => x.nama === cur) ? cur : '';
+    const list = all.grup.filter(x => !sel.value || x.nama === sel.value);
+    data = gabung(list.length ? list : all.grup);
+  }
+
   function load() {
     const base = typeof KPI_WEBAPP_URL !== 'undefined' ? KPI_WEBAPP_URL : '';
     if (!base) return;
@@ -88,8 +113,8 @@
     const old = $('kh-data-script'); if (old) old.remove();
     window[cb] = function (res) {
       delete window[cb]; const s = $('kh-data-script'); if (s) s.remove();
-      if (!res || !res.success || !Array.isArray(res.orang)) { setText('kh-info', 'Data kehadiran gagal dimuat: ' + ((res && res.error) || 'Web App belum memakai kode kehadiran terbaru (deploy New version).')); return; }
-      data = res; renderKh();
+      if (!res || !res.success || !Array.isArray(res.grup)) { setText('kh-info', 'Data kehadiran gagal dimuat: ' + ((res && res.error) || 'Web App belum memakai kode kehadiran terbaru (deploy New version).')); return; }
+      all = res; terapkan(); renderKh();
     };
     const sc = document.createElement('script');
     sc.id = 'kh-data-script';
