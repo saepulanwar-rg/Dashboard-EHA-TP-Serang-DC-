@@ -24,10 +24,9 @@
       '<div class="chart-card"><div class="chart-header"><div class="chart-title">Persentase Masuk per Tim</div></div><div id="kh-chart-tim" class="chart-container"></div></div>' +
       '<div class="chart-card"><div class="chart-header"><div class="chart-title">Komposisi Kehadiran</div></div><div id="kh-chart-donut" class="chart-container"></div></div>' +
       '<div class="chart-card" style="grid-column:1/-1"><div class="chart-header"><div class="chart-title">Persentase Masuk per Hari</div></div><div id="kh-chart-hari" class="chart-container"></div></div></div>' +
-      '<div class="table-card"><div class="table-toolbar"><div class="chart-title">Kehadiran per Orang</div><select id="kh-filter" class="select-input"><option value="">Semua Tim</option></select></div>' +
-      '<div class="kpi-table-wrap"><table class="kpi-table" id="kh-table"><thead></thead><tbody></tbody></table></div>' +
-      '<div style="margin-top:10px;font-size:12px;color:var(--text-secondary);" id="kh-info">Memuat data kehadiran...</div></div></section>');
-    $('kh-filter').addEventListener('change', renderTabel);
+      '<div class=\"table-toolbar\" style=\"margin-bottom:12px;\"><div class=\"chart-title\">Kehadiran per Orang</div></div><div id=\"kh-chips\" style=\"display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px;\"></div>' +
+      '<div id="kh-tabel-grup"></div><div style="margin-top:10px;font-size:12px;color:var(--text-secondary);" id="kh-info">Memuat data kehadiran...</div></section>');
+    $('kh-chips').addEventListener('click', function (ev) { const b = ev.target.closest('button'); if (!b) return; timDipilih = b.getAttribute('data-t') || ''; renderChips(); renderTabel(); });
     $('kh-grup').addEventListener('change', function () { terapkan(); renderKh(); });
   }
 
@@ -35,13 +34,26 @@
     ['tim', 'donut', 'hari'].forEach(k => { const el = $('kh-chart-' + k); if (el && el.offsetWidth && !chartInstances['kh' + k]) chartInstances['kh' + k] = echarts.init(el); });
   }
 
+  const bar = p => p === null ? '-' : '<div style="display:flex;align-items:center;gap:8px;justify-content:flex-end;"><div style="width:70px;height:6px;border-radius:6px;background:rgba(255,255,255,.12);overflow:hidden;"><div style="width:' + Math.min(100, p) + '%;height:100%;background:currentColor;"></div></div>' + fmtPct(p) + '</div>';
+
+  let timDipilih = '';
+  function renderChips() {
+    if (!data.tim.some(x => x.team === timDipilih)) timDipilih = '';
+    const chip = (t, label) => '<button class="btn' + (timDipilih === t ? ' btn-primary' : '') + '" data-t="' + esc(t) + '">' + esc(label) + '</button>';
+    $('kh-chips').innerHTML = chip('', 'Semua Tim') + data.tim.map(x => chip(x.team, x.team + ' · ' + x.orang + ' orang · ' + fmtPct(pct(x)))).join('');
+  }
+
   function renderTabel() {
     if (!data) return;
-    const f = $('kh-filter').value;
-    $('kh-table').querySelector('thead').innerHTML = '<tr><th>Nama</th><th>Kelompok</th><th>Team</th><th>Job Desk</th><th>Hadir</th><th>Alpa</th><th>Sakit</th><th>Izin</th><th>% Masuk</th></tr>';
-    $('kh-table').querySelector('tbody').innerHTML = data.orang.filter(o => !f || o.team === f).map(o => {
-      const p = pct(o);
-      return '<tr><td>' + esc(o.nama) + '</td><td>' + esc(o.grup) + '</td><td>' + esc(o.team) + '</td><td>' + esc(o.jobdesk) + '</td><td>' + o.hadir + '</td><td>' + o.alpa + '</td><td>' + o.sakit + '</td><td>' + o.izin + '</td><td class="' + kls(p) + '">' + fmtPct(p) + '</td></tr>';
+    const f = timDipilih, names = [];
+    data.orang.forEach(o => { if (names.indexOf(o.grup) < 0) names.push(o.grup); });
+    $('kh-tabel-grup').innerHTML = names.map(g => {
+      const rows = data.orang.filter(o => o.grup === g && (!f || o.team === f)), tot = { hadir: 0, alpa: 0, sakit: 0, izin: 0 };
+      if (f && !rows.length) return '';
+      rows.forEach(o => Object.keys(tot).forEach(k => tot[k] += o[k]));
+      const body = rows.map((o, i) => { const p = pct(o); return '<tr><td>' + (i + 1) + '</td><td>' + esc(o.nama) + '</td><td>' + esc(o.jobdesk) + '</td><td>' + esc(o.team) + '</td><td>' + o.hadir + '</td><td>' + o.alpa + '</td><td>' + o.sakit + '</td><td>' + o.izin + '</td><td class="' + kls(p) + '">' + bar(p) + '</td></tr>'; }).join('');
+      return '<div class="table-card" style="margin-bottom:20px;"><div class="table-toolbar"><div class="chart-title">' + esc(g) + ' (' + rows.length + ' orang)</div><div class="' + kls(pct(tot)) + '" style="font-weight:700;">Persentase masuk ' + fmtPct(pct(tot)) + '</div></div>' +
+        '<div class="kpi-table-wrap"><table class="kpi-table"><thead><tr><th>No</th><th>Nama</th><th>Job Desk (Ops)</th><th>Team</th><th>Hadir</th><th>Alpa</th><th>Sakit</th><th>Izin</th><th>% Masuk</th></tr></thead><tbody>' + body + '</tbody></table></div></div>';
     }).join('');
   }
 
@@ -52,9 +64,7 @@
     setText('kh-last', last ? fmtPct(pct(last)) + ' (' + tglIndo(last.label, true) + ')' : '-');
     setText('kh-hadir', fmtAngka(tot.hadir)); setText('kh-alpa', fmtAngka(tot.alpa)); setText('kh-sakit', fmtAngka(tot.sakit)); setText('kh-izin', fmtAngka(tot.izin));
     setText('kh-info', diisi(tot) ? 'Periode ' + tglIndo(data.start) + ' sampai ' + tglIndo(data.end) + '. Hijau ≥ ' + BATAS_BAIK + '%, kuning ≥ ' + BATAS_CUKUP + '%. Hari OFF dan sel yang belum diisi tidak dihitung.' : 'Tabel kehadiran di sheet belum diisi (isi ✓ untuk masuk, A / S / I untuk tidak masuk).');
-    const sel = $('kh-filter'), cur = sel.value;
-    sel.innerHTML = '<option value="">Semua Tim</option>' + data.tim.map(x => '<option value="' + esc(x.team) + '">' + esc(x.team) + '</option>').join('');
-    sel.value = cur;
+    renderChips();
     renderTabel();
     charts();
     const kosong = { show: !diisi(tot), text: 'Belum ada data kehadiran', left: 'center', top: 'center', textStyle: { color: t.muted, fontSize: 14, fontWeight: 500 } };
