@@ -41,23 +41,30 @@ button:disabled{opacity:.55;cursor:not-allowed}
     <label for="nama">Nama</label>
     <select id="nama"></select>
 
+    <label for="status">Status</label>
+    <select id="status">
+        <option value="H">Hadir</option>
+        <option value="S">Sakit</option>
+        <option value="I">Izin / Cuti</option>
+    </select>
+
     <label for="pin">PIN</label>
     <input id="pin" type="password" inputmode="numeric" autocomplete="off" maxlength="12" placeholder="PIN dari leader">
 
     <button id="btn" type="button">Absen Hadir</button>
     <div class="hasil" id="hasil" role="status" aria-live="polite"></div>
 
-    <p class="catatan">Absen hanya untuk diri sendiri. PIN bersifat pribadi, jangan dibagikan.<br>Absen sebelum pukul 08.00 dihitung untuk shift tanggal sebelumnya.</p>
+    <p class="catatan">Absen hanya untuk diri sendiri. PIN bersifat pribadi, jangan dibagikan.<br>Absen sebelum pukul 08.00 dihitung untuk shift tanggal sebelumnya.<br>Sakit atau Izin / Cuti dicatat untuk shift tanggal yang tertera di atas.</p>
 </main>
 
 <script>
-/* Alamat Web App (/exec). Bawaan: sama dengan dashboard.
-   Kalau memakai deployment terpisah khusus absen, ganti dengan alamat /exec deployment itu. */
+/* Alamat Web App (/exec) project Google pribadi untuk absen. */
 const ABSEN_WEBAPP_URL = 'https://script.google.com/macros/s/AKfycbxCVXCo-COicHN0nPeLKR2iMgGGYuKNeacLtWVQM1pUJJwmCV9PGWsVDOVsbDCb9wfx7A/exec';
 
 const $ = id => document.getElementById(id);
 const BULAN = ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des'];
-const STATUS = { H: 'Hadir', A: 'Alpa', S: 'Sakit', I: 'Izin' };
+const STATUS = { H: 'Hadir', A: 'Alpa', S: 'Sakit', I: 'Izin / Cuti' };
+const LABEL_TOMBOL = { H: 'Absen Hadir', S: 'Kirim: Sakit', I: 'Kirim: Izin / Cuti' };
 let daftar = null;
 
 function tglIndo(label) {
@@ -151,33 +158,35 @@ function muatDaftar() {
 }
 
 function absen() {
-    const kelompok = $('kelompok').value, nama = $('nama').value, pin = $('pin').value.trim();
+    const kelompok = $('kelompok').value, nama = $('nama').value, pin = $('pin').value.trim(), status = $('status').value;
     if (!nama) { tampil('Pilih nama Anda dulu.', 'err'); return; }
     if (!pin) { tampil('Masukkan PIN.', 'err'); return; }
 
     try { localStorage.setItem('absen_kelompok', kelompok); localStorage.setItem('absen_nama', nama); } catch (e) { /* abaikan */ }
     $('btn').disabled = true;
-    tampil('Mengirim absen...', 'info');
+    tampil('Mengirim...', 'info');
 
-    panggil({ type: 'absen_simpan', kelompok: kelompok, nama: nama, pin: pin, ua: navigator.userAgent.slice(0, 120) }, function (res) {
+    panggil({ type: 'absen_simpan', kelompok: kelompok, nama: nama, pin: pin, status: status, ua: navigator.userAgent.slice(0, 120) }, function (res) {
         $('btn').disabled = false;
         $('pin').value = '';
-        if (!res || !res.success || !res.data) { tampil('Absen gagal: ' + pesanError(res), 'err'); return; }
-        const d = res.data;
+        if (!res || !res.success || !res.data) { tampil('Gagal: ' + pesanError(res), 'err'); return; }
+        const d = res.data, st = d.status || 'H';
         if (!d.sudah) {
-            tampil(['Absen tercatat', d.nama + (d.team ? ' (' + d.team + ')' : ''), 'Shift ' + tglIndo(d.tanggal) + ' · pukul ' + String(d.jam).slice(0, 5) + ' WIB'], 'ok');
+            const judul = d.diperbarui ? 'Status diperbarui: ' + STATUS[st] : (st === 'H' ? 'Absen tercatat' : STATUS[st] + ' tercatat');
+            tampil([judul, d.nama + (d.team ? ' (' + d.team + ')' : ''), 'Shift ' + tglIndo(d.tanggal) + ' · pukul ' + String(d.jam).slice(0, 5) + ' WIB'], 'ok');
         } else if (d.sumber === 'sheet') {
             tampil(['Sudah tercatat', 'Kehadiran ' + tglIndo(d.tanggal) + ' sudah diisi leader: ' + (STATUS[d.status] || d.status) + '.'], 'info');
         } else {
-            tampil(['Anda sudah absen', d.nama + ' · shift ' + tglIndo(d.tanggal) + ' pukul ' + String(d.jam).slice(0, 5) + ' WIB'], 'info');
+            tampil(['Sudah tercatat: ' + STATUS[st], d.nama + ' · shift ' + tglIndo(d.tanggal) + ' pukul ' + String(d.jam).slice(0, 5) + ' WIB'], 'info');
         }
     }, function (msg) {
         $('btn').disabled = false;
-        tampil('Absen gagal: ' + msg, 'err');
+        tampil('Gagal: ' + msg, 'err');
     });
 }
 
 $('kelompok').addEventListener('change', function () { try { localStorage.removeItem('absen_nama'); } catch (e) { /* abaikan */ } isiNama(); });
+$('status').addEventListener('change', function () { $('btn').textContent = LABEL_TOMBOL[$('status').value]; tampil('', ''); });
 $('btn').addEventListener('click', absen);
 $('pin').addEventListener('keypress', function (e) { if (e.key === 'Enter') absen(); });
 muatDaftar();
